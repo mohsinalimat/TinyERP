@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11232" systemVersion="15G1004" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="ItemEntity" representedClassName="Item" syncable="YES">
+        <attribute name="itemImg" optional="YES" attributeType="Date" allowsExternalBinaryDataStorage="YES" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="itemKind" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemNo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemPrice" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="itemRemark" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemSafetyStock" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="itemSpec" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemUnit" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ItemKindEntity" representedClassName="ItemKind" syncable="YES">
+        <attribute name="itemKindName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="OrderDetailEntity" syncable="YES"/>
+    <entity name="OrderMasterEntity" syncable="YES"/>
+    <entity name="PartnerEntity" syncable="YES"/>
+    <entity name="UnitEntity" representedClassName="Unit" syncable="YES">
+        <attribute name="unitName" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="ItemEntity" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="ItemKindEntity" positionX="-9" positionY="72" width="128" height="60"/>
+        <element name="OrderDetailEntity" positionX="-18" positionY="27" width="128" height="45"/>
+        <element name="OrderMasterEntity" positionX="-36" positionY="9" width="128" height="45"/>
+        <element name="PartnerEntity" positionX="-54" positionY="-9" width="128" height="45"/>
+        <element name="UnitEntity" positionX="-36" positionY="54" width="128" height="60"/>
+    </elements>
+</model>
