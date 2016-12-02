@@ -30,6 +30,8 @@
     
     self.steupTableView.delegate = self;
     self.steupTableView.dataSource = self;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
