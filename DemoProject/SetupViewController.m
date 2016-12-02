@@ -32,11 +32,54 @@
     self.steupTableView.dataSource = self;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupOK" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+     {
+         NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+         NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
+         NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
+         NSString *dbPath3 = [homePath stringByAppendingPathComponent:@"System.sqlite-wal"];
+         NSData *dbData1 = [NSData dataWithContentsOfFile:dbPath1];
+         NSData *dbData2 = [NSData dataWithContentsOfFile:dbPath2];
+         NSData *dbData3 = [NSData dataWithContentsOfFile:dbPath3];
+         
+         DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite" inputData:dbData1];
+         [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+          {
+              if (md){
+                  NSLog(@"1.OK");}
+              else{
+                  NSLog(@"1.%@%@",error,dberror);}
+          }];
+         DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-shm" inputData:dbData2];
+         [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+          {
+              if (md){
+                  NSLog(@"2.OK");}
+              else{
+                  NSLog(@"2.%@%@",error,dberror);}
+          }];
+         DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-wal" inputData:dbData3];
+         [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+          {
+              if (md){
+                  NSLog(@"3.OK");}
+              else{
+                  NSLog(@"3.%@%@",error,dberror);}
+          }];
+     }];
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)transferWVC
 {
-    
+    if(![FBSDKAccessToken currentAccessToken])
+    {
+        AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        appDLG.isLogin = NO;
+        WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
+        [self presentViewController:wvc animated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -86,12 +129,10 @@
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
 {
-    NSLog(@"這邊不會登入");
 }
 
 -(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
 {
-    NSLog(@"這邊一點按鈕就呼叫");
 }
 
 -(BOOL)isDropboxDidLogin
@@ -120,44 +161,7 @@
     if ([self isDropboxDidLogin])
     {
         [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox並覆蓋舊檔？" yes:@"是" no:@"否" controller:self];
-        [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupOK" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
-        {
-            NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-            NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
-            NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
-            NSString *dbPath3 = [homePath stringByAppendingPathComponent:@"System.sqlite-wal"];
-            NSData *dbData1 = [NSData dataWithContentsOfFile:dbPath1];
-            NSData *dbData2 = [NSData dataWithContentsOfFile:dbPath2];
-            NSData *dbData3 = [NSData dataWithContentsOfFile:dbPath3];
-            
-            DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite" inputData:dbData1];
-            [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
-             {
-                 if (md){
-                     NSLog(@"1.OK");}
-                 else{
-                     NSLog(@"1.%@%@",error,dberror);}
-             }];
-            DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-shm" inputData:dbData2];
-            [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
-             {
-                 if (md){
-                     NSLog(@"2.OK");}
-                 else{
-                     NSLog(@"2.%@%@",error,dberror);}
-             }];
-            DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-wal" inputData:dbData3];
-            [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
-             {
-                 if (md){
-                     NSLog(@"3.OK");}
-                 else{
-                     NSLog(@"3.%@%@",error,dberror);}
-             }];
-        }];
     }
-    
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"dbBackupOK" object:nil];
 }
 
 -(void)dropboxRestore

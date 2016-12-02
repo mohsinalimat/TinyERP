@@ -26,48 +26,19 @@
     self.fbLoginButton.delegate = self;
 }
 
-//只要一登入 就會刷新頁面
 -(void)viewWillAppear:(BOOL)animated
 {
-//  //取得最基本的三個權限
-    //開關無法登入問題依舊
     self.fbLoginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
-//
-    //啟用Token更新 藉此更新個人資料 (Token為用來跟FB認證user的一串文字,但不是userID)
-//    [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
-    //這行放這邊,不放在SetupViewController,是因為這樣才會找到原本的WVC物件,不然會被navigate納入控管,又可回上頁
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
-    
-//    if ([FBSDKProfile currentProfile])
-//    {
-//        UINavigationController *centerNVC = [self.storyboard instantiateViewControllerWithIdentifier:@"centerNVC"];
-//        [self addChildViewController:centerNVC];
-//        [self.view addSubview:centerNVC.view];
-//    }
 }
 
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
 {
-    //再呼叫這個
     if([FBSDKAccessToken currentAccessToken])
     {
         [self didLogin];
         [self dismissViewControllerAnimated:YES completion:nil];
-//        UINavigationController *centerNVC = [self.storyboard instantiateViewControllerWithIdentifier:@"centerNVC"];
-//        [self addChildViewController:centerNVC];
-//        [self.view addSubview:centerNVC.view];
     }
 }
-
-//-(void)transferWVC
-//{
-//    if ([FBSDKAccessToken currentAccessToken] == nil)
-//    {
-//        WelcomeViewController *welcomeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
-//        [self addChildViewController:welcomeVC];
-//        [self.view addSubview:welcomeVC.view];
-//    }
-//}
 
 -(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
 {
