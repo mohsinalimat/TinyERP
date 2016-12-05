@@ -8,6 +8,7 @@ target 'DemoProject' do
   # Uncomment this line if you're using Swift or would like to use dynamic frameworks
   pod "Firebase"
   pod "Firebase/Core"
+  pod "Firebase/AdMob"
 
   # Pods for DemoProject
   pod "ObjectiveDropboxOfficial"

@@ -18,6 +18,7 @@
 #import "AlertManager.h"
 
 @interface SetupViewController () <UITableViewDelegate,UITableViewDataSource,FBSDKLoginButtonDelegate>
+@property (weak, nonatomic) IBOutlet UIPickerView *dbRestorePicker;
 @property (weak, nonatomic) IBOutlet UITableView *steupTableView;
 @property DropboxClient *dbClient;
 @end
@@ -35,6 +36,9 @@
     
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupOK" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
+         NSDateFormatter *df = [[NSDateFormatter alloc]init];
+         [df setDateFormat:@"yyMMdd_hhmmss"];
+         NSString *backupDateString = [df stringFromDate:[NSDate date]];
          NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
          NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
          NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
@@ -43,7 +47,8 @@
          NSData *dbData2 = [NSData dataWithContentsOfFile:dbPath2];
          NSData *dbData3 = [NSData dataWithContentsOfFile:dbPath3];
          
-         DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite" inputData:dbData1];
+         NSString *uploadPath1 = [NSString stringWithFormat:@"/%@/System.sqlite",backupDateString];
+         DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:uploadPath1 inputData:dbData1];
          [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
           {
               if (md){
@@ -51,7 +56,8 @@
               else{
                   NSLog(@"1.%@%@",error,dberror);}
           }];
-         DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-shm" inputData:dbData2];
+         NSString *uploadPath2 = [NSString stringWithFormat:@"/%@/System.sqlite-shm",backupDateString];
+         DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:uploadPath2 inputData:dbData2];
          [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
           {
               if (md){
@@ -59,7 +65,8 @@
               else{
                   NSLog(@"2.%@%@",error,dberror);}
           }];
-         DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:@"/System.sqlite-wal" inputData:dbData3];
+         NSString *uploadPath3 = [NSString stringWithFormat:@"/%@/System.sqlite-wal",backupDateString];
+         DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:uploadPath3 inputData:dbData3];
          [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
           {
               if (md){
@@ -68,6 +75,11 @@
                   NSLog(@"3.%@%@",error,dberror);}
           }];
      }];
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelected" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    {
+        NSLog(@"");
+    }];
+     
 }
 
 -(void)transferWVC
@@ -160,12 +172,16 @@
 {
     if ([self isDropboxDidLogin])
     {
-        [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox並覆蓋舊檔？" yes:@"是" no:@"否" controller:self];
+        [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self];
     }
 }
 
 -(void)dropboxRestore
 {
+//    if ([self isDropboxDidLogin])
+//    {
+//        [AlertManager alertYesAndNo:@"請確認從Dropbox還原\n覆蓋現有檔案？" yes:@"是" no:@"否" controller:self];
+//    }
     
 }
 

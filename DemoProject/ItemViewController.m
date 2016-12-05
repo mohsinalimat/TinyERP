@@ -12,9 +12,11 @@
 #import "DataBaseManager.h"
 #import "ItemListViewController.h"
 #import "AlertManager.h"
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
-@interface ItemViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate>
+@interface ItemViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate,GADInterstitialDelegate>
 
+@property (nonatomic) GADInterstitial *interAD;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 //文字欄位
 @property (weak, nonatomic) IBOutlet UITextField *itemNoInput;
@@ -58,6 +60,15 @@
     //[self.pickerView setHidden:YES];
     self.pickerView.alpha = 0;
     [self.itemNoIsSame setHidden:YES];
+    
+    //廣告
+    self.interAD = [[GADInterstitial alloc]initWithAdUnitID:@"ca-app-pub-7838204729392356/2229865429"];
+    self.interAD.delegate = self;
+    //模擬器的話就放假廣告
+    GADRequest *request = [GADRequest request];
+    [request setTestDevices:@[kGADSimulatorID]];
+    [self.interAD loadRequest:request];
+//    [self.interAD loadRequest:GADRequest request]];
     
     //代理
     self.itemNoInput.delegate = self;
@@ -324,23 +335,31 @@
 //按下儲存
 - (IBAction)itemInputDone:(id)sender
 {
-    //檢查欄位
-    if ([self saveCheckOK])
+    
+    if ( self.interAD.isReady )
     {
-        [self saveToItemObject];
-        
-        //如果新增多筆
-        if (self.isCreataAgain==YES)
+        [self.interAD presentFromRootViewController:self];
+    }
+    else
+    {
+        //檢查欄位
+        if ([self saveCheckOK])
         {
-            //整個tableView刷新
-            [self.delegate allCellRefresh];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else
-        {
-            //只刷新一筆cell
-            [self.delegate cellRefresh:self.thisItem];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self saveToItemObject];
+            
+            //如果新增多筆
+            if (self.isCreataAgain==YES)
+            {
+                //整個tableView刷新
+                [self.delegate allCellRefresh];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+            else
+            {
+                //只刷新一筆cell
+                [self.delegate cellRefresh:self.thisItem];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }

@@ -1680,6 +1680,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="itemListTableView" destination="BaF-Or-AmJ" id="J7o-CG-LBT"/>
+                        <outlet property="tableViewTopConstraint" destination="ELV-kf-2EJ" id="8sl-lg-yM7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Cw-L5-zSc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1931,16 +1932,24 @@ StoreApp
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wqd-bp-FXB">
+                                <rect key="frame" x="20" y="260" width="374" height="216"/>
+                            </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="0RG-Pw-0Xk" firstAttribute="top" secondItem="1ze-w1-E7P" secondAttribute="bottom" id="5PO-10-2xL"/>
+                            <constraint firstItem="wqd-bp-FXB" firstAttribute="centerX" secondItem="p9x-DB-pBV" secondAttribute="centerX" id="aB4-uL-twh"/>
                             <constraint firstItem="1ze-w1-E7P" firstAttribute="leading" secondItem="p9x-DB-pBV" secondAttribute="leading" id="aEk-TU-T4d"/>
+                            <constraint firstItem="wqd-bp-FXB" firstAttribute="leading" secondItem="p9x-DB-pBV" secondAttribute="leadingMargin" id="cKF-Hf-Kf4"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wqd-bp-FXB" secondAttribute="trailing" id="eVe-Jq-LKl"/>
+                            <constraint firstItem="wqd-bp-FXB" firstAttribute="centerY" secondItem="p9x-DB-pBV" secondAttribute="centerY" id="kGf-5Q-Yzz"/>
                             <constraint firstAttribute="trailing" secondItem="1ze-w1-E7P" secondAttribute="trailing" id="tcs-C2-upB"/>
                             <constraint firstItem="1ze-w1-E7P" firstAttribute="top" secondItem="p9x-DB-pBV" secondAttribute="top" id="y4V-fh-5Tm"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dbRestorePicker" destination="wqd-bp-FXB" id="Q5h-RO-Wso"/>
                         <outlet property="steupTableView" destination="1ze-w1-E7P" id="aSh-ML-Afs"/>
                     </connections>
                 </viewController>

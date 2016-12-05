@@ -111,10 +111,27 @@
     if ([self.orderNoBegin isEqualToString:@"P"])
     {
         self.partnerLabel.text = @"廠商";
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            self.orderPreOrderInput.placeholder = @"可輸入訂單號碼";
+        }
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            self.orderPreOrderInput.placeholder = @"請輸入採購單號";
+        }
     }
     else if ([self.orderNoBegin isEqualToString:@"S"])
     {
         self.partnerLabel.text = @"客戶";
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            [self.preOrderLabel setHidden:YES];
+            [self.orderPreOrderInput setHidden:YES];
+        }
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
+        }
     }
     
     //代理區
