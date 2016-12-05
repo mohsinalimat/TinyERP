@@ -11,6 +11,9 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <ObjectiveDropboxOfficial.h>
+#import <Firebase.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate ()
 
@@ -50,6 +53,8 @@
 {
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     [DropboxClientsManager setupWithAppKey:@"wjpf7a0wt2kjbdh"];
+    [FIRApp configure];
+    [Fabric with:@[[Crashlytics class]]];
     NSLog(@"%@",NSHomeDirectory());
     
     //啟用Token更新 藉此更新個人資料 (Token為用來跟FB認證user的一串文字,但不是userID)

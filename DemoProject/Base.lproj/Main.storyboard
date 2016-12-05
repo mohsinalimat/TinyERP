@@ -255,7 +255,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="tOb-Uc-Psd">
-                        <barButtonItem key="rightBarButtonItem" title="已採未收" id="Clb-Sh-ujA"/>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="已採未收" id="Clb-Sh-ujA"/>
                     </navigationItem>
                     <connections>
                         <outlet property="notYetOrder" destination="Clb-Sh-ujA" id="NaA-rq-Lcm"/>
@@ -1743,7 +1743,7 @@ StoreApp
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-In-7ah">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-In-7ah">
                                 <rect key="frame" x="103.66666666666669" y="353" width="207" height="30"/>
                                 <state key="normal" title="登入"/>
                                 <connections>
@@ -1754,7 +1754,7 @@ StoreApp
                                 <rect key="frame" x="103.66666666666669" y="413" width="207" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DCt-z8-K2y">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DCt-z8-K2y">
                                 <rect key="frame" x="103" y="646" width="207" height="30"/>
                                 <state key="normal" title="註冊"/>
                                 <connections>
@@ -1823,7 +1823,7 @@ StoreApp
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUm-7B-Dlu">
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUm-7B-Dlu">
                                                     <rect key="frame" x="192" y="5" width="31" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" title="登出"/>
