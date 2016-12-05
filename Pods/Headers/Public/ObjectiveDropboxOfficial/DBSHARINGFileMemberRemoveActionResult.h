@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/PlatformNeutral/ApiObjects/Sharing/DBSHARINGFileMemberRemoveActionResult.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGFileMemberRemoveActionResult.h

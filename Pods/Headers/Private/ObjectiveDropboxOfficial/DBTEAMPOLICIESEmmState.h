@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/PlatformNeutral/ApiObjects/TeamPolicies/DBTEAMPOLICIESEmmState.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/TeamPolicies/DBTEAMPOLICIESEmmState.h

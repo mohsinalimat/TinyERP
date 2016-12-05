@@ -40,10 +40,10 @@
     }
 }
 
--(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
-{
-    NSLog(@"我不會在這邊登出");
-}
+//-(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
+//{
+//    NSLog(@"我不會在這邊登出");
+//}
 
 - (IBAction)userLoginButton:(id)sender
 {

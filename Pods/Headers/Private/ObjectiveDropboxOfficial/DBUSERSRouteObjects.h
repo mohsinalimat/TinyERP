@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/PlatformNeutral/Routes/RouteObjects/DBUSERSRouteObjects.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/Shared/Generated/Routes/RouteObjects/DBUSERSRouteObjects.h

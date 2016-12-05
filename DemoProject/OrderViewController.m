@@ -88,8 +88,6 @@
     [self.dataPickerView setHidden:YES];
     self.orderPartnerInput.placeholder = @"必填";
     self.orderWarehouseInput.placeholder = @"必填";
-    self.datePickerView.layer.backgroundColor = self.view.tintColor.CGColor;
-    self.dataPickerView.layer.backgroundColor = self.view.tintColor.CGColor;
     self.datePickerView.datePickerMode = UIDatePickerModeDate;
     self.totalAmountLabel.text = [self.currentOM.orderTotalAmount stringValue];
     //設了會當掉

@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial_iOS/iOS/DropboxSDKImportsMobile.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial_iOS/DropboxSDKImportsMobile.h

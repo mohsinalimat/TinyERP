@@ -13,7 +13,7 @@
 #import "DataBaseManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-@interface ItemListViewController () <UITableViewDelegate,UITableViewDataSource,GADBannerViewDelegate>
+@interface ItemListViewController () <UITableViewDelegate,UITableViewDataSource,GADBannerViewDelegate,UISearchBarDelegate>
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewTopConstraint;
 //@property (weak, nonatomic) IBOutlet UITableView *itemListTableView;
 #pragma mark Q.search用拉的該如何實作？
@@ -44,7 +44,9 @@
     self.title = @"商品清單";
     self.itemListTableView.delegate = self;
     self.itemListTableView.dataSource = self;
+    self.itemListSearchController.searchBar.delegate = self;
     
+    //加廣告
     self.bannerAD = [[GADBannerView alloc]initWithAdSize:kGADAdSizeSmartBannerPortrait];
     self.bannerAD.adUnitID = @"ca-app-pub-7838204729392356/8056073022";
     self.bannerAD.delegate = self;
@@ -53,6 +55,10 @@
     //因為下面要設動態Constraint, 所以這個舊設定先關掉
     self.bannerAD.translatesAutoresizingMaskIntoConstraints = NO;
     [self.bannerAD loadRequest:[GADRequest request]];
+    //修改畫面VC
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
     
     //產生搜尋物件
     //ResultsController可以指定別的ViewController
@@ -71,6 +77,8 @@
     self.itemListSearchController.searchResultsUpdater = self;
     //意義不明(加了這行搜尋欄才不會跳到下一頁)
     self.definesPresentationContext = YES;
+    //一開始隱藏(位移)SearchBar(聽說這種做法比較專業)
+    self.itemListTableView.contentOffset = CGPointMake(0, 44);
 }
 
 //如果有收到廣告
@@ -82,7 +90,7 @@
         //關閉table view 上方的constraint
         self.tableViewTopConstraint.active = NO;
         //重新產生autolayout
-        NSArray *constraints =  [NSLayoutConstraint constraintsWithVisualFormat:@"V:[top][ad][tableView]|" options:0 metrics:nil views:@{@"ad":bannerView,@"tableView":self.tableViewTopConstraint,@"top":self.topLayoutGuide}];
+        NSArray *constraints =  [NSLayoutConstraint constraintsWithVisualFormat:@"V:[top][ad][tableView]|" options:0 metrics:nil views:@{@"ad":bannerView,@"tableView":self.itemListTableView,@"top":self.topLayoutGuide}];
         NSArray *horizonalConstraints =  [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[adview]|" options:0 metrics:nil views:@{@"adview":bannerView}];
         [NSLayoutConstraint activateConstraints:constraints];
         [NSLayoutConstraint activateConstraints:horizonalConstraints];
@@ -154,20 +162,23 @@
 //啟用滑動編輯
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle==UITableViewCellEditingStyleDelete)
-    {
-        //生成物件
-        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-        Item *item = [self.itemList objectAtIndex:indexPath.row];
-        //刪DB
-        [helper.managedObjectContext deleteObject:item];
-        //刪陣列
-        [self.itemList removeObjectAtIndex:indexPath.row];
-        //刪cell
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //寫DB
-        [DataBaseManager updateToCoreData];
-    }
+//    if (self.itemListSearchController.active==NO)
+//    {
+//        if (editingStyle==UITableViewCellEditingStyleDelete)
+//        {
+//            //生成物件
+//            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+//            Item *item = [self.itemList objectAtIndex:indexPath.row];
+//            //刪DB
+//            [helper.managedObjectContext deleteObject:item];
+//            //刪陣列
+//            [self.itemList removeObjectAtIndex:indexPath.row];
+//            //刪cell
+//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            //寫DB
+//            [DataBaseManager updateToCoreData];
+//        }
+//    }
 }
 
 //串場前準備
@@ -216,6 +227,7 @@
 {
     [self.itemListTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+
 //接陣列寫法(有空研究為何不行)
 //-(void)cellRefresh:(NSArray*)backItemList
 //{
@@ -233,6 +245,11 @@
 //    //寫DB
 //    [DataBaseManager updateToCoreData];
 //}
+
+-(void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    [self updateSearchResultsForSearchController:self.itemListSearchController];
+}
 
 //更新搜尋結果
 -(void)updateSearchResultsForSearchController:(UISearchController *)searchController
@@ -284,32 +301,6 @@
     
     [self.itemListTableView reloadData];
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 - (void)didReceiveMemoryWarning
 {

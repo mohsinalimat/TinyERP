@@ -51,7 +51,6 @@
 {
     [FBSDKAppEvents activateApp];
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
-    NSLog(@"===========%@",[FBSDKProfile currentProfile]);
     //已登入狀態 重啟APP 狀態不改 但還是要更新
     self.fbProfileView.profileID = [FBSDKProfile currentProfile].userID;
     self.fbProfileName.text = [FBSDKProfile currentProfile].name;

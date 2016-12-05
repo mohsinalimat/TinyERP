@@ -68,7 +68,9 @@
     GADRequest *request = [GADRequest request];
     [request setTestDevices:@[kGADSimulatorID]];
     [self.interAD loadRequest:request];
-//    [self.interAD loadRequest:GADRequest request]];
+    
+    //模擬器跑真廣告好像會壞
+    //[self.interAD loadRequest:[GADRequest request]];
     
     //代理
     self.itemNoInput.delegate = self;
@@ -86,7 +88,6 @@
     self.itemRemarkInput.layer.borderColor = self.view.tintColor.CGColor;
     self.itemImageView.layer.borderWidth = 1;
     self.itemImageView.layer.borderColor = self.view.tintColor.CGColor;
-    self.pickerView.layer.backgroundColor = self.view.tintColor.CGColor;
     //設定欄位提示
     self.itemNoInput.placeholder = @"必填,請勿輸入中文";
     self.itemNameInput.placeholder = @"必填";
@@ -214,19 +215,24 @@
     BasicData *bd;
     if ([self.whichInput isEqualToString:@"單位"])
     {
-        bd = [self.unitList objectAtIndex:row];
-        self.itemUnitInput.text = bd.basicDataName;
+        if (self.unitList.count!=0)
+        {
+            bd = [self.unitList objectAtIndex:row];
+            self.itemUnitInput.text = bd.basicDataName;
+        }
     }
     else if ([self.whichInput isEqualToString:@"商品分類"])
     {
-        bd = [self.itemKindList objectAtIndex:row];
-        self.itemKindInput.text = bd.basicDataName;
+        if (self.unitList.count!=0)
+        {
+            bd = [self.itemKindList objectAtIndex:row];
+            self.itemKindInput.text = bd.basicDataName;
+        }
     }
 }
 
 - (IBAction)itemIamge:(id)sender
 {
-    NSLog(@"%@",self.navigationController.viewControllers);
     //產生物件
     UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc]init];
     //指定類型為抓圖庫
@@ -332,35 +338,39 @@
     return NO;
 }
 
+-(void)checkSaveRefresh
+{
+    if ([self saveCheckOK])
+    {
+        [self saveToItemObject];
+        
+        //如果新增多筆
+        if (self.isCreataAgain==YES)
+        {
+            //整個tableView刷新
+            [self.delegate allCellRefresh];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            //只刷新一筆cell
+            [self.delegate cellRefresh:self.thisItem];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+}
+
 //按下儲存
 - (IBAction)itemInputDone:(id)sender
 {
     
-    if ( self.interAD.isReady )
+    if (self.interAD.isReady)
     {
         [self.interAD presentFromRootViewController:self];
     }
     else
     {
-        //檢查欄位
-        if ([self saveCheckOK])
-        {
-            [self saveToItemObject];
-            
-            //如果新增多筆
-            if (self.isCreataAgain==YES)
-            {
-                //整個tableView刷新
-                [self.delegate allCellRefresh];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            else
-            {
-                //只刷新一筆cell
-                [self.delegate cellRefresh:self.thisItem];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-        }
+        [self checkSaveRefresh];
     }
 }
 
@@ -420,6 +430,21 @@
         [DataBaseManager deleteDataAndObject:self.thisItem array:self.itemListInDetail];
     }
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+//使用者按下x，關閉廣告
+-(void)interstitialDidDismissScreen:(GADInterstitial *)ad
+{
+    [self checkSaveRefresh];
+}
+
+//使用者點擊廣告，賺錢
+-(void)interstitialWillLeaveApplication:(GADInterstitial *)ad
+{
+    [self dismissViewControllerAnimated:YES completion:
+     ^{
+         [self checkSaveRefresh];
+    }];
 }
 
 - (void)didReceiveMemoryWarning

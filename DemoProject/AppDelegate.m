@@ -41,7 +41,7 @@
         }
         else if ([authResilt isError])
         {
-            NSLog(@"ErrorType:%ld, Error:%@",(long)authResilt.errorType,authResilt.errorDescription);
+            NSLog(@"DropBox ErrorType:%ld, Error:%@",(long)authResilt.errorType,authResilt.errorDescription);
         }
     }
     return nil;

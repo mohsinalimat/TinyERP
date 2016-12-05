@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial_iOS/iOS/DropboxClientsManager+MobileAuth.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial_iOS/DropboxClientsManager+MobileAuth.h

@@ -1,1 +1,1 @@
-../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/PlatformNeutral/ApiObjects/TeamPolicies/DBTEAMPOLICIESSharedFolderMemberPolicy.h
+../../../ObjectiveDropboxOfficial/Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/TeamPolicies/DBTEAMPOLICIESSharedFolderMemberPolicy.h

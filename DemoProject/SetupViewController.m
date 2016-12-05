@@ -17,9 +17,10 @@
 #import <ObjectiveDropboxOfficial.h>
 #import "AlertManager.h"
 
-@interface SetupViewController () <UITableViewDelegate,UITableViewDataSource,FBSDKLoginButtonDelegate>
-@property (weak, nonatomic) IBOutlet UIPickerView *dbRestorePicker;
+@interface SetupViewController () <UITableViewDelegate,UITableViewDataSource,FBSDKLoginButtonDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *steupTableView;
+@property (weak, nonatomic) IBOutlet UIPickerView *dbRestorePicker;
+@property (nonatomic) NSMutableArray *dbRestoreList;
 @property DropboxClient *dbClient;
 @end
 
@@ -31,6 +32,9 @@
     
     self.steupTableView.delegate = self;
     self.steupTableView.dataSource = self;
+    self.dbRestorePicker.delegate = self;
+    self.dbRestorePicker.dataSource = self;
+    [self.dbRestorePicker setHidden:YES];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
     
@@ -49,7 +53,7 @@
          
          NSString *uploadPath1 = [NSString stringWithFormat:@"/%@/System.sqlite",backupDateString];
          DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:uploadPath1 inputData:dbData1];
-         [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+         [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
           {
               if (md){
                   NSLog(@"1.OK");}
@@ -58,7 +62,7 @@
           }];
          NSString *uploadPath2 = [NSString stringWithFormat:@"/%@/System.sqlite-shm",backupDateString];
          DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:uploadPath2 inputData:dbData2];
-         [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+         [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
           {
               if (md){
                   NSLog(@"2.OK");}
@@ -67,7 +71,7 @@
           }];
          NSString *uploadPath3 = [NSString stringWithFormat:@"/%@/System.sqlite-wal",backupDateString];
          DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:uploadPath3 inputData:dbData3];
-         [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBError * _Nullable dberror)
+         [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
           {
               if (md){
                   NSLog(@"3.OK");}
@@ -139,13 +143,13 @@
     return nil;
 }
 
--(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
-{
-}
-
--(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
-{
-}
+//-(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
+//{
+//}
+//
+//-(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
+//{
+//}
 
 -(BOOL)isDropboxDidLogin
 {
@@ -178,11 +182,49 @@
 
 -(void)dropboxRestore
 {
-//    if ([self isDropboxDidLogin])
-//    {
-//        [AlertManager alertYesAndNo:@"請確認從Dropbox還原\n覆蓋現有檔案？" yes:@"是" no:@"否" controller:self];
-//    }
+    if (self.dbRestoreList == nil)
+    {
+        self.dbRestoreList = [NSMutableArray new];
+    }
+    else
+    {
+        [self.dbRestoreList removeAllObjects];
+    }
+    //取得DB上APP資料夾的根目錄
+    DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
+    [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
+    {
+        for (DBFILESMetadata *md in result.entries)
+        {
+            NSLog(@"======%@",md.name);
+            [self.dbRestoreList addObject:md.name];
+        }
+    }];
     
+    [self.dbRestorePicker setHidden:NO];
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return self.dbRestoreList.count;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *dbRestoreName = [self.dbRestoreList objectAtIndex:row];
+    return dbRestoreName;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSString *selectedName = [self.dbRestoreList objectAtIndex:row];
+    NSString *message = [NSString stringWithFormat:@"您選擇的是%@的檔案\n請確認是否從Dropbox還原\n覆蓋現有資料",selectedName];
+    [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self];
 }
 
 -(void)dropboxLogout
