@@ -471,8 +471,10 @@
 -(void)saveToOrderMasterObject
 {
     self.currentOM.orderNo = self.orderNoInput.text;
-    //文字轉日期要處理
-    //self.currentOM.orderDate = self.orderDateInput.text;
+    NSString *dateString = self.orderDateInput.text;
+    NSDateFormatter *df = [NSDateFormatter new];
+    [df setDateFormat:@"yyyy/MM/dd"];
+    self.currentOM.orderDate = [df dateFromString:dateString];
     self.currentOM.orderUser = self.orderUserInput.text;
     self.currentOM.orderPartner = self.orderPartnerInput.text;
     self.currentOM.orderWarehouse = self.orderWarehouseInput.text;

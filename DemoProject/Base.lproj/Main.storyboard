@@ -25,37 +25,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qjh-Fk-rSQ">
-                                <rect key="frame" x="217" y="76" width="157" height="157"/>
-                                <state key="normal" title="庫存資料"/>
+                                <rect key="frame" x="267.66666666666669" y="207.66666666666669" width="100" height="100.00000000000006"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="fxo-YU-ygR"/>
+                                    <constraint firstAttribute="height" constant="100" id="lJH-O1-q4r"/>
+                                </constraints>
+                                <state key="normal" title="庫存管理"/>
                                 <connections>
                                     <segue destination="HwR-iw-tRO" kind="show" id="hf7-bO-kpe"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxx-qj-5wx">
-                                <rect key="frame" x="217" y="503" width="157" height="157"/>
-                                <state key="normal" title="銷售資料"/>
-                                <connections>
-                                    <segue destination="svs-VA-5qF" kind="show" identifier="sSegue" id="aXL-PQ-SHZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWe-FN-Vwm">
-                                <rect key="frame" x="40" y="503" width="157" height="157"/>
-                                <state key="normal" title="採購資料"/>
-                                <connections>
-                                    <segue destination="svs-VA-5qF" kind="show" identifier="pSegue" id="LNu-av-hvY"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AAP-VP-h2V">
-                                <rect key="frame" x="107" y="358" width="200" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="4Kk-nn-ppY"/>
-                                    <constraint firstAttribute="height" constant="20" id="cdY-dn-1kR"/>
-                                </constraints>
-                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZPd-ET-RzI">
-                                <rect key="frame" x="40" y="76" width="157" height="157"/>
+                                <rect key="frame" x="157.66666666666669" y="208" width="100.00000000000006" height="100"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="ZPd-ET-RzI" secondAttribute="height" multiplier="1:1" id="uqj-6G-SPP"/>
+                                    <constraint firstAttribute="width" constant="100" id="IIc-K9-6IQ"/>
+                                    <constraint firstAttribute="height" constant="100" id="M7q-Xs-PUB"/>
                                 </constraints>
                                 <state key="normal" title="基本資料"/>
                                 <connections>
@@ -63,7 +47,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yaB-MS-4Y3">
-                                <rect key="frame" x="129" y="290" width="157" height="157"/>
+                                <rect key="frame" x="47.666666666666657" y="208.66666666666669" width="100" height="100.00000000000006"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="3HM-eF-3gN"/>
+                                    <constraint firstAttribute="width" constant="100" id="Cau-li-8HW"/>
+                                </constraints>
                                 <state key="normal" title="系統設定">
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -71,37 +59,87 @@
                                     <segue destination="RJi-ws-ivv" kind="show" identifier="steupSegue" id="fTZ-2Y-NL1"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ek4-yp-mcg">
+                                <rect key="frame" x="157" y="318" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="tQi-41-7c5"/>
+                                    <constraint firstAttribute="width" constant="100" id="yT2-g0-S1k"/>
+                                </constraints>
+                                <state key="normal" title="委外管理"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dhc-AC-uoc">
+                                <rect key="frame" x="267" y="427.66666666666663" width="100" height="99.999999999999886"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="8s1-Ww-F2V"/>
+                                    <constraint firstAttribute="width" constant="100" id="Jf5-qI-C3Z"/>
+                                </constraints>
+                                <state key="normal" title="應收帳款"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j8m-MZ-pO9">
+                                <rect key="frame" x="157" y="428" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="SAz-i0-qgU"/>
+                                    <constraint firstAttribute="height" constant="100" id="faq-Yn-9Kc"/>
+                                </constraints>
+                                <state key="normal" title="票據資金"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxx-qj-5wx">
+                                <rect key="frame" x="267" y="317.66666666666669" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="VRf-Iw-9il"/>
+                                    <constraint firstAttribute="width" constant="100" id="dXo-Pz-hF4"/>
+                                </constraints>
+                                <state key="normal" title="訂單銷貨"/>
+                                <connections>
+                                    <segue destination="svs-VA-5qF" kind="show" identifier="sSegue" id="aXL-PQ-SHZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWe-FN-Vwm">
+                                <rect key="frame" x="47" y="318.66666666666669" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="X6G-JI-F4p"/>
+                                    <constraint firstAttribute="height" constant="100" id="gwO-Z6-pUu"/>
+                                </constraints>
+                                <state key="normal" title="採購進貨"/>
+                                <connections>
+                                    <segue destination="svs-VA-5qF" kind="show" identifier="pSegue" id="LNu-av-hvY"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWy-Qg-MCn">
+                                <rect key="frame" x="47" y="428.66666666666663" width="100" height="99.999999999999886"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="Ler-pF-Xdb"/>
+                                    <constraint firstAttribute="width" constant="100" id="gHU-sP-GU9"/>
+                                </constraints>
+                                <state key="normal" title="應付帳款"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="Qjh-Fk-rSQ" secondAttribute="trailing" constant="20" id="5rY-5q-bV6"/>
-                            <constraint firstItem="yaB-MS-4Y3" firstAttribute="width" secondItem="ZPd-ET-RzI" secondAttribute="width" id="CFK-Pa-7nx"/>
-                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="DdF-qr-Fvc"/>
-                            <constraint firstItem="AAP-VP-h2V" firstAttribute="top" secondItem="ZPd-ET-RzI" secondAttribute="bottom" constant="125" id="GL4-52-PHK"/>
-                            <constraint firstItem="ZPd-ET-RzI" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="20" id="Ggu-ej-aOh"/>
-                            <constraint firstItem="yaB-MS-4Y3" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="KJK-Oa-P1v"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Kxx-qj-5wx" secondAttribute="trailing" constant="20" id="OMU-aW-dM3"/>
-                            <constraint firstItem="AAP-VP-h2V" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="QoZ-wN-trO"/>
-                            <constraint firstItem="Qjh-Fk-rSQ" firstAttribute="height" secondItem="ZPd-ET-RzI" secondAttribute="height" id="TgM-cX-Ha4"/>
-                            <constraint firstItem="AAP-VP-h2V" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="aHK-3I-gWv"/>
-                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="width" secondItem="ZPd-ET-RzI" secondAttribute="width" id="aiC-9z-brS"/>
-                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="height" secondItem="ZPd-ET-RzI" secondAttribute="height" id="bT7-Si-Cnm"/>
-                            <constraint firstItem="AAP-VP-h2V" firstAttribute="top" secondItem="Qjh-Fk-rSQ" secondAttribute="bottom" constant="125" id="eUX-kC-Ili"/>
-                            <constraint firstItem="yaB-MS-4Y3" firstAttribute="height" secondItem="ZPd-ET-RzI" secondAttribute="height" id="jSn-hP-04B"/>
-                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="height" secondItem="ZPd-ET-RzI" secondAttribute="height" id="lAH-4d-JHB"/>
-                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="leading" secondItem="FWe-FN-Vwm" secondAttribute="trailing" constant="20" id="mm1-Va-ueq"/>
-                            <constraint firstItem="Qjh-Fk-rSQ" firstAttribute="width" secondItem="ZPd-ET-RzI" secondAttribute="width" id="qa6-Hz-Cw6"/>
-                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="width" secondItem="ZPd-ET-RzI" secondAttribute="width" id="sUO-s4-Lzi"/>
-                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="top" secondItem="AAP-VP-h2V" secondAttribute="bottom" constant="125" id="unZ-9S-Trs"/>
-                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="top" secondItem="AAP-VP-h2V" secondAttribute="bottom" constant="125" id="unh-9s-kap"/>
-                            <constraint firstItem="Qjh-Fk-rSQ" firstAttribute="leading" secondItem="ZPd-ET-RzI" secondAttribute="trailing" constant="20" id="wKm-9N-Z7K"/>
-                            <constraint firstItem="yaB-MS-4Y3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yg0-fx-bzw"/>
+                            <constraint firstItem="Dhc-AC-uoc" firstAttribute="leading" secondItem="j8m-MZ-pO9" secondAttribute="trailing" constant="10" id="3eV-YU-5ut"/>
+                            <constraint firstItem="ek4-yp-mcg" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="4hM-nW-tKq"/>
+                            <constraint firstItem="j8m-MZ-pO9" firstAttribute="leading" secondItem="CWy-Qg-MCn" secondAttribute="trailing" constant="10" id="92l-Nb-IcQ"/>
+                            <constraint firstItem="Qjh-Fk-rSQ" firstAttribute="leading" secondItem="ZPd-ET-RzI" secondAttribute="trailing" constant="10" id="CId-3b-ogf"/>
+                            <constraint firstItem="ek4-yp-mcg" firstAttribute="top" secondItem="ZPd-ET-RzI" secondAttribute="bottom" constant="10" id="EpK-35-G5m"/>
+                            <constraint firstItem="Dhc-AC-uoc" firstAttribute="top" secondItem="Kxx-qj-5wx" secondAttribute="bottom" constant="10" id="FbT-sm-fcZ"/>
+                            <constraint firstItem="ek4-yp-mcg" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="Hfd-gS-Qbn"/>
+                            <constraint firstItem="j8m-MZ-pO9" firstAttribute="top" secondItem="ek4-yp-mcg" secondAttribute="bottom" constant="10" id="Pn6-cr-tUP"/>
+                            <constraint firstItem="ek4-yp-mcg" firstAttribute="leading" secondItem="FWe-FN-Vwm" secondAttribute="trailing" constant="10" id="U1C-xq-Mnk"/>
+                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="VZ4-9X-SMK"/>
+                            <constraint firstItem="CWy-Qg-MCn" firstAttribute="top" secondItem="FWe-FN-Vwm" secondAttribute="bottom" constant="10" id="XLd-5g-AS3"/>
+                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="top" secondItem="Qjh-Fk-rSQ" secondAttribute="bottom" constant="10" id="Yq0-sd-k2B"/>
+                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="top" secondItem="yaB-MS-4Y3" secondAttribute="bottom" constant="10" id="Zim-Bw-TId"/>
+                            <constraint firstItem="Kxx-qj-5wx" firstAttribute="leading" secondItem="ek4-yp-mcg" secondAttribute="trailing" constant="10" id="dzE-mR-Y41"/>
+                            <constraint firstItem="j8m-MZ-pO9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="g3i-3I-uR7"/>
+                            <constraint firstItem="FWe-FN-Vwm" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="gXL-MY-iXC"/>
+                            <constraint firstItem="ZPd-ET-RzI" firstAttribute="leading" secondItem="yaB-MS-4Y3" secondAttribute="trailing" constant="10" id="sdd-vj-0nB"/>
+                            <constraint firstItem="ZPd-ET-RzI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zGI-hu-07g"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="89I-Zn-c1G">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="sqS-4o-5Vb">
-                            <rect key="frame" x="148" y="5.5" width="118" height="33"/>
+                            <rect key="frame" x="148" y="6" width="118" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gNc-A5-rvy" customClass="FBSDKProfilePictureView">
@@ -129,13 +167,17 @@
                         </view>
                     </navigationItem>
                     <connections>
-                        <outlet property="basicDataButton" destination="ZPd-ET-RzI" id="dg5-rp-6PF"/>
                         <outlet property="fbProfileName" destination="vGd-F2-y6J" id="aEK-4D-icx"/>
                         <outlet property="fbProfileView" destination="gNc-A5-rvy" id="U3i-Pa-4sG"/>
-                        <outlet property="inventoryButton" destination="Qjh-Fk-rSQ" id="eWi-sZ-nE5"/>
-                        <outlet property="purchaseButton" destination="FWe-FN-Vwm" id="NSh-x2-sOF"/>
-                        <outlet property="saleButton" destination="Kxx-qj-5wx" id="daA-S4-jcl"/>
-                        <outlet property="setupButton" destination="yaB-MS-4Y3" id="skk-2q-c1d"/>
+                        <outletCollection property="nineButton" destination="Qjh-Fk-rSQ" id="ZeZ-2S-BNx"/>
+                        <outletCollection property="nineButton" destination="ZPd-ET-RzI" id="fsP-lp-941"/>
+                        <outletCollection property="nineButton" destination="yaB-MS-4Y3" id="tGE-FZ-Ns5"/>
+                        <outletCollection property="nineButton" destination="ek4-yp-mcg" id="P4A-5s-Ub8"/>
+                        <outletCollection property="nineButton" destination="Dhc-AC-uoc" id="0oj-x9-XPf"/>
+                        <outletCollection property="nineButton" destination="CWy-Qg-MCn" id="DCq-7S-PP0"/>
+                        <outletCollection property="nineButton" destination="j8m-MZ-pO9" id="FnR-jr-BI8"/>
+                        <outletCollection property="nineButton" destination="Kxx-qj-5wx" id="UxS-Kt-mVo"/>
+                        <outletCollection property="nineButton" destination="FWe-FN-Vwm" id="oe1-Ex-Oyc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -1689,21 +1731,20 @@ StoreApp
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入帳號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TYQ-zr-d7v">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入帳號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TYQ-zr-d7v">
                                 <rect key="frame" x="104" y="273" width="207" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5XY-20-MVf">
+                            <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="請輸入密碼" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5XY-20-MVf">
                                 <rect key="frame" x="103.66666666666669" y="313" width="207" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-In-7ah">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPn-In-7ah">
                                 <rect key="frame" x="103.66666666666669" y="353" width="207" height="30"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.88754215079999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="登入"/>
                                 <connections>
                                     <action selector="userLoginButton:" destination="nnU-gA-FgE" eventType="touchUpInside" id="akY-Tj-Oz1"/>
@@ -1713,9 +1754,8 @@ StoreApp
                                 <rect key="frame" x="103.66666666666669" y="413" width="207" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DCt-z8-K2y">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DCt-z8-K2y">
                                 <rect key="frame" x="103" y="646" width="207" height="30"/>
-                                <color key="backgroundColor" red="1" green="0.0" blue="0.88754215079999998" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="註冊"/>
                                 <connections>
                                     <action selector="userSignupButton:" destination="nnU-gA-FgE" eventType="touchUpInside" id="pOx-Dm-PFA"/>
