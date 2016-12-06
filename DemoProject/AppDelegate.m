@@ -28,7 +28,7 @@
     {
         return [[FBSDKApplicationDelegate sharedInstance] application:app openURL:url sourceApplication:options[UIApplicationOpenURLOptionsSourceApplicationKey] annotation:options[UIApplicationOpenURLOptionsAnnotationKey]];
     }
-    else if ([[url scheme] isEqualToString:@"db-wjpf7a0wt2kjbdh"])
+    else if ([[url scheme] isEqualToString:@"db-earyyjijj6zq965"])
     {
         DBOAuthResult *authResilt = [DropboxClientsManager handleRedirectURL:url];
         if (authResilt == nil)
@@ -54,7 +54,7 @@
     self.window.backgroundColor = [UIColor whiteColor];
     NSLog(@"%@",NSHomeDirectory());
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
-    [DropboxClientsManager setupWithAppKey:@"wjpf7a0wt2kjbdh"];
+    [DropboxClientsManager setupWithAppKey:@"earyyjijj6zq965"];
     [FIRApp configure];
     [Fabric with:@[[Crashlytics class]]];
     
