@@ -51,14 +51,14 @@
 //APP啟動完了呼叫
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    self.window.backgroundColor = [UIColor whiteColor];
+    NSLog(@"%@",NSHomeDirectory());
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     [DropboxClientsManager setupWithAppKey:@"wjpf7a0wt2kjbdh"];
     [FIRApp configure];
     [Fabric with:@[[Crashlytics class]]];
-    NSLog(@"%@",NSHomeDirectory());
     
     //啟用Token更新 藉此更新個人資料 (Token為用來跟FB認證user的一串文字,但不是userID)
-    //開關無法登入問題依舊
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
     
     if ([FBSDKProfile currentProfile])

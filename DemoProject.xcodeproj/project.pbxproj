@@ -376,7 +376,7 @@
 				TargetAttributes = {
 					272BB5581DC732A800A1AB11 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = NAV2G9Q6P7;
+						DevelopmentTeam = FYWS2XXTMP;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -639,7 +639,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DemoProject/DemoProject.entitlements;
-				DEVELOPMENT_TEAM = NAV2G9Q6P7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = FYWS2XXTMP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DemoProject",
@@ -651,7 +652,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.www.DemoProject;
+				PRODUCT_BUNDLE_IDENTIFIER = mark.DemoProject.StoreApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7  armv7s";
@@ -664,7 +665,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DemoProject/DemoProject.entitlements;
-				DEVELOPMENT_TEAM = NAV2G9Q6P7;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = FYWS2XXTMP;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DemoProject",
@@ -676,7 +678,7 @@
 					"$(inherited)",
 					"-ObjC",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.www.DemoProject;
+				PRODUCT_BUNDLE_IDENTIFIER = mark.DemoProject.StoreApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7  armv7s";

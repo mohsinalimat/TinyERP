@@ -18,9 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet FBSDKProfilePictureView *fbProfileView;
 @property (weak, nonatomic) IBOutlet UILabel *fbProfileName;
-
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *nineButton;
-
 @end
 
 @implementation ViewController
@@ -29,6 +27,7 @@
 {
     [super viewDidLoad];
     
+    self.view.hidden=YES;
     for (UIButton *btn in self.nineButton)
     {
         btn.layer.borderWidth = 1;
@@ -49,6 +48,11 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (appDLG.isLogin == YES)
+    {
+        [self.view setHidden:NO];
+    }
     [FBSDKAppEvents activateApp];
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
     //已登入狀態 重啟APP 狀態不改 但還是要更新

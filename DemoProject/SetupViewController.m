@@ -143,14 +143,6 @@
     return nil;
 }
 
-//-(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
-//{
-//}
-//
-//-(void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton
-//{
-//}
-
 -(BOOL)isDropboxDidLogin
 {
     //先確認是否已登入,auth==nil就是沒認證
@@ -191,15 +183,34 @@
         [self.dbRestoreList removeAllObjects];
     }
     //取得DB上APP資料夾的根目錄
-    DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
-    [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
-    {
-        for (DBFILESMetadata *md in result.entries)
-        {
-            NSLog(@"======%@",md.name);
-            [self.dbRestoreList addObject:md.name];
-        }
-    }];
+    
+//    [[[client.filesRoutes downloadData:@"/test/path"]
+//      response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
+//          if (result) {
+//              NSLog(@"%@\n", result);
+//              NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
+//              NSLog(@"%@\n", dataStr);
+//          } else {
+//              NSLog(@"%@\n%@\n", routeError, error);
+//          }
+//      }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+//          NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
+//      }];
+    
+//    [self.dbClient.filesRoutes downloadData:@""]response:^(DBFILESFileMetadata * _Nullable, DBFILESDownloadError * _Nullable, DBRequestError * _Nullable, NSData * _Nonnull)
+//    {
+//        <#code#>
+//    }
+    
+//    DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
+//    [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
+//    {
+//        for (DBFILESMetadata *md in result.entries)
+//        {
+//            NSLog(@"======%@",md.name);
+//            [self.dbRestoreList addObject:md.name];
+//        }
+//    }];
     
     [self.dbRestorePicker setHidden:NO];
 }

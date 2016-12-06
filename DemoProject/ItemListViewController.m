@@ -44,7 +44,6 @@
     self.title = @"商品清單";
     self.itemListTableView.delegate = self;
     self.itemListTableView.dataSource = self;
-    self.itemListSearchController.searchBar.delegate = self;
     
     //加廣告
     self.bannerAD = [[GADBannerView alloc]initWithAdSize:kGADAdSizeSmartBannerPortrait];
@@ -64,7 +63,8 @@
     //ResultsController可以指定別的ViewController
     self.itemListSearchController = [[UISearchController alloc]initWithSearchResultsController:nil];
     self.itemListSearchController.searchBar.scopeButtonTitles = @[@"商品分類",@"商品編號",@"商品名稱"];
-    self.itemListSearchController.searchBar.placeholder = @"當搜尋文字改變, 搜尋結果才會改變";
+    self.itemListSearchController.searchBar.delegate = self;
+    
     //設定高度
     CGRect rect = self.itemListSearchController.searchBar.frame;
     rect.size.height = 44.0;
@@ -159,26 +159,33 @@
     [self showViewController:ivc sender:self];
 }
 
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.itemListSearchController.active){
+        return NO;
+    }
+    return YES;
+}
+
 //啟用滑動編輯
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (self.itemListSearchController.active==NO)
-//    {
-//        if (editingStyle==UITableViewCellEditingStyleDelete)
-//        {
-//            //生成物件
-//            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-//            Item *item = [self.itemList objectAtIndex:indexPath.row];
-//            //刪DB
-//            [helper.managedObjectContext deleteObject:item];
-//            //刪陣列
-//            [self.itemList removeObjectAtIndex:indexPath.row];
-//            //刪cell
-//            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            //寫DB
-//            [DataBaseManager updateToCoreData];
-//        }
-//    }
+    if (self.itemListSearchController.active==NO)
+    {
+        if (editingStyle==UITableViewCellEditingStyleDelete)
+        {
+            //生成物件
+            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+            Item *item = [self.itemList objectAtIndex:indexPath.row];
+            //刪DB
+            [helper.managedObjectContext deleteObject:item];
+            //刪陣列
+            [self.itemList removeObjectAtIndex:indexPath.row];
+            //刪cell
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            //寫DB
+            [DataBaseManager updateToCoreData];
+        }
+    }
 }
 
 //串場前準備

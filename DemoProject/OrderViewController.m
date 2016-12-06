@@ -282,13 +282,19 @@
         Partner *p;
         if ([self.orderNoBegin isEqualToString:@"P"])
         {
-            p = [self.firmList objectAtIndex:row];
-            self.orderPartnerInput.text = p.partnerID;
+            if (self.firmList.count != 0)
+            {
+                p = [self.firmList objectAtIndex:row];
+                self.orderPartnerInput.text = p.partnerID;
+            }
         }
         else if ([self.orderNoBegin isEqualToString:@"S"])
         {
-            p = [self.custList objectAtIndex:row];
-            self.orderPartnerInput.text = p.partnerID;
+            if (self.custList.count != 0)
+            {
+                p = [self.custList objectAtIndex:row];
+                self.orderPartnerInput.text = p.partnerID;
+            }
         }
     }
     else if ([self.whichInput isEqualToString:@"倉庫"])
