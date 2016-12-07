@@ -11,6 +11,8 @@
 @implementation OrderDetail
 @dynamic orderItemNo;
 @dynamic orderAmount;
+@dynamic orderNotYetQty;
+@dynamic orderNotYetAmount;
 @dynamic orderNo;
 @dynamic orderPrice;
 @dynamic orderQty;

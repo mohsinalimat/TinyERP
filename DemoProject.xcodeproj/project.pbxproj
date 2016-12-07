@@ -46,6 +46,8 @@
 		27BE8C431DDBE79400FAA604 /* OrderListBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C421DDBE79400FAA604 /* OrderListBViewController.m */; };
 		27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */; };
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
+		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
+		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
 		27FEF6671DF521220084AE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27FEF6661DF521220084AE1E /* GoogleService-Info.plist */; };
 		27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF6691DF5239B0084AE1E /* Fabric.framework */; };
 		27FEF66C1DF5239B0084AE1E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF66A1DF5239B0084AE1E /* Crashlytics.framework */; };
@@ -126,6 +128,10 @@
 		27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		27E1A62E1DF009A8002ADDF1 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		27E1A62F1DF009A8002ADDF1 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
+		27E73CC71DF7AAB500FA09BC /* AccountingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingListViewController.h; sourceTree = "<group>"; };
+		27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingListViewController.m; sourceTree = "<group>"; };
+		27E73CCA1DF7AB3C00FA09BC /* AccountingReverseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingReverseViewController.h; sourceTree = "<group>"; };
+		27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingReverseViewController.m; sourceTree = "<group>"; };
 		27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		27FEF6661DF521220084AE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -192,9 +198,11 @@
 				27FE10311DEBE30E00457049 /* CELLs */,
 				27853CB31DD325FD00C01E10 /* DATAs */,
 				27853CB41DD3262300C01E10 /* ITEMs */,
-				27853CB61DD3269A00C01E10 /* ORDERs */,
 				27853CB71DD326D400C01E10 /* PARTNERs */,
+				27853CB61DD3269A00C01E10 /* ORDERs */,
 				27853CB51DD3265A00C01E10 /* MANAGERs */,
+				27E73CC51DF7AA0B00FA09BC /* ACCOUNTINGs */,
+				27E73CC61DF7AA5700FA09BC /* FINANCEs */,
 				272BB55C1DC732A800A1AB11 /* Supporting Files */,
 			);
 			path = DemoProject;
@@ -291,6 +299,24 @@
 				27BE8C0D1DD5C82A00FAA604 /* PartnerViewController.m */,
 			);
 			name = PARTNERs;
+			sourceTree = "<group>";
+		};
+		27E73CC51DF7AA0B00FA09BC /* ACCOUNTINGs */ = {
+			isa = PBXGroup;
+			children = (
+				27E73CC71DF7AAB500FA09BC /* AccountingListViewController.h */,
+				27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */,
+				27E73CCA1DF7AB3C00FA09BC /* AccountingReverseViewController.h */,
+				27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */,
+			);
+			name = ACCOUNTINGs;
+			sourceTree = "<group>";
+		};
+		27E73CC61DF7AA5700FA09BC /* FINANCEs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = FINANCEs;
 			sourceTree = "<group>";
 		};
 		27FE0FFA1DEBD08800457049 /* FBs */ = {
@@ -490,6 +516,7 @@
 				271462641DDD48F300CC8CB6 /* OrderDetailCell.m in Sources */,
 				272BB58A1DC746C900A1AB11 /* Partner.m in Sources */,
 				27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */,
+				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,
 				27A4C9D51DED6C6C002476CD /* InventoryCell.m in Sources */,
 				27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */,
@@ -511,6 +538,7 @@
 				275147E51DE7FFB100FF888D /* Inventory.m in Sources */,
 				272BB55E1DC732A800A1AB11 /* main.m in Sources */,
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
+				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,
 				275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */,
 				275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */,
 				271A7F931DE4304700EEAFB3 /* AlertManager.m in Sources */,

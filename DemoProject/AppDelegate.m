@@ -52,7 +52,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window.backgroundColor = [UIColor whiteColor];
-    NSLog(@"%@",NSHomeDirectory());
+    NSLog(@"==========================\n\n\n\n\n%@",NSHomeDirectory());
     [[FBSDKApplicationDelegate sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
     [DropboxClientsManager setupWithAppKey:@"earyyjijj6zq965"];
     [FIRApp configure];

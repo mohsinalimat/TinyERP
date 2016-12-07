@@ -10,6 +10,7 @@
 #import "OrderListViewController.h"
 #import "WelcomeViewController.h"
 #import "SetupViewController.h"
+#import "AccountingListViewController.h"
 #import "AppDelegate.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ObjectiveDropboxOfficial.h>
@@ -79,6 +80,16 @@
     {
         OrderListViewController *olvc = segue.destinationViewController;
         olvc.whereFrom = @"sSegue";
+    }
+    else if ([segue.identifier isEqualToString:@"apSegue"])
+    {
+        AccountingListViewController *alvc = segue.destinationViewController;
+        alvc.whereFrom = @"apSegue";
+    }
+    else if ([segue.identifier isEqualToString:@"arSegue"])
+    {
+        AccountingListViewController *alvc = segue.destinationViewController;
+        alvc.whereFrom = @"arSegue";
     }
 }
 

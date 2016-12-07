@@ -9,6 +9,7 @@
 #import "DataBaseManager.h"
 #import "CoreDataHelper.h"
 #import "Inventory.h"
+#import "OrderDetail.h"
 
 @implementation DataBaseManager
 
@@ -76,7 +77,17 @@
     //查非零庫存
     else if ([fiterColumn isEqualToString:@"qty"])
     {
-        pred = [NSPredicate predicateWithFormat:@"qty!=%@",@([fiterString integerValue])];
+        pred = [NSPredicate predicateWithFormat:@"qty!=%@",@([fiterString floatValue])];
+    }
+    //查未沖金額不等於零
+    else if ([fiterColumn isEqualToString:@"NotYetAmount"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"orderNotYetAmount!=%@",@([fiterString floatValue])];
+    }
+    //交易對象編號
+    else if ([fiterColumn isEqualToString:@"partnerID"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
     }
     
     request.predicate = pred;
@@ -92,6 +103,18 @@
     else
     {
         returnResults = [NSMutableArray arrayWithArray:results];
+        if ([fiterColumn isEqualToString:@"NotYetAmount"])
+        {
+            NSMutableArray *orderListB = [[NSMutableArray alloc]init];
+            for (OrderDetail *od in returnResults)
+            {
+                if ([[od.orderNo substringWithRange:NSMakeRange(1, 1)]isEqualToString:@"B"])
+                {
+                    [orderListB addObject:od];
+                }
+            }
+            return orderListB;
+        }
     }
     return returnResults;
 }

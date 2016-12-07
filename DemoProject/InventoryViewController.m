@@ -22,6 +22,8 @@
 
 @implementation InventoryViewController
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -34,6 +36,7 @@
     NSSet *itemGroup = [NSSet setWithArray:[self.totalInventoryList valueForKey:@"itemNo"]];
     NSSet *warehouseGroup = [NSSet setWithArray:[self.totalInventoryList valueForKey:@"warehouse"]];
     //排序
+#pragma mark Q.為何排序不用給Key
     NSArray *sortedArray = @[[[NSSortDescriptor alloc]initWithKey:nil ascending:YES]];
     NSArray *itemGroupSortedArray = [itemGroup sortedArrayUsingDescriptors:sortedArray];
     NSArray *warehouseGroupSortedArray = [warehouseGroup sortedArrayUsingDescriptors:sortedArray];

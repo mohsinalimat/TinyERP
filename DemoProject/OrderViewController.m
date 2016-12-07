@@ -60,7 +60,7 @@
     self.orderNoInput.text = self.currentOM.orderNo;
     self.orderPreOrderInput.text = self.currentOM.oderPreOrder;
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"YY/MM/dd"];
+    [formatter setDateFormat:@"yyyy/MM/dd"];
     NSString *dateString;
     if (self.currentOM.orderDate != nil)
     {
@@ -220,7 +220,7 @@
 - (IBAction)selectDate:(UIDatePicker*)sender
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"YY/MM/dd"];
+    [formatter setDateFormat:@"yyyy/MM/dd"];
     NSString *dateString = [formatter stringFromDate:sender.date];
     self.orderDateInput.text = dateString;
 }
@@ -409,6 +409,7 @@
     od.orderQty = qtyN;
     od.orderPrice = priceN;
     od.orderAmount = amountN;
+    od.orderNotYetAmount = amountN;
     [DataBaseManager updateToCoreData];
     //放到cell
     if (![[od.orderAmount stringValue] isEqualToString:@"0"])

@@ -174,41 +174,42 @@
 
 -(void)dropboxRestore
 {
-    if (self.dbRestoreList == nil)
+    if ([self isDropboxDidLogin])
     {
-        self.dbRestoreList = [NSMutableArray new];
-    }
-    else
-    {
-        [self.dbRestoreList removeAllObjects];
-    }
-    
-    [[[self.dbClient.filesRoutes downloadData:@""]
-      response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
-          if (result)
-          {
-              NSLog(@"%@\n", result);
-              NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
-              NSLog(@"%@\n", dataStr);
-          } else {
-              NSLog(@"%@\n%@\n", routeError, error);
-          }
-      }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-          NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-      }];
+        if (self.dbRestoreList == nil)
+        {
+            self.dbRestoreList = [NSMutableArray new];
+        }
+        else
+        {
+            [self.dbRestoreList removeAllObjects];
+        }
+        
+        [[[self.dbClient.filesRoutes downloadData:@"/店店三碗公/161206_053831"]
+          response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
+              if (result) {
+                  NSLog(@"%@\n", result);
+                  NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
+                  NSLog(@"%@\n", dataStr);
+              } else {
+                  NSLog(@"%@\n%@\n", routeError, error);
+              }
+          }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+              NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
+          }];
 
-    
-//    DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
-//    [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
-//    {
-//        for (DBFILESMetadata *md in result.entries)
+//        DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
+//        [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
 //        {
-//            NSLog(@"======%@",md.name);
-//            [self.dbRestoreList addObject:md.name];
-//        }
-//    }];
+//            for (DBFILESMetadata *md in result.entries)
+//            {
+//                NSLog(@"======%@",md.name);
+//                [self.dbRestoreList addObject:md.name];
+//            }
+//        }];
     
-    [self.dbRestorePicker setHidden:NO];
+        [self.dbRestorePicker setHidden:NO];
+    }
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

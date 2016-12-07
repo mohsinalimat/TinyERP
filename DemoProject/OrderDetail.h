@@ -12,6 +12,8 @@
 @interface OrderDetail : NSManagedObject
 @property NSString *orderItemNo;
 @property NSNumber *orderAmount;
+@property NSNumber *orderNotYetAmount;
+@property NSNumber *orderNotYetQty;
 @property NSString *orderNo;
 @property NSNumber *orderPrice;
 @property NSNumber *orderQty;
