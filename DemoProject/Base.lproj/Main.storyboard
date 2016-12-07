@@ -247,6 +247,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="K8e-A9-Xjl" firstAttribute="centerY" secondItem="u0g-Sn-Keq" secondAttribute="centerY" id="8ln-Pw-rtd"/>
                             <constraint firstAttribute="trailing" secondItem="8gw-cm-Ddd" secondAttribute="trailing" id="9aL-Y4-Ys0"/>
@@ -262,6 +263,9 @@
                             <constraint firstAttribute="trailing" secondItem="buf-12-LFm" secondAttribute="trailing" id="zAL-TN-IDB"/>
                             <constraint firstItem="8gw-cm-Ddd" firstAttribute="top" secondItem="30N-Yt-fOP" secondAttribute="top" constant="44" id="zxV-gO-4eG"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="sIh-IG-xkU" appends="YES" id="udS-Ml-5TL"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="tOb-Uc-Psd">
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="已採未收" id="Clb-Sh-ujA"/>
@@ -274,6 +278,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zWV-1J-NMd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="sIh-IG-xkU">
+                    <connections>
+                        <action selector="gesturePop:" destination="svs-VA-5qF" id="R6a-Bn-gLm"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1070" y="1088"/>
         </scene>
@@ -366,6 +375,10 @@
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="VU2-Yg-qtt" appends="YES" id="HNO-fo-td1"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="accountingSegment" destination="51v-dM-vpK" id="hZo-KK-WLR"/>
@@ -373,6 +386,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iKr-ac-mxw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="VU2-Yg-qtt">
+                    <connections>
+                        <action selector="gesturePop:" destination="anp-h5-Vun" id="PCw-9t-7xF"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1069.5652173913045" y="1863.5869565217392"/>
         </scene>
@@ -388,9 +406,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Zyo-VB-JSR" appends="YES" id="e5D-u1-iwc"/>
+                        </connections>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uGw-23-DGk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="Zyo-VB-JSR"/>
             </objects>
             <point key="canvasLocation" x="2009" y="1864"/>
         </scene>
@@ -725,6 +748,7 @@
                             </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="vfR-3c-5nQ" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="283-Pk-PbQ"/>
                             <constraint firstItem="ypT-Rk-hs6" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="6no-Em-XiW"/>
@@ -749,6 +773,9 @@
                             <constraint firstItem="9pg-TS-cbC" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="tJP-37-iWQ"/>
                             <constraint firstAttribute="trailing" secondItem="vfR-3c-5nQ" secondAttribute="trailing" id="vGU-q7-59C"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="CZb-HY-cIS" appends="YES" id="R7e-TR-yiK"/>
+                        </connections>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="nPV-wf-dop">
@@ -780,6 +807,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c8u-JM-17h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="CZb-HY-cIS">
+                    <connections>
+                        <action selector="gesturePop:" destination="LDr-cX-G5j" id="Jqo-lk-AGO"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2865" y="1088"/>
         </scene>
@@ -814,12 +846,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="zGg-Qy-Gfl" secondAttribute="trailing" id="0DV-wU-DeK"/>
                             <constraint firstItem="zGg-Qy-Gfl" firstAttribute="leading" secondItem="HzI-Xl-8dN" secondAttribute="leadingMargin" id="9uM-cA-L5J"/>
                             <constraint firstItem="zJG-36-7Vk" firstAttribute="top" secondItem="zGg-Qy-Gfl" secondAttribute="bottom" id="QG4-kE-UCv"/>
                             <constraint firstItem="zGg-Qy-Gfl" firstAttribute="top" secondItem="HzI-Xl-8dN" secondAttribute="topMargin" id="kFc-Rr-VDI"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ONr-Nz-H3A" appends="YES" id="udM-Df-OHq"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="umY-FI-iPe">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="pWv-2p-cjB">
@@ -833,6 +869,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UkP-Jp-X1n" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="ONr-Nz-H3A">
+                    <connections>
+                        <action selector="gesturePop:" destination="5bn-4h-Q5K" id="Av1-BH-pWm"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1070" y="-540"/>
         </scene>
@@ -995,6 +1036,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="ez8-VA-fve" secondAttribute="trailing" constant="10" id="2He-1m-YAY"/>
                             <constraint firstItem="J6f-UW-fNy" firstAttribute="leading" secondItem="2k7-U4-AeK" secondAttribute="trailing" constant="5" id="A5k-Jh-BDT"/>
@@ -1016,6 +1058,9 @@
                             <constraint firstItem="J6f-UW-fNy" firstAttribute="top" secondItem="Be7-hr-UxQ" secondAttribute="bottom" constant="20" id="qu3-Ed-t0g"/>
                             <constraint firstItem="5uQ-bd-PIo" firstAttribute="width" secondItem="XYK-in-23i" secondAttribute="width" multiplier="0.6" id="ult-qN-eHa"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="GK2-D2-ohV" appends="YES" id="sHM-fo-hqq"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="6E2-kB-X9l">
                         <barButtonItem key="rightBarButtonItem" title="儲存並新增" id="lMX-zE-Wiy">
@@ -1046,6 +1091,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xUb-Ia-Juk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="GK2-D2-ohV">
+                    <connections>
+                        <action selector="gesturePop:" destination="iCj-8B-txV" id="sAZ-PG-Vd4"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1536" y="-1308"/>
         </scene>
@@ -1080,12 +1130,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Pj3-6c-ydH" firstAttribute="leading" secondItem="1RA-9v-OTt" secondAttribute="leadingMargin" id="7Rv-BX-v57"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Pj3-6c-ydH" secondAttribute="trailing" id="ZIR-0e-sGC"/>
                             <constraint firstItem="Pj3-6c-ydH" firstAttribute="top" secondItem="1RA-9v-OTt" secondAttribute="topMargin" id="rb5-fB-ex8"/>
                             <constraint firstItem="VW3-X6-8eY" firstAttribute="top" secondItem="Pj3-6c-ydH" secondAttribute="bottom" id="xro-mJ-EJf"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="R2V-FY-RZX" appends="YES" id="x63-dV-cQI"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="Oez-6F-bfo">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="xze-xk-u4z">
@@ -1099,6 +1153,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xxo-4b-SIs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="R2V-FY-RZX">
+                    <connections>
+                        <action selector="gesturePop:" destination="8ED-bD-fc7" id="WSb-dD-N1o"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2009" y="-540"/>
         </scene>
@@ -1327,6 +1386,11 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4En-JU-mfQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="0eQ-r2-FJU">
+                    <connections>
+                        <action selector="gesturePop:" destination="L79-Dt-c7L" id="V3Z-IE-gL6"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="151" y="245"/>
         </scene>
@@ -1375,12 +1439,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="apR-vK-DS1" firstAttribute="top" secondItem="n1e-d9-cOd" secondAttribute="topMargin" id="7a2-rH-J7B"/>
                             <constraint firstItem="LHc-6J-Gny" firstAttribute="top" secondItem="apR-vK-DS1" secondAttribute="bottom" id="Lxo-oz-Iax"/>
                             <constraint firstItem="apR-vK-DS1" firstAttribute="leading" secondItem="n1e-d9-cOd" secondAttribute="leadingMargin" id="RR6-6e-i2d"/>
                             <constraint firstItem="apR-vK-DS1" firstAttribute="trailing" secondItem="n1e-d9-cOd" secondAttribute="trailingMargin" id="cOg-Ck-fOB"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="TBZ-Fl-2JI" appends="YES" id="knH-52-s2C"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="x0K-Pq-1HW">
                         <barButtonItem key="leftBarButtonItem" title="儲存並離開" id="D4m-Ec-oox">
@@ -1399,6 +1467,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HhF-dG-bwi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="TBZ-Fl-2JI">
+                    <connections>
+                        <action selector="gesturePop:" destination="9Td-hE-K2i" id="Jes-XJ-ixO"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-813" y="-540"/>
         </scene>
@@ -1490,6 +1563,7 @@
                             </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="FMs-8m-Qts" firstAttribute="centerX" secondItem="t0l-hU-2AF" secondAttribute="centerX" id="Vfk-Az-sUd"/>
                             <constraint firstItem="y38-mF-xtP" firstAttribute="top" secondItem="upd-Xs-GDu" secondAttribute="bottom" id="WFI-OH-xeS"/>
@@ -1498,12 +1572,20 @@
                             <constraint firstItem="upd-Xs-GDu" firstAttribute="top" secondItem="OL0-hQ-dfh" secondAttribute="bottom" id="s8L-F6-jgP"/>
                             <constraint firstAttribute="trailing" secondItem="upd-Xs-GDu" secondAttribute="trailing" id="yjo-Qk-i9V"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="gP1-QL-p3d" appends="YES" id="9xy-qz-nro"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="inventoryCollectionView" destination="upd-Xs-GDu" id="2Md-Be-cH4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="izg-iL-h5j" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="gP1-QL-p3d">
+                    <connections>
+                        <action selector="gesturePop:" destination="HwR-iw-tRO" id="2KO-Yi-kf1"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1070" y="245"/>
         </scene>
@@ -1710,6 +1792,7 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="7KU-1X-HEh" firstAttribute="leading" secondItem="2Bv-ek-eWy" secondAttribute="trailing" constant="5" id="2zb-EC-qKC"/>
                             <constraint firstItem="6Nk-w9-r8V" firstAttribute="top" secondItem="pUh-oK-1UU" secondAttribute="bottom" constant="10" id="5ZK-Le-jgP"/>
@@ -1737,6 +1820,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="ZgC-r5-MjO" secondAttribute="trailing" constant="10" id="pRo-mg-VLL"/>
                             <constraint firstAttribute="trailingMargin" secondItem="pUh-oK-1UU" secondAttribute="trailing" constant="10" id="xnQ-Js-mjf"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="C4c-aU-jUt" appends="YES" id="FWl-b1-QY3"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="NZM-fU-DuH">
                         <barButtonItem key="rightBarButtonItem" title="儲存並新增" id="weU-yW-Pop">
@@ -1761,6 +1847,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rWN-Zx-3mZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="C4c-aU-jUt">
+                    <connections>
+                        <action selector="gesturePop:" destination="SAi-mU-zRC" id="nzY-J1-VoT"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="151" y="-1308"/>
         </scene>
@@ -1795,12 +1886,16 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="BaF-Or-AmJ" firstAttribute="top" secondItem="vzC-HX-x9s" secondAttribute="top" id="ELV-kf-2EJ"/>
                             <constraint firstItem="wYf-oA-tm0" firstAttribute="top" secondItem="BaF-Or-AmJ" secondAttribute="bottom" id="ZYf-1a-bNb"/>
                             <constraint firstItem="BaF-Or-AmJ" firstAttribute="leading" secondItem="vzC-HX-x9s" secondAttribute="leading" id="ddd-sD-NvT"/>
                             <constraint firstAttribute="trailing" secondItem="BaF-Or-AmJ" secondAttribute="trailing" id="h0F-JV-4Tc"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Pg0-28-qDC" appends="YES" id="Krh-2U-48Z"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="PUE-fT-5Ut">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="EJf-h2-pjB">
@@ -1815,6 +1910,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2Cw-L5-zSc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="Pg0-28-qDC">
+                    <connections>
+                        <action selector="gesturePop:" destination="dsC-CJ-uwI" id="yHi-W4-Hzf"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="151" y="-540"/>
         </scene>
@@ -2069,6 +2169,7 @@ StoreApp
                             </pickerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="0RG-Pw-0Xk" firstAttribute="top" secondItem="1ze-w1-E7P" secondAttribute="bottom" id="5PO-10-2xL"/>
                             <constraint firstItem="wqd-bp-FXB" firstAttribute="centerX" secondItem="p9x-DB-pBV" secondAttribute="centerX" id="aB4-uL-twh"/>
@@ -2079,6 +2180,9 @@ StoreApp
                             <constraint firstAttribute="trailing" secondItem="1ze-w1-E7P" secondAttribute="trailing" id="tcs-C2-upB"/>
                             <constraint firstItem="1ze-w1-E7P" firstAttribute="top" secondItem="p9x-DB-pBV" secondAttribute="top" id="y4V-fh-5Tm"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="tms-oW-90I" appends="YES" id="YI9-sD-bcj"/>
+                        </connections>
                     </view>
                     <connections>
                         <outlet property="dbRestorePicker" destination="wqd-bp-FXB" id="Q5h-RO-Wso"/>
@@ -2086,6 +2190,11 @@ StoreApp
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rve-IC-lFx" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="tms-oW-90I">
+                    <connections>
+                        <action selector="gesturePop:" destination="RJi-ws-ivv" id="ctI-JA-DfD"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-813" y="245"/>
         </scene>

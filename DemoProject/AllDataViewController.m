@@ -135,4 +135,9 @@
     }
 }
 
+- (IBAction)gesturePop:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 @end
