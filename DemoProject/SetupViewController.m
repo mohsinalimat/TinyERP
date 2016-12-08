@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *dbRestorePicker;
 @property (nonatomic) NSMutableArray *dbRestoreList;
 @property DropboxClient *dbClient;
+@property NSString *dbSelectedFolderName;
+@property NSArray *fileNameArray;
 @end
 
 @implementation SetupViewController
@@ -31,6 +33,7 @@
     [super viewDidLoad];
     
     self.title = @"系統設定";
+    self.fileNameArray = @[@"System.sqlite",@"System.sqlite-shm",@"System.sqlite-wal"];
     self.steupTableView.delegate = self;
     self.steupTableView.dataSource = self;
     self.dbRestorePicker.delegate = self;
@@ -44,13 +47,9 @@
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
          [df setDateFormat:@"yyMMdd_hhmmss"];
          NSString *backupDateString = [df stringFromDate:[NSDate date]];
-         NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-         NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
-         NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
-         NSString *dbPath3 = [homePath stringByAppendingPathComponent:@"System.sqlite-wal"];
-         NSData *dbData1 = [NSData dataWithContentsOfFile:dbPath1];
-         NSData *dbData2 = [NSData dataWithContentsOfFile:dbPath2];
-         NSData *dbData3 = [NSData dataWithContentsOfFile:dbPath3];
+         NSData *dbData1 = [NSData dataWithContentsOfFile:[self getLocalDBArray][0]];
+         NSData *dbData2 = [NSData dataWithContentsOfFile:[self getLocalDBArray][1]];
+         NSData *dbData3 = [NSData dataWithContentsOfFile:[self getLocalDBArray][2]];
          
          NSString *uploadPath1 = [NSString stringWithFormat:@"/%@/System.sqlite",backupDateString];
          DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:uploadPath1 inputData:dbData1];
@@ -82,9 +81,68 @@
      }];
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelected" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
-        NSLog(@"我回來了");
+        [self deleteLocalDB];
+        for (NSString *fileName in self.fileNameArray)
+        {
+            NSString *dbRestorePath = [NSString stringWithFormat:@"/%@/%@",self.dbSelectedFolderName,fileName];
+            DBDownloadDataTask *task = [self.dbClient.filesRoutes downloadData:dbRestorePath];
+            [task response:^(DBFILESMetadata* _Nullable md, DBFILESDownloadError* _Nullable dberror, DBRequestError* _Nullable error, NSData* _Nonnull data)
+             {
+                 if (data)
+                 {
+                     NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+                     NSString *filePath = [homePath stringByAppendingPathComponent:fileName];
+                     NSFileManager *fileManager = [NSFileManager defaultManager];
+                     BOOL isSuccess = [fileManager createFileAtPath:filePath contents:data attributes:nil];
+                     if (isSuccess)
+                     {
+                         NSLog(@"%ld.create success",[self.fileNameArray indexOfObject:fileName]);
+                     }
+                     else
+                     {
+                         NSLog(@"%ld.create fail",[self.fileNameArray indexOfObject:fileName]);
+                     }
+                 }
+             }];
+        }
+        
+//        [task response:^(DBFILESMetadata* _Nullable md, DBFILESDownloadError* _Nullable err, DBError* _Nullable dbErr, NSData* _Nonnull data)
+//         {
+//             if (data)
+//             {
+//                 self.DBimgView.image = [UIImage imageWithData:data];
+//             }
+//         }];
     }];
      
+}
+
+-(NSArray*)getLocalDBArray
+{
+    NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
+    NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
+    NSString *dbPath3 = [homePath stringByAppendingPathComponent:@"System.sqlite-wal"];
+    NSArray *localDBArray = @[dbPath1,dbPath2,dbPath3];
+    return localDBArray;
+}
+
+-(void)deleteLocalDB
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *localDBArray = [self getLocalDBArray];
+    for (NSString *dbPath in localDBArray)
+    {
+        BOOL isSuccess = [fileManager removeItemAtPath:dbPath error:nil];
+        if (isSuccess)
+        {
+            NSLog(@"%ld.delete success",[localDBArray indexOfObject:dbPath]);
+        }
+        else
+        {
+            NSLog(@"%ld.delete fail",[localDBArray indexOfObject:dbPath]);
+        }
+    }
 }
 
 -(void)transferWVC
@@ -239,8 +297,8 @@
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    NSString *selectedName = [self.dbRestoreList objectAtIndex:row];
-    NSString *message = [NSString stringWithFormat:@"您選擇的是%@的檔案\n請確認是否從Dropbox還原\n覆蓋現有資料",selectedName];
+    self.dbSelectedFolderName = [self.dbRestoreList objectAtIndex:row];
+    NSString *message = [NSString stringWithFormat:@"您選擇的是%@的檔案\n請確認是否從Dropbox還原\n覆蓋現有資料",self.dbSelectedFolderName];
     [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self postNotificationName:@"dbRestoreSelected"];
 }
 
