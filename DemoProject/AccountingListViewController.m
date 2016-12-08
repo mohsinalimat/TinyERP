@@ -23,6 +23,7 @@
 @property (nonatomic) NSMutableArray *orderDayTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderNoTwoDimensionalList;
 @property (nonatomic) NSString *partner;
+@property (nonatomic) UIView *headView;
 @end
 
 @implementation AccountingListViewController
@@ -38,16 +39,15 @@
     //UI
     if ([self.whereFrom isEqualToString:@"apSegue"])
     {
+        self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
         self.partner = @"廠商";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
+        self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
         self.partner = @"客戶";
     }
     [self.accountingSegment setTitle:self.partner forSegmentAtIndex:0];
-    
-    //先撈所有的B單單身
-    self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmount" fiterBy:@"0"];
     
     //取得單號並去重
     NSSet *orederNoGroup = [NSSet setWithArray:[self.totalOrderDetailList valueForKey:@"orderNo"]];
@@ -227,10 +227,8 @@
     return 0;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(OrderDetail*)getOD:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountingCell"];
-    
     OrderDetail *od;
     switch (self.accountingSummaryType)
     {
@@ -257,6 +255,11 @@
         default:
             break;
     }
+    return od;
+}
+
+-(NSArray*)getOMArray:(OrderDetail*)od
+{
     OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo][0];
     
     NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
@@ -265,49 +268,77 @@
     NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
     [dayDF setDateFormat:@"yyyy/MM/dd"];
     NSString *dayString = [dayDF stringFromDate:om.orderDate];
-    NSString *partnerName;
-    
-    //這邊先偷懶只寫編號 其實應該還考慮類型
+    NSMutableArray *findPartnerArray;
+    Partner *partner;
+    NSString *partnerName = @"";
     if ([self.whereFrom isEqualToString:@"apSegue"])
     {
-        Partner *p = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:om.orderPartner][0];
-        partnerName = p.partnerName;
+        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeF" fiterBy:om.orderPartner];
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
-        Partner *p = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:om.orderPartner][0];
-        partnerName = p.partnerName;
+        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeC" fiterBy:om.orderPartner];
     }
+    if (findPartnerArray.count != 0)
+    {
+        partner = findPartnerArray[0];
+        partnerName = partner.partnerName;
+    }
+    NSArray *omArray = @[partnerName,monthString,dayString,om.orderNo];
+    return omArray;
+}
+
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountingCell"];
+    
+    OrderDetail *od = [self getOD:indexPath];
+
+    CGFloat orderAlreadyAmount = [od.orderAmount floatValue] - [od.orderNotYetAmount floatValue];
+    cell.textLabel.text = [NSString stringWithFormat:@"          [%ld]應收%.2f已收%.2f未收%.2f",[od.orderSeq integerValue],[od.orderAmount floatValue],orderAlreadyAmount,[od.orderNotYetAmount floatValue]];
+    
+    return cell;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:section];
+    OrderDetail *od = [self getOD:ip];
+    NSArray *omArray = [self getOMArray:od];
+    
     switch (self.accountingSummaryType)
     {
         case 0:
         {
-            cell.textLabel.text = [NSString stringWithFormat:@"[%ld]%@",indexPath.section,om.orderPartner];
+            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
             break;
         }
         case 1:
         {
-            cell.textLabel.text = [NSString stringWithFormat:@"[%ld]%@",indexPath.section,monthString];
+            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
             break;
         }
         case 2:
         {
-            cell.textLabel.text = [NSString stringWithFormat:@"[%ld]%@",indexPath.section,dayString];
+            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
             break;
         }
         case 3:
         {
-            cell.textLabel.text = [NSString stringWithFormat:@"[%ld]%@",indexPath.section,om.orderNo];
+            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
             break;
         }
         default:
             break;
     }
-    CGFloat orderAlreadyAmount = [od.orderAmount floatValue] - [od.orderNotYetAmount floatValue];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"[%ld]應收%.2f已收%.2f未收%.2f",[od.orderSeq integerValue],[od.orderAmount floatValue],orderAlreadyAmount,[od.orderNotYetAmount floatValue]];
-    
-    return cell;
+    return @"";
 }
+
+//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    
+//}
 
 - (IBAction)gesturePop:(id)sender
 {

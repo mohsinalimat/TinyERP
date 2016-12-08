@@ -79,15 +79,31 @@
     {
         pred = [NSPredicate predicateWithFormat:@"qty!=%@",@([fiterString floatValue])];
     }
-    //查未沖金額不等於零
-    else if ([fiterColumn isEqualToString:@"NotYetAmount"])
+    //查進貨未沖金額不等於零
+    else if ([fiterColumn isEqualToString:@"NotYetAmountPB"])
     {
-        pred = [NSPredicate predicateWithFormat:@"orderNotYetAmount!=%@",@([fiterString floatValue])];
+        NSString *pb = @"PB*";
+        pred = [NSPredicate predicateWithFormat:@"(orderNotYetAmount!=%@) && (orderNo like %@)",@([fiterString floatValue]),pb];
     }
-    //交易對象編號
-    else if ([fiterColumn isEqualToString:@"partnerID"])
+    //查銷貨未沖金額不等於零
+    else if ([fiterColumn isEqualToString:@"NotYetAmountSB"])
     {
-        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
+        NSString *sb = @"SB*";
+        pred = [NSPredicate predicateWithFormat:@"(orderNotYetAmount!=%@) && (orderNo like %@)",@([fiterString floatValue]),sb];
+    }
+    //廠商編號
+    else if ([fiterColumn isEqualToString:@"partnerIDtypeF"])
+    {
+        //        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
+        NSString *f = @"F";
+        pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,f];
+    }
+    //客戶編號
+    else if ([fiterColumn isEqualToString:@"partnerIDtypeC"])
+    {
+        //        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
+        NSString *c = @"C";
+        pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,c];
     }
     
     request.predicate = pred;
@@ -103,18 +119,6 @@
     else
     {
         returnResults = [NSMutableArray arrayWithArray:results];
-        if ([fiterColumn isEqualToString:@"NotYetAmount"])
-        {
-            NSMutableArray *orderListB = [[NSMutableArray alloc]init];
-            for (OrderDetail *od in returnResults)
-            {
-                if ([[od.orderNo substringWithRange:NSMakeRange(1, 1)]isEqualToString:@"B"])
-                {
-                    [orderListB addObject:od];
-                }
-            }
-            return orderListB;
-        }
     }
     return returnResults;
 }
