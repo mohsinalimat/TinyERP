@@ -82,7 +82,7 @@
      }];
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelected" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
-        NSLog(@"");
+        NSLog(@"我回來了");
     }];
      
 }
@@ -153,7 +153,6 @@
          {
              [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
          } browserAuth:NO];
-        //為何離開db登入頁面 不管登入與否 都會回到CenterViewController(把起始頁指回centerVC就好了)
         return NO;
     }
     else
@@ -169,7 +168,7 @@
 {
     if ([self isDropboxDidLogin])
     {
-        [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self];
+        [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackupOK"];
     }
 }
 
@@ -186,30 +185,39 @@
             [self.dbRestoreList removeAllObjects];
         }
         
-        [[[self.dbClient.filesRoutes downloadData:@"/店店三碗公/161206_053831"]
-          response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
-              if (result) {
-                  NSLog(@"%@\n", result);
-                  NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
-                  NSLog(@"%@\n", dataStr);
-              } else {
-                  NSLog(@"%@\n%@\n", routeError, error);
-              }
-          }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-              NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-          }];
+        //就是這邊不進去了
+//        [[[self.dbClient.filesRoutes downloadData:@"/店店三碗公/161206_053831"]
+//          response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
+//              if (result) {
+//                  NSLog(@"%@\n", result);
+//                  NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
+//                  NSLog(@"%@\n", dataStr);
+//              } else {
+//                  NSLog(@"%@\n%@\n", routeError, error);
+//              }
+//          }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+//              NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
+//          }];
 
-//        DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
-//        [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
-//        {
-//            for (DBFILESMetadata *md in result.entries)
-//            {
-//                NSLog(@"======%@",md.name);
-//                [self.dbRestoreList addObject:md.name];
-//            }
-//        }];
+        DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
+        [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
+        {
+            for (DBFILESMetadata *md in result.entries)
+            {
+                NSLog(@"======%@",md.name);
+                [self.dbRestoreList addObject:md.name];
+                //這招也沒用 還是偷跑
+//                [self.dbRestorePicker setHidden:NO];
+                [self.dbRestorePicker reloadAllComponents];
+            }
+            //這招沒用 還是偷跑
+//            dispatch_async(dispatch_get_main_queue(),
+//           ^{
+//                [self.dbRestorePicker setHidden:NO];
+//           });
+            [self.dbRestorePicker setHidden:NO];
+        }];
     
-        [self.dbRestorePicker setHidden:NO];
     }
 }
 
@@ -233,7 +241,7 @@
 {
     NSString *selectedName = [self.dbRestoreList objectAtIndex:row];
     NSString *message = [NSString stringWithFormat:@"您選擇的是%@的檔案\n請確認是否從Dropbox還原\n覆蓋現有資料",selectedName];
-    [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self];
+    [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self postNotificationName:@"dbRestoreSelected"];
 }
 
 -(void)dropboxLogout

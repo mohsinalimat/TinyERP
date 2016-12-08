@@ -22,35 +22,29 @@
 
 +(void)alertYesAndNo:(NSString*)message yes:(NSString*)yesString no:(NSString*)noString controller:(UIViewController*)vc
 {
-    NSInteger vcType;
-    if ([vc isKindOfClass:[ItemViewController class]])
-    {
-        vcType = 0;
-    }
-    else if ([vc isKindOfClass:[SetupViewController class]])
-    {
-        vcType = 1;
-    }
-    
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *yesButton = [UIAlertAction actionWithTitle:yesString style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action)
-    {
-        switch (vcType)
         {
-            case 0:
+            if ([vc isKindOfClass:[ItemViewController class]])
             {
                 ItemViewController *ivc = (ItemViewController*)vc;
                 ivc.itemImageView.image = nil;
-                break;
             }
-            case 1:
-            {
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"dbBackupOK" object:vc];
-            }
-            default:
-                break;
-        }
-    }];
+        }];
+    UIAlertAction *noButton = [UIAlertAction actionWithTitle:noString style:UIAlertActionStyleDefault handler:nil];
+    [ac addAction:noButton];
+    [ac addAction:yesButton];
+    [vc presentViewController:ac animated:YES completion:nil];
+}
+
+
++(void)alertYesAndNo:(NSString*)message yes:(NSString*)yesString no:(NSString*)noString controller:(UIViewController*)vc postNotificationName:(NSString*)Notification
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *yesButton = [UIAlertAction actionWithTitle:yesString style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action)
+        {
+            [[NSNotificationCenter defaultCenter]postNotificationName:Notification object:vc];
+        }];
     UIAlertAction *noButton = [UIAlertAction actionWithTitle:noString style:UIAlertActionStyleDefault handler:nil];
     [ac addAction:noButton];
     [ac addAction:yesButton];
