@@ -11,6 +11,7 @@
 #import "DataBaseManager.h"
 #import "CoreDataHelper.h"
 #import "Inventory.h"
+#import "Item.h"
 #import "CollectionReusableViewWithTitle.h"
 
 @interface InventoryViewController () <UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
@@ -129,17 +130,22 @@
         inv = [[self.warehouseListSorted objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         cell.inventoryNo.text = inv.itemNo;
     }
+    Item *item;
+    if([DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:inv.itemNo].count !=0)
+    {
+        item = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:inv.itemNo][0];
+    }
+    cell.inventoryImg.image = [UIImage imageWithData:item.itemImg] ;
     cell.inventoryQty.text = [inv.qty stringValue];
+    cell.layer.borderWidth = 1;
     return cell;
 }
 
+//處理header或footer
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     CollectionReusableViewWithTitle *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"collectionHeader" forIndexPath:indexPath];
     headerView.backgroundColor = [UIColor yellowColor];
-    CGRect rect = headerView.frame;
-    rect.size.height = 22.0;
-    headerView.frame = rect;
     if (self.isShowByItem)
     {
         headerView.title.text = self.itemGroupSortedArray[indexPath.section];
@@ -149,6 +155,32 @@
         headerView.title.text = self.warehouseGroupSortedArray[indexPath.section];
     }
     return headerView;
+}
+
+//Header大小
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section
+{
+    //寬度不管設多寬都比照superview
+    CGSize size={0,22};
+    return size;
+}
+
+//UICollectionViewCell的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return CGSizeMake(75, 75);
+}
+
+//間距
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 1;
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    //這邊看可否Push過去itemViewController 不然就只好用present
+    NSLog(@"%@",indexPath);
 }
 
 - (IBAction)gesturePop:(id)sender

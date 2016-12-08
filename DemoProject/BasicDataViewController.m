@@ -19,8 +19,8 @@
 {
     [super viewDidLoad];
     self.title = @"基本資料";
-    UIPanGestureRecognizer *swipeGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(gesturePop)];
-    swipeGesture.delegate = self;
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(gesturePop)];
+    swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:swipeGesture];
 }
 
