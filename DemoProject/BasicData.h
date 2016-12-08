@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CoreDataHelper.h"
 
-@interface BasicData : NSObject
-//@interface BasicData : NSManagedObject
+//@interface BasicData : NSObject
+@interface BasicData : NSManagedObject
 @property NSString *basicDataType;
 @property NSString *basicDataName;
 @end

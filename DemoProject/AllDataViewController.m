@@ -35,6 +35,7 @@
 {
     [super viewDidLoad];
     [self.navigationItem setHidesBackButton:YES animated:YES];
+    self.title = self.whereFrom;
     //代理
     self.allDataTableView.delegate = self;
     self.allDataTableView.dataSource = self;

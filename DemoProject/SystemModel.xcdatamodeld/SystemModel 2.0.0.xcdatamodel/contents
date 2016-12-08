@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11542" systemVersion="15G1004" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="BasicDataEntity" representedClassName="" syncable="YES">
+    <entity name="BasicDataEntity" representedClassName="BasicData" syncable="YES">
         <attribute name="basicDataName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="basicDataType" optional="YES" attributeType="String" syncable="YES"/>
     </entity>

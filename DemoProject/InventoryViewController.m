@@ -11,22 +11,24 @@
 #import "DataBaseManager.h"
 #import "CoreDataHelper.h"
 #import "Inventory.h"
+#import "CollectionReusableViewWithTitle.h"
 
 @interface InventoryViewController () <UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *inventoryCollectionView;
 @property NSMutableArray *totalInventoryList;
 @property NSMutableArray *itemListSorted;
 @property NSMutableArray *warehouseListSorted;
+@property NSArray *itemGroupSortedArray;
+@property NSArray *warehouseGroupSortedArray;
 @property BOOL isShowByItem;
 @end
 
 @implementation InventoryViewController
 
-
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"庫存查詢";
     self.inventoryCollectionView.delegate = self;
     self.inventoryCollectionView.dataSource = self;
     self.isShowByItem = NO;
@@ -38,11 +40,11 @@
     //排序
 #pragma mark Q.為何排序不用給Key
     NSArray *sortedArray = @[[[NSSortDescriptor alloc]initWithKey:nil ascending:YES]];
-    NSArray *itemGroupSortedArray = [itemGroup sortedArrayUsingDescriptors:sortedArray];
-    NSArray *warehouseGroupSortedArray = [warehouseGroup sortedArrayUsingDescriptors:sortedArray];
+    self.itemGroupSortedArray = [itemGroup sortedArrayUsingDescriptors:sortedArray];
+    self.warehouseGroupSortedArray = [warehouseGroup sortedArrayUsingDescriptors:sortedArray];
     //組二維陣列
     self.itemListSorted = [[NSMutableArray alloc]init];
-    for (NSString *setString in itemGroupSortedArray)
+    for (NSString *setString in self.itemGroupSortedArray)
     {
         NSMutableArray *aItemList = [[NSMutableArray alloc]init];
         for (Inventory *inv in self.totalInventoryList)
@@ -56,7 +58,7 @@
     }
     
     self.warehouseListSorted = [[NSMutableArray alloc]init];
-    for (NSString *setString in warehouseGroupSortedArray)
+    for (NSString *setString in self.warehouseGroupSortedArray)
     {
         NSMutableArray *aWarehouseList = [[NSMutableArray alloc]init];
         for (Inventory *inv in self.totalInventoryList)
@@ -129,6 +131,24 @@
     }
     cell.inventoryQty.text = [inv.qty stringValue];
     return cell;
+}
+
+-(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    CollectionReusableViewWithTitle *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"collectionHeader" forIndexPath:indexPath];
+    headerView.backgroundColor = [UIColor yellowColor];
+    CGRect rect = headerView.frame;
+    rect.size.height = 22.0;
+    headerView.frame = rect;
+    if (self.isShowByItem)
+    {
+        headerView.title.text = self.itemGroupSortedArray[indexPath.section];
+    }
+    else
+    {
+        headerView.title.text = self.warehouseGroupSortedArray[indexPath.section];
+    }
+    return headerView;
 }
 
 - (IBAction)gesturePop:(id)sender

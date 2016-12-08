@@ -23,7 +23,6 @@
 @property (nonatomic) NSMutableArray *orderDayTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderNoTwoDimensionalList;
 @property (nonatomic) NSString *partner;
-@property (nonatomic) UIView *headView;
 @end
 
 @implementation AccountingListViewController
@@ -41,11 +40,13 @@
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
         self.partner = @"廠商";
+        self.title = @"未沖應付";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
         self.partner = @"客戶";
+        self.title = @"未沖應收";
     }
     [self.accountingSegment setTitle:self.partner forSegmentAtIndex:0];
     
@@ -301,44 +302,72 @@
     return cell;
 }
 
+//沒有這個方法viewForHeader就不會出現
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    return @" ";
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    //不知這邊為何大小設0,0沒用
+    //self.accountingTableView.tableHeaderView.frame.size.width
+    //self.accountingTableView.tableHeaderView.frame.size.height
+    //self.accountingTableView.estimatedSectionHeaderHeight
+    //上面都是0
+    //然後這個是-1 self.accountingTableView.sectionHeaderHeight
+    UIView *tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
+    tableHeaderView.backgroundColor = [UIColor yellowColor];
+    CGFloat buttonXlocal = self.accountingTableView.frame.size.width - 100;
+    //大小一樣沒用
+    UIButton *reverseButton = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocal, 0, 0, 0)];
+    reverseButton.tag = section;
+    //按了UI看不出變化
+    [reverseButton setTitle:@"沖帳請按我" forState:UIControlStateNormal];
+    [reverseButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [reverseButton sizeToFit];
+    [tableHeaderView addSubview:reverseButton];
+    [reverseButton addTarget:self action:@selector(transferARVC:) forControlEvents:UIControlEventTouchUpInside];
+    
+    NSString *sectionTitle;
+    UILabel *sectionLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, self.accountingTableView.frame.size.width, 22)];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:section];
     OrderDetail *od = [self getOD:ip];
     NSArray *omArray = [self getOMArray:od];
-    
     switch (self.accountingSummaryType)
     {
         case 0:
         {
-            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
+            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
             break;
         }
         case 1:
         {
-            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
+            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
             break;
         }
         case 2:
         {
-            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
+            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
             break;
         }
         case 3:
         {
-            return [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
+            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
             break;
         }
         default:
             break;
     }
-    return @"";
+    sectionLabel.text = sectionTitle;
+    [tableHeaderView addSubview:sectionLabel];
+    return tableHeaderView;
 }
 
-//-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    
-//}
+-(void)transferARVC:(UIButton*)btn
+{
+    NSLog(@"%ld",btn.tag);
+}
 
 - (IBAction)gesturePop:(id)sender
 {

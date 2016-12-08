@@ -19,6 +19,9 @@
 {
     [super viewDidLoad];
     self.title = @"基本資料";
+    UIPanGestureRecognizer *swipeGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(gesturePop)];
+    swipeGesture.delegate = self;
+    [self.view addGestureRecognizer:swipeGesture];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -57,7 +60,7 @@
 
 }
 
-- (IBAction)gesturePop:(id)sender
+- (void)gesturePop
 {
     [self.navigationController popViewControllerAnimated:YES];
 }

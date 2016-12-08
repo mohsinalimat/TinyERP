@@ -112,10 +112,12 @@
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
             self.orderPreOrderInput.placeholder = @"可輸入訂單號碼";
+            self.title = @"採購單";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
             self.orderPreOrderInput.placeholder = @"請輸入採購單號";
+            self.title = @"進貨單";
         }
     }
     else if ([self.orderNoBegin isEqualToString:@"S"])
@@ -125,10 +127,12 @@
         {
             [self.preOrderLabel setHidden:YES];
             [self.orderPreOrderInput setHidden:YES];
+            self.title = @"訂單";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
             self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
+            self.title = @"銷貨單";
         }
     }
     

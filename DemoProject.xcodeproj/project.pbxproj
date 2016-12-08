@@ -48,6 +48,7 @@
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
 		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
+		27E73CCF1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */; };
 		27FEF6671DF521220084AE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27FEF6661DF521220084AE1E /* GoogleService-Info.plist */; };
 		27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF6691DF5239B0084AE1E /* Fabric.framework */; };
 		27FEF66C1DF5239B0084AE1E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF66A1DF5239B0084AE1E /* Crashlytics.framework */; };
@@ -132,6 +133,8 @@
 		27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingListViewController.m; sourceTree = "<group>"; };
 		27E73CCA1DF7AB3C00FA09BC /* AccountingReverseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingReverseViewController.h; sourceTree = "<group>"; };
 		27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingReverseViewController.m; sourceTree = "<group>"; };
+		27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionReusableViewWithTitle.h; sourceTree = "<group>"; };
+		27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableViewWithTitle.m; sourceTree = "<group>"; };
 		27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		27FEF6661DF521220084AE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -346,6 +349,8 @@
 				27A4CA131DEECE41002476CD /* DropBoxCell.m */,
 				27E1A62E1DF009A8002ADDF1 /* UserCell.h */,
 				27E1A62F1DF009A8002ADDF1 /* UserCell.m */,
+				27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */,
+				27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */,
 			);
 			name = CELLs;
 			sourceTree = "<group>";
@@ -522,6 +527,7 @@
 				27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */,
 				278DA2001DD17855000F23DE /* EditCell.m in Sources */,
 				272BB5871DC746A800A1AB11 /* Item.m in Sources */,
+				27E73CCF1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m in Sources */,
 				27A4C99F1DEC3758002476CD /* FBLogoutCell.m in Sources */,
 				27BE8C0B1DD5C81200FAA604 /* CustomerListViewController.m in Sources */,
 				278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */,

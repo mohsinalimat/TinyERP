@@ -30,6 +30,7 @@
 {
     [super viewDidLoad];
     
+    self.title = @"系統設定";
     self.steupTableView.delegate = self;
     self.steupTableView.dataSource = self;
     self.dbRestorePicker.delegate = self;

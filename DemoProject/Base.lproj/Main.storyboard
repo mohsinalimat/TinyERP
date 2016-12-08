@@ -289,6 +289,7 @@
         <!--Table View Controller-->
         <scene sceneID="hti-BV-LWZ">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lJp-dO-6KY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="BO7-dH-cBH" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="oy3-dT-YIO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
@@ -310,7 +311,6 @@
                         </connections>
                     </tableView>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="lJp-dO-6KY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="151" y="1864"/>
         </scene>
@@ -1379,11 +1379,6 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4En-JU-mfQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="0eQ-r2-FJU">
-                    <connections>
-                        <action selector="gesturePop:" destination="L79-Dt-c7L" id="V3Z-IE-gL6"/>
-                    </connections>
-                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="151" y="245"/>
         </scene>
@@ -1485,13 +1480,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e42-ag-xw8">
                                     <size key="itemSize" width="50" height="50"/>
-                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="headerReferenceSize" width="50" height="50"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="inventoryCell" id="LvE-OU-Jxv" customClass="InventoryCell">
-                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <rect key="frame" x="0.0" y="50" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -1543,6 +1538,25 @@
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionHeader" id="4Xf-aS-Img" customClass="CollectionReusableViewWithTitle">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JrJ-oa-DnM">
+                                            <rect key="frame" x="186" y="15" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="JrJ-oa-DnM" firstAttribute="centerY" secondItem="4Xf-aS-Img" secondAttribute="centerY" id="2lg-kJ-rS9"/>
+                                        <constraint firstItem="JrJ-oa-DnM" firstAttribute="centerX" secondItem="4Xf-aS-Img" secondAttribute="centerX" id="rLd-2J-Xny"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="title" destination="JrJ-oa-DnM" id="bTN-dg-wfZ"/>
+                                    </connections>
+                                </collectionReusableView>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FMs-8m-Qts">
                                 <rect key="frame" x="166" y="86" width="83" height="29"/>
