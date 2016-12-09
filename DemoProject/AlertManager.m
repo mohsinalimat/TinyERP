@@ -12,6 +12,7 @@
 #import <UIKit/UIKit.h>
 
 @implementation AlertManager
+
 +(void)alert:(NSString*)message controller:(UIViewController*)vc
 {
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];

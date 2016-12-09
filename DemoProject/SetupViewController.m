@@ -47,37 +47,29 @@
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
          [df setDateFormat:@"yyMMdd_hhmmss"];
          NSString *backupDateString = [df stringFromDate:[NSDate date]];
-         NSData *dbData1 = [NSData dataWithContentsOfFile:[self getLocalDBArray][0]];
-         NSData *dbData2 = [NSData dataWithContentsOfFile:[self getLocalDBArray][1]];
-         NSData *dbData3 = [NSData dataWithContentsOfFile:[self getLocalDBArray][2]];
+         NSArray *dataArray = @[
+         [NSData dataWithContentsOfFile:[self getLocalDBArray][0]],
+         [NSData dataWithContentsOfFile:[self getLocalDBArray][1]],
+         [NSData dataWithContentsOfFile:[self getLocalDBArray][2]],
+         ];
          
-         NSString *uploadPath1 = [NSString stringWithFormat:@"/%@/System.sqlite",backupDateString];
-         DBUploadTask *task1 = [self.dbClient.filesRoutes uploadData:uploadPath1 inputData:dbData1];
-         [task1 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
-          {
-              if (md){
-                  NSLog(@"1.OK");}
-              else{
-                  NSLog(@"1.%@%@",error,dberror);}
-          }];
-         NSString *uploadPath2 = [NSString stringWithFormat:@"/%@/System.sqlite-shm",backupDateString];
-         DBUploadTask *task2 = [self.dbClient.filesRoutes uploadData:uploadPath2 inputData:dbData2];
-         [task2 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
-          {
-              if (md){
-                  NSLog(@"2.OK");}
-              else{
-                  NSLog(@"2.%@%@",error,dberror);}
-          }];
-         NSString *uploadPath3 = [NSString stringWithFormat:@"/%@/System.sqlite-wal",backupDateString];
-         DBUploadTask *task3 = [self.dbClient.filesRoutes uploadData:uploadPath3 inputData:dbData3];
-         [task3 response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
-          {
-              if (md){
-                  NSLog(@"3.OK");}
-              else{
-                  NSLog(@"3.%@%@",error,dberror);}
-          }];
+         for (NSString *fileName in self.fileNameArray)
+         {
+             NSInteger index = [self.fileNameArray indexOfObject:fileName];
+              NSString *uploadPath = [NSString stringWithFormat:@"/%@/%@",backupDateString,fileName];
+              DBUploadTask *task = [self.dbClient.filesRoutes uploadData:uploadPath inputData:dataArray[index]];
+              [task response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
+               {
+                   if (md)
+                   {
+                       NSLog(@"%ld.OK",index);
+                   }
+                   else
+                   {
+                       NSLog(@"%ld.%@%@",index,error,dberror);
+                   }
+               }];
+         }
      }];
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelected" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
@@ -105,14 +97,6 @@
                  }
              }];
         }
-        
-//        [task response:^(DBFILESMetadata* _Nullable md, DBFILESDownloadError* _Nullable err, DBError* _Nullable dbErr, NSData* _Nonnull data)
-//         {
-//             if (data)
-//             {
-//                 self.DBimgView.image = [UIImage imageWithData:data];
-//             }
-//         }];
     }];
      
 }
@@ -120,9 +104,9 @@
 -(NSArray*)getLocalDBArray
 {
     NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *dbPath1 = [homePath stringByAppendingPathComponent:@"System.sqlite"];
-    NSString *dbPath2 = [homePath stringByAppendingPathComponent:@"System.sqlite-shm"];
-    NSString *dbPath3 = [homePath stringByAppendingPathComponent:@"System.sqlite-wal"];
+    NSString *dbPath1 = [homePath stringByAppendingPathComponent:self.fileNameArray[0]];
+    NSString *dbPath2 = [homePath stringByAppendingPathComponent:self.fileNameArray[1]];
+    NSString *dbPath3 = [homePath stringByAppendingPathComponent:self.fileNameArray[2]];
     NSArray *localDBArray = @[dbPath1,dbPath2,dbPath3];
     return localDBArray;
 }
@@ -242,20 +226,6 @@
         {
             [self.dbRestoreList removeAllObjects];
         }
-        
-        //就是這邊不進去了
-//        [[[self.dbClient.filesRoutes downloadData:@"/店店三碗公/161206_053831"]
-//          response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
-//              if (result) {
-//                  NSLog(@"%@\n", result);
-//                  NSString *dataStr = [[NSString alloc]initWithData:fileContents encoding:NSUTF8StringEncoding];
-//                  NSLog(@"%@\n", dataStr);
-//              } else {
-//                  NSLog(@"%@\n%@\n", routeError, error);
-//              }
-//          }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-//              NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-//          }];
 
         DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
         [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
@@ -264,11 +234,12 @@
             {
                 NSLog(@"======%@",md.name);
                 [self.dbRestoreList addObject:md.name];
-                //這招也沒用 還是偷跑
+                //2.這招也沒用 還是偷跑
 //                [self.dbRestorePicker setHidden:NO];
+                //3.最後只好用刷新的
                 [self.dbRestorePicker reloadAllComponents];
             }
-            //這招沒用 還是偷跑
+            //1.這招沒用 還是偷跑
 //            dispatch_async(dispatch_get_main_queue(),
 //           ^{
 //                [self.dbRestorePicker setHidden:NO];

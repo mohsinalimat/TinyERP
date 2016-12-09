@@ -2062,12 +2062,15 @@ StoreApp
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUm-7B-Dlu">
-                                                    <rect key="frame" x="192" y="5" width="31" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yUm-7B-Dlu">
+                                                    <rect key="frame" x="192" y="7" width="31" height="30"/>
                                                     <state key="normal" title="登出"/>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="yUm-7B-Dlu" firstAttribute="centerX" secondItem="pwy-AM-YGA" secondAttribute="centerX" id="FNg-wM-2nn"/>
+                                                <constraint firstItem="yUm-7B-Dlu" firstAttribute="centerY" secondItem="pwy-AM-YGA" secondAttribute="centerY" id="QpB-OX-SaM"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="userLogoutButton" destination="yUm-7B-Dlu" id="EO6-i0-LbA"/>
@@ -2080,12 +2083,20 @@ StoreApp
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1jA-t8-IrX" customClass="FBSDKLoginButton">
-                                                    <rect key="frame" x="67" y="0.0" width="279" height="43"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jA-t8-IrX" customClass="FBSDKLoginButton">
+                                                    <rect key="frame" x="56.666666666666657" y="0.0" width="300" height="43"/>
                                                     <color key="backgroundColor" red="0.21100763950000001" green="0.55004929960000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="300" id="ESp-pS-xuO"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="1jA-t8-IrX" secondAttribute="bottom" id="fQC-O4-15p"/>
+                                                <constraint firstItem="1jA-t8-IrX" firstAttribute="top" secondItem="B3B-RO-1E4" secondAttribute="top" id="hQA-Cb-s5T"/>
+                                                <constraint firstItem="1jA-t8-IrX" firstAttribute="centerX" secondItem="B3B-RO-1E4" secondAttribute="centerX" id="i8V-GA-6x4"/>
+                                                <constraint firstItem="1jA-t8-IrX" firstAttribute="centerY" secondItem="B3B-RO-1E4" secondAttribute="centerY" id="xJ9-f6-EhH"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="dbCell" id="ZRW-2e-poz" customClass="DropBoxCell">
