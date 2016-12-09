@@ -788,6 +788,8 @@
                         <outlet property="dataPickerView" destination="ypT-Rk-hs6" id="Oiw-IP-rRv"/>
                         <outlet property="datePickerView" destination="LNN-gE-Hle" id="aBK-9w-Qmm"/>
                         <outlet property="orderDateInput" destination="Kfc-JX-QMZ" id="HI9-nT-3vW"/>
+                        <outlet property="orderDetailButtonForAdd" destination="xlr-dI-8xx" id="u2E-SG-RiN"/>
+                        <outlet property="orderDetailButtonForCopy" destination="R0b-wZ-jRR" id="mME-dT-DsK"/>
                         <outlet property="orderDteailTableView" destination="vfR-3c-5nQ" id="3jc-rP-dsC"/>
                         <outlet property="orderNoInput" destination="Ugi-Hc-KeP" id="PnR-Kl-Lit"/>
                         <outlet property="orderPartnerInput" destination="ZdE-Oy-0cI" id="CkN-vc-TEX"/>
@@ -1027,20 +1029,37 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xf0-r6-3Bh">
+                                <rect key="frame" x="295" y="264" width="31" height="30"/>
+                                <state key="normal" title="撥號"/>
+                                <connections>
+                                    <action selector="phoneCell:" destination="iCj-8B-txV" eventType="touchUpInside" id="R4A-J0-bIH"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ow8-Hp-k3J">
+                                <rect key="frame" x="83" y="334" width="31" height="30"/>
+                                <state key="normal" title="導航"/>
+                                <connections>
+                                    <action selector="goToMap:" destination="iCj-8B-txV" eventType="touchUpInside" id="ulP-HI-U3F"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="ez8-VA-fve" secondAttribute="trailing" constant="10" id="2He-1m-YAY"/>
+                            <constraint firstItem="Ow8-Hp-k3J" firstAttribute="centerX" secondItem="fLT-36-0Nj" secondAttribute="centerX" id="51h-gh-cMj"/>
                             <constraint firstItem="J6f-UW-fNy" firstAttribute="leading" secondItem="2k7-U4-AeK" secondAttribute="trailing" constant="5" id="A5k-Jh-BDT"/>
                             <constraint firstItem="w5q-6V-ykV" firstAttribute="leading" secondItem="XYK-in-23i" secondAttribute="leading" id="BJr-UR-5TR"/>
                             <constraint firstItem="2k7-U4-AeK" firstAttribute="leading" secondItem="nQK-E7-Bd3" secondAttribute="trailing" constant="5" id="ETs-qG-bZQ"/>
                             <constraint firstAttribute="trailing" secondItem="w5q-6V-ykV" secondAttribute="trailing" id="EZq-hA-R8H"/>
                             <constraint firstItem="5uQ-bd-PIo" firstAttribute="top" secondItem="2k7-U4-AeK" secondAttribute="bottom" constant="5" id="GMo-LR-J7u"/>
                             <constraint firstItem="2k7-U4-AeK" firstAttribute="centerX" secondItem="XYK-in-23i" secondAttribute="centerX" id="IkK-WA-eIf"/>
+                            <constraint firstItem="xf0-r6-3Bh" firstAttribute="leading" secondItem="2k7-U4-AeK" secondAttribute="trailing" constant="5" id="JZX-rp-h9O"/>
                             <constraint firstItem="F7m-jS-L4S" firstAttribute="top" secondItem="w5q-6V-ykV" secondAttribute="bottom" id="LNW-2U-Z45"/>
                             <constraint firstItem="2k7-U4-AeK" firstAttribute="height" secondItem="nQK-E7-Bd3" secondAttribute="height" id="NOA-PP-djC"/>
                             <constraint firstItem="5uQ-bd-PIo" firstAttribute="leading" secondItem="2k7-U4-AeK" secondAttribute="leading" id="ORj-cw-Ctl"/>
+                            <constraint firstItem="Ow8-Hp-k3J" firstAttribute="centerY" secondItem="5uQ-bd-PIo" secondAttribute="centerY" id="Qhe-c8-xZ0"/>
                             <constraint firstItem="ez8-VA-fve" firstAttribute="leading" secondItem="XYK-in-23i" secondAttribute="leadingMargin" constant="10" id="a56-ge-gzd"/>
                             <constraint firstItem="5uQ-bd-PIo" firstAttribute="leading" secondItem="fLT-36-0Nj" secondAttribute="trailing" constant="5" id="b2V-Yp-LYK"/>
                             <constraint firstItem="fLT-36-0Nj" firstAttribute="top" secondItem="nQK-E7-Bd3" secondAttribute="bottom" constant="10" id="eFS-hL-dZ1"/>
@@ -1050,6 +1069,7 @@
                             <constraint firstItem="w5q-6V-ykV" firstAttribute="top" secondItem="ez8-VA-fve" secondAttribute="bottom" constant="10" id="pfD-Fr-Qyo"/>
                             <constraint firstItem="J6f-UW-fNy" firstAttribute="top" secondItem="Be7-hr-UxQ" secondAttribute="bottom" constant="20" id="qu3-Ed-t0g"/>
                             <constraint firstItem="5uQ-bd-PIo" firstAttribute="width" secondItem="XYK-in-23i" secondAttribute="width" multiplier="0.6" id="ult-qN-eHa"/>
+                            <constraint firstItem="xf0-r6-3Bh" firstAttribute="centerY" secondItem="2If-Hu-hhu" secondAttribute="centerY" id="xj5-9M-g18"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="GK2-D2-ohV" appends="YES" id="sHM-fo-hqq"/>

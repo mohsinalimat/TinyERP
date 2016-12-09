@@ -10,8 +10,10 @@
 #import "DataBaseManager.h"
 #import "FirmListViewController.h"
 #import "CustomerListViewController.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
 
-@interface PartnerViewController () <UINavigationBarDelegate>
+@interface PartnerViewController () <UINavigationBarDelegate,CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *pID;
 @property (weak, nonatomic) IBOutlet UILabel *pKind;
@@ -39,9 +41,14 @@
 @property (nonatomic) BOOL isCreateStatus;
 @property (nonatomic) BOOL isCreataAgain;
 
+@property (nonatomic) NSString *currentCoordinateString;
+
 @end
 
 @implementation PartnerViewController
+{
+    CLLocationManager *locationManager;
+}
 
 - (void)viewDidLoad
 {
@@ -97,6 +104,16 @@
         [self.deletePartnerButton setTitle:@"放棄新增" forState:UIControlStateNormal];
         self.isCreateStatus = YES;
     }
+    
+    locationManager=[[CLLocationManager alloc]init];
+    if([locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+    {
+        [locationManager requestWhenInUseAuthorization];
+    }
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.activityType = CLActivityTypeAutomotiveNavigation;
+    locationManager.delegate = self;
+    [locationManager startUpdatingLocation];
 }
 
 -(void)saveValue
@@ -199,6 +216,57 @@
 - (IBAction)gesturePop:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)phoneCell:(id)sender
+{
+    
+}
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    //取得"陣列裡"最新的位置
+    CLLocation *currentLocation = locations.lastObject;
+    self.currentCoordinateString = [NSString stringWithFormat:@"%.6f,%.6f",currentLocation.coordinate.latitude,currentLocation.coordinate.longitude];
+    NSLog(@"%@",self.currentCoordinateString);
+}
+
+- (IBAction)goToMap:(id)sender
+{
+    NSString *oneLineAddressString = [self.pAddrInput.text stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    //去除掉首尾的空白字符和换行字符
+    //[headerData stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"comgooglemaps://"]])
+    {
+        NSString *googleMapURLString = [NSString stringWithFormat:@"comgooglemaps://?saddr=%@&daddr=%@",self.currentCoordinateString,oneLineAddressString];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[googleMapURLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+    }
+    else
+    {
+        CLGeocoder *geoclderForApple = [[CLGeocoder alloc]init];
+        [geoclderForApple geocodeAddressString:oneLineAddressString completionHandler:
+         //異步執行1.需連網查Apple DB 2.需等待
+         ^(NSArray<CLPlacemark*>* _Nullable placemarks, NSError* _Nullable error)
+         {
+             if(error)
+             {
+                 NSLog(@"%@",error);
+                 return ;
+             }
+             
+             CLPlacemark *targetPlacemark = placemarks.firstObject;
+             //因為要用地圖 所以把CL的轉成MK
+             MKPlacemark *targetPlace = [[MKPlacemark alloc ]initWithPlacemark:targetPlacemark];
+             MKMapItem *targetMapItem = [[MKMapItem alloc]initWithPlacemark:targetPlace];
+             
+             //導航模式參數
+             NSDictionary *options = @{MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving};
+             
+             //請AppleMap導航(由現在位置到目標位置)
+             [targetMapItem openInMapsWithLaunchOptions:options];
+         }];
+    }
 }
 
 - (void)didReceiveMemoryWarning

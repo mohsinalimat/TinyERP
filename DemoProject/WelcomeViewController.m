@@ -28,6 +28,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:YES];
     self.fbLoginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
 }
 

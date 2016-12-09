@@ -60,6 +60,7 @@
 		<string>fbauth2</string>
 		<string>dbapi-2</string>
 		<string>dbapi-8-emm</string>
+		<string>comgooglemaps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
@@ -67,6 +68,8 @@
 	<string>是否允許存取相機？</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>是否允許存取相簿？</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>是否允取存取定位？(只在地址導航時使用, 不會於背景收集您的個人資訊)</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

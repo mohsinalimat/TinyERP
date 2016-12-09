@@ -24,6 +24,7 @@
 @property DropboxClient *dbClient;
 @property NSString *dbSelectedFolderName;
 @property NSArray *fileNameArray;
+@property NSString *dbAction;
 @end
 
 @implementation SetupViewController
@@ -42,10 +43,14 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dbBackupOrRestore) name:@"dbLoginSuccess" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showDBRestorePicker) name:@"dbDownloadOver" object:nil];
+    
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupOK" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
-         [df setDateFormat:@"yyMMdd_hhmmss"];
+         [df setDateFormat:@"yyMMdd_HHmmss"];
          NSString *backupDateString = [df stringFromDate:[NSDate date]];
          NSArray *dataArray = @[
          [NSData dataWithContentsOfFile:[self getLocalDBArray][0]],
@@ -172,11 +177,11 @@
         case 2:
         {
             DropBoxCell *dropboxCell = [tableView dequeueReusableCellWithIdentifier:@"dbCell"];
-            [dropboxCell.dbBackupIcon addTarget:self action:@selector(dropboxBackup) forControlEvents:UIControlEventTouchUpInside];
-            [dropboxCell.dbBackupButton addTarget:self action:@selector(dropboxBackup) forControlEvents:UIControlEventTouchUpInside];
-            [dropboxCell.dbRestoreIcon addTarget:self action:@selector(dropboxRestore) forControlEvents:UIControlEventTouchUpInside];
-            [dropboxCell.dbRestoreButton addTarget:self action:@selector(dropboxRestore) forControlEvents:UIControlEventTouchUpInside];
-            [dropboxCell.dbLogoutButton addTarget:self action:@selector(dropboxLogout) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbBackupIcon addTarget:self action:@selector(dropboxBackupButton) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbBackupButton addTarget:self action:@selector(dropboxBackupButton) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbRestoreIcon addTarget:self action:@selector(dropboxRestoreButton) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbRestoreButton addTarget:self action:@selector(dropboxRestoreButton) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbLogoutButton addTarget:self action:@selector(dropboxLogoutButton) forControlEvents:UIControlEventTouchUpInside];
             return dropboxCell;
             break;
         }
@@ -206,48 +211,68 @@
     return nil;
 }
 
--(void)dropboxBackup
+-(void)dbBackupOrRestore
 {
-    if ([self isDropboxDidLogin])
+    if ([self.dbAction isEqualToString:@"Backup"])
     {
-        [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackupOK"];
+        [self dropboxBackupAction];
+    }
+    else if ([self.dbAction isEqualToString:@"Restore"])
+    {
+        [self dropboxRestoreAction];
     }
 }
 
--(void)dropboxRestore
+-(void)dropboxBackupButton
 {
+    self.dbAction = @"Backup";
     if ([self isDropboxDidLogin])
     {
-        if (self.dbRestoreList == nil)
-        {
-            self.dbRestoreList = [NSMutableArray new];
-        }
-        else
-        {
-            [self.dbRestoreList removeAllObjects];
-        }
-
-        DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
-        [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
-        {
-            for (DBFILESMetadata *md in result.entries)
-            {
-                NSLog(@"======%@",md.name);
-                [self.dbRestoreList addObject:md.name];
-                //2.這招也沒用 還是偷跑
-//                [self.dbRestorePicker setHidden:NO];
-                //3.最後只好用刷新的
-                [self.dbRestorePicker reloadAllComponents];
-            }
-            //1.這招沒用 還是偷跑
-//            dispatch_async(dispatch_get_main_queue(),
-//           ^{
-//                [self.dbRestorePicker setHidden:NO];
-//           });
-            [self.dbRestorePicker setHidden:NO];
-        }];
-    
+        [self dropboxBackupAction];
     }
+}
+
+-(void)dropboxBackupAction
+{
+    [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackupOK"];
+}
+
+-(void)dropboxRestoreButton
+{
+    self.dbAction = @"Restore";
+    if ([self isDropboxDidLogin])
+    {
+        [self dropboxRestoreAction];
+    }
+}
+
+-(void)dropboxRestoreAction
+{
+    if (self.dbRestoreList == nil)
+    {
+        self.dbRestoreList = [NSMutableArray new];
+    }
+    else
+    {
+        [self.dbRestoreList removeAllObjects];
+    }
+    
+    DBRpcTask *task = [self.dbClient.filesRoutes listFolder:@""];
+    [task response:^(DBFILESListFolderResult* _Nullable result, DBFILESListFolderError* _Nullable error, DBRequestError* _Nullable dberror)
+     {
+         for (DBFILESMetadata *md in result.entries)
+         {
+             NSLog(@"======%@",md.name);
+             [self.dbRestoreList addObject:md.name];
+         }
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"dbDownloadOver" object:nil];
+     }];
+}
+
+-(void)showDBRestorePicker
+{
+    [self.dbRestorePicker setHidden:NO];
+    [self.dbRestorePicker reloadAllComponents];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -273,7 +298,7 @@
     [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self postNotificationName:@"dbRestoreSelected"];
 }
 
--(void)dropboxLogout
+-(void)dropboxLogoutButton
 {
     if ([DropboxClientsManager authorizedClient] != nil)
     {

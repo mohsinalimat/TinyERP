@@ -49,6 +49,8 @@
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
 		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
 		27E73CCF1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */; };
+		27E73CD21DFA57FB00FA09BC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD11DFA57FB00FA09BC /* MapKit.framework */; };
+		27E73CD41DFA580B00FA09BC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD31DFA580B00FA09BC /* CoreLocation.framework */; };
 		27FEF6671DF521220084AE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27FEF6661DF521220084AE1E /* GoogleService-Info.plist */; };
 		27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF6691DF5239B0084AE1E /* Fabric.framework */; };
 		27FEF66C1DF5239B0084AE1E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF66A1DF5239B0084AE1E /* Crashlytics.framework */; };
@@ -135,6 +137,8 @@
 		27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingReverseViewController.m; sourceTree = "<group>"; };
 		27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionReusableViewWithTitle.h; sourceTree = "<group>"; };
 		27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableViewWithTitle.m; sourceTree = "<group>"; };
+		27E73CD11DFA57FB00FA09BC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		27E73CD31DFA580B00FA09BC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		27FEF6661DF521220084AE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27E73CD41DFA580B00FA09BC /* CoreLocation.framework in Frameworks */,
+				27E73CD21DFA57FB00FA09BC /* MapKit.framework in Frameworks */,
 				27A4C9981DEC2795002476CD /* Bolts.framework in Frameworks */,
 				27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */,
 				27A4C9951DEC2749002476CD /* FBSDKCoreKit.framework in Frameworks */,
@@ -367,6 +373,8 @@
 		ED0AC9C4CAB150F8CCEEBD81 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27E73CD31DFA580B00FA09BC /* CoreLocation.framework */,
+				27E73CD11DFA57FB00FA09BC /* MapKit.framework */,
 				2F0CA6170C0774E18079C16F /* libPods-DemoProject.a */,
 			);
 			name = Frameworks;

@@ -34,6 +34,7 @@
 //因為whereFrom只會傳給爸爸, VDL時還抓不到爸爸, 故寫在VWA
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:YES];
     OrderListViewController *olvc = (OrderListViewController*)self.parentViewController;
     self.whereFromB = olvc.whereFrom;
     if ([self.whereFromB isEqualToString:@"pSegue"])

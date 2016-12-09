@@ -49,6 +49,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:YES];
     AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     if (appDLG.isLogin == YES)
     {

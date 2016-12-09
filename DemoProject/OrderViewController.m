@@ -45,6 +45,9 @@
 @property NSInteger selectedRowIndex;
 @property OrderListViewController *olvc;
 @property OrderListBViewController *olBvc;
+@property (weak, nonatomic) IBOutlet UIButton *orderDetailButtonForAdd;
+@property (weak, nonatomic) IBOutlet UIButton * orderDetailButtonForCopy;
+
 @end
 
 @implementation OrderViewController
