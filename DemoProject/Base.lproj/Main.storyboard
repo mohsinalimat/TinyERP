@@ -642,6 +642,12 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w6g-L5-sPn">
+                                                    <rect key="frame" x="310" y="7" width="51.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="9gu-29-dAr" firstAttribute="top" secondItem="VwO-1A-0O2" secondAttribute="topMargin" id="07a-Yj-lGz"/>
@@ -649,11 +655,14 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="YbX-9g-aHI" secondAttribute="bottom" constant="3.5" id="1fQ-YX-dl3"/>
                                                 <constraint firstItem="EPT-VV-qvF" firstAttribute="leading" secondItem="9gu-29-dAr" secondAttribute="trailing" constant="5" id="3Ni-YL-BBG"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.1875" id="5lm-GD-s5T"/>
+                                                <constraint firstItem="w6g-L5-sPn" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.125" id="67g-E7-TVd"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="CEu-dk-g9W"/>
                                                 <constraint firstItem="3Kp-0r-dAF" firstAttribute="leading" secondItem="EPT-VV-qvF" secondAttribute="trailing" constant="5" id="DbW-PS-rgi"/>
                                                 <constraint firstAttribute="bottom" secondItem="pVk-L6-0Wd" secondAttribute="bottom" id="F3Z-35-8BR"/>
                                                 <constraint firstItem="3Kp-0r-dAF" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="ISG-Db-9lI"/>
                                                 <constraint firstItem="pVk-L6-0Wd" firstAttribute="leading" secondItem="VwO-1A-0O2" secondAttribute="leading" id="OBd-Eq-nfV"/>
+                                                <constraint firstItem="w6g-L5-sPn" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="SRd-Kx-OnI"/>
+                                                <constraint firstItem="w6g-L5-sPn" firstAttribute="leading" secondItem="3Kp-0r-dAF" secondAttribute="trailing" constant="5" id="W3n-fh-3jU"/>
                                                 <constraint firstItem="9gu-29-dAr" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.1875" id="ZNo-Em-XUK"/>
                                                 <constraint firstItem="EPT-VV-qvF" firstAttribute="top" secondItem="VwO-1A-0O2" secondAttribute="topMargin" constant="3" id="Zqh-uf-OgP"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="top" secondItem="VwO-1A-0O2" secondAttribute="topMargin" constant="3" id="a8W-GY-XDM"/>
@@ -676,6 +685,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="odAlreadyQty" destination="w6g-L5-sPn" id="1ub-Lm-GYm"/>
                                             <outlet property="odAmount" destination="YbX-9g-aHI" id="nOp-KN-Wjc"/>
                                             <outlet property="odItemName" destination="9gu-29-dAr" id="PBB-uG-w8M"/>
                                             <outlet property="odItemNo" destination="Dmp-iq-E5o" id="BNx-bX-qQE"/>
@@ -708,17 +718,24 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="VAd-UO-TEI">
-                                        <rect key="frame" x="270" y="7" width="134" height="30"/>
+                                        <rect key="frame" x="229" y="7" width="175" height="30"/>
                                         <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQH-gt-gFp">
+                                                <rect key="frame" x="0.0" y="0.0" width="31" height="30"/>
+                                                <state key="normal" title="全部"/>
+                                                <connections>
+                                                    <action selector="allDelivery:" destination="LDr-cX-G5j" eventType="touchUpInside" id="VU9-eS-yNY"/>
+                                                </connections>
+                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R0b-wZ-jRR">
-                                                <rect key="frame" x="0.0" y="0.0" width="62" height="30"/>
+                                                <rect key="frame" x="41" y="0.0" width="62" height="30"/>
                                                 <state key="normal" title="複製單身"/>
                                                 <connections>
                                                     <action selector="copyOoderDetail:" destination="LDr-cX-G5j" eventType="touchUpInside" id="EZ9-Ba-PUh"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlr-dI-8xx">
-                                                <rect key="frame" x="72" y="0.0" width="62" height="30"/>
+                                                <rect key="frame" x="113" y="0.0" width="62" height="30"/>
                                                 <state key="normal" title="新增單身"/>
                                                 <connections>
                                                     <action selector="addOrderDetail:" destination="LDr-cX-G5j" eventType="touchUpInside" id="dxC-zY-lig"/>
@@ -812,6 +829,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="allDeliveryButton" destination="HQH-gt-gFp" id="aza-Cl-xRa"/>
                         <outlet property="dataPickerView" destination="ypT-Rk-hs6" id="Oiw-IP-rRv"/>
                         <outlet property="datePickerView" destination="LNN-gE-Hle" id="aBK-9w-Qmm"/>
                         <outlet property="emptyInput" destination="bSV-kf-eZj" id="PJu-RD-LSd"/>
@@ -831,6 +849,7 @@
                         <outlet property="partnerLabel" destination="739-XG-D2j" id="UO2-xc-XGe"/>
                         <outlet property="preOrderLabel" destination="J7C-XH-fgH" id="QVL-1Q-ewI"/>
                         <outlet property="totalAmountLabel" destination="N3Y-Mn-z7O" id="R6a-at-77D"/>
+                        <outlet property="totalAmountWordLabel" destination="tg6-45-0wk" id="99f-V0-cT1"/>
                         <outlet property="warehouseLabel" destination="sSj-5U-UGi" id="DId-lI-hMK"/>
                     </connections>
                 </viewController>
@@ -841,7 +860,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2865" y="1088"/>
+            <point key="canvasLocation" x="2862.3188405797105" y="1087.5"/>
         </scene>
         <!--Customer List View Controller-->
         <scene sceneID="hZE-Sg-6rm">

@@ -78,6 +78,13 @@
     self.itemUnitInput.delegate = self;
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
+    
+    //監聽
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    {
+        self.itemImageView.image = nil;
+    }];
+    
     //撈資料
     self.unitList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"單位"];
     self.itemKindList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"商品分類"];
@@ -259,7 +266,7 @@
 
 - (IBAction)ItemImgDelete:(id)sender
 {
-    [AlertManager alertYesAndNo:@"是否確定刪除圖片" yes:@"是" no:@"否" controller:self];
+    [AlertManager alertYesAndNo:@"是否確定刪除圖片" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteImg"];
 }
 
 //挑完照片

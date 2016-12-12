@@ -19,4 +19,5 @@
 @property NSString *orderWarehouse;
 @property NSString *orderType;
 @property NSNumber *orderCount;
+@property NSDate *orderExpectedDay;
 @end

@@ -26,6 +26,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *expectedDayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *warehouseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *totalAmountWordLabel;
+@property (weak, nonatomic) IBOutlet UIButton *allDeliveryButton;
+
 @property (weak, nonatomic) IBOutlet UILabel *orderDateLabel;
 
 @property (weak, nonatomic) IBOutlet UITextField *orderNoInput;
@@ -109,6 +112,7 @@
         self.olvc = [naviArray objectAtIndex:thisIndex-1];
         [self.orderWarehouseInput setHidden:YES];
         [self.warehouseLabel setHidden:YES];
+        [self.allDeliveryButton setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
@@ -118,8 +122,11 @@
         self.olBvc = self.olvc.childViewControllers[0];
         [self.orderDetailButtonForAdd setHidden:YES];
         [self.orderDetailButtonForCopy setHidden:YES];
+        [self.totalAmountLabel setHidden:YES];
+        [self.totalAmountWordLabel setHidden:YES];
         [self.expectedDayLabel setHidden:YES];
         [self.orderExpectedDayInput setHidden:YES];
+        [self.orderPartnerInput setEnabled:NO];
     }
     if ([self.orderNoBegin isEqualToString:@"P"])
     {
@@ -136,6 +143,7 @@
         {
             self.orderPreOrderInput.placeholder = @"請輸入採購單號";
             self.title = @"進貨單";
+            [self.allDeliveryButton setTitle:@"全部收貨" forState:UIControlStateNormal];
         }
     }
     else if ([self.orderNoBegin isEqualToString:@"S"])
@@ -144,6 +152,7 @@
         self.orderDateLabel.text = @"訂單日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
+            //如果沒指定寬度的話, 就沒辦法變顏色
             self.emptyInput.layer.borderWidth = 1;
             self.emptyInput.layer.borderColor = [[UIColor whiteColor]CGColor];
             [self.preOrderLabel setHidden:YES];
@@ -156,6 +165,7 @@
             [self.emptyInput setHidden:YES];
             self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
             self.title = @"銷貨單";
+            [self.allDeliveryButton setTitle:@"全部出貨" forState:UIControlStateNormal];
         }
     }
     
@@ -170,6 +180,44 @@
     self.orderDateInput.delegate = self;
     self.orderPartnerInput.delegate = self;
     self.orderWarehouseInput.delegate = self;
+    self.orderPreOrderInput.delegate = self;
+    
+    //監聽
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    {
+        NSArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
+        if (orderAOrderDetailList.count != 0)
+        {
+            //撈單身
+            NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
+            //如果有撈到單頭
+            if (omArray.count != 0)
+            {
+                //assign交易對象
+                OrderMaster *om = omArray[0];
+                self.orderPartnerInput.text = om.orderPartner;
+            }
+            //清空單身
+            self.orderDetailList = [NSMutableArray array];
+            for (OrderDetail *od in orderAOrderDetailList)
+            {
+                OrderDetail *odB = [self birthOrderDetail:od];
+                //改單身的爸爸
+                odB.orderNo = self.currentOM.orderNo;
+                [self.orderDetailList addObject:odB];
+            }
+            [DataBaseManager updateToCoreData];
+            [self.orderDteailTableView reloadData];
+        }
+        else
+        {
+            [AlertManager alert:@"此單號查無單身,請確認" controller:self];
+        }
+    }];
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailNo" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+     {
+         self.orderPreOrderInput.text = @"";
+     }];
     
     //DataMode
     self.orderDetailList = [[NSMutableArray alloc]init];
@@ -196,6 +244,7 @@
 }
 
 //開始編輯
+//只有有這個Method, setEnable:NO跟shouldChangeCharactersInRange return NO; 都無效
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.orderDateInput)
@@ -204,9 +253,12 @@
     }
     if (textField == self.orderPartnerInput)
     {
-        self.whichInput = @"夥伴";
-        [self.dataPickerView setHidden:NO];
-        [self.dataPickerView reloadAllComponents];
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            self.whichInput = @"夥伴";
+            [self.dataPickerView setHidden:NO];
+            [self.dataPickerView reloadAllComponents];
+        }
     }
     else if (textField == self.orderWarehouseInput)
     {
@@ -223,6 +275,26 @@
     {
         [self.datePickerView setHidden:YES];
     }
+    //帶單身
+    if (textField == self.orderPreOrderInput)
+    {
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            [self checkPreOrderNo:@"SA"];
+        }
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            if ([self.orderNoBegin isEqualToString:@"P"])
+            {
+                [self checkPreOrderNo:@"PA"];
+            }
+            else if ([self.orderNoBegin isEqualToString:@"S"])
+            {
+                [self checkPreOrderNo:@"SA"];
+            }
+        }
+    }
+    
     if (textField == self.orderPartnerInput)
     {
         [self.dataPickerView setHidden:YES];
@@ -233,7 +305,19 @@
     }
 }
 
-//不可變更單號
+-(void)checkPreOrderNo:(NSString*)type
+{
+    if ([[self.orderPreOrderInput.text substringToIndex:2] isEqualToString:type])
+    {
+        [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
+    }
+    else
+    {
+        [AlertManager alert:@"單號類型錯誤\n請輸入訂單單號" controller:self];
+    }
+}
+
+//不可變更
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField == self.orderNoInput)
@@ -348,6 +432,16 @@
     odCell.odQty.text = @"";
     odCell.odPrice.text = @"";
     odCell.odAmount.text = @"";
+    if ([self.whereFrom isEqualToString:@"aSegue"])
+    {
+        [odCell.odAlreadyQty setHidden:YES];
+    }
+    else if ([self.whereFrom isEqualToString:@"bSegue"])
+    {
+        [odCell.odItemNo setEnabled:NO];
+        [odCell.odPrice setHidden:YES];
+        [odCell.odAmount setHidden:YES];
+    }
     
     //監聽欄位
     [odCell.odItemNo addTarget:self action:@selector(odItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
@@ -412,7 +506,8 @@
         Item *item = [itemList objectAtIndex:0];
         odCell.odItemName.text = item.itemName;
         odCell.odItemUnit.text = item.itemUnit;
-        if (![[item.itemPrice stringValue]isEqualToString:@"0"])
+        //如果基本資料的價格不等於0 且 目前沒價格
+        if (![[item.itemPrice stringValue]isEqualToString:@"0"] && [odCell.odPrice.text isEqualToString:@""])
         {
             odCell.odPrice.text = [item.itemPrice stringValue];
             od.orderPrice = item.itemPrice;
@@ -447,6 +542,11 @@
     NSNumber *totalAmount = [self.orderDetailList valueForKeyPath:@"@sum.orderAmount"];
     self.currentOM.orderTotalAmount = totalAmount;
     self.totalAmountLabel.text = [totalAmount stringValue];
+}
+
+- (IBAction)allDelivery:(id)sender
+{
+    
 }
 
 //新增單身
@@ -484,19 +584,27 @@
     }
     if (self.selectedRowIndex != -1)
     {
+        //取得複製對象
         OrderDetail *selectedOD = [self.orderDetailList objectAtIndex:self.selectedRowIndex];
-        //會崩潰
-//        OrderDetail *copyOD = [selectedOD mutableCopy];
-        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-        OrderDetail *copyOD = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
-        copyOD.orderItemNo = selectedOD.orderItemNo;
-        copyOD.orderAmount = selectedOD.orderAmount;
-        copyOD.orderNo = selectedOD.orderNo;
-        copyOD.orderPrice = selectedOD.orderPrice;
-        copyOD.orderQty = selectedOD.orderQty;
-        copyOD.orderSeq = selectedOD.orderSeq;
+        OrderDetail *copyOD = [self birthOrderDetail:selectedOD];
         [self newOrderDetail:copyOD];
     }
+}
+
+-(OrderDetail*)birthOrderDetail:(OrderDetail*)fatherOrderDetail
+{
+    //生新物件
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    OrderDetail *childOD = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
+    //賦值
+    childOD.orderItemNo = fatherOrderDetail.orderItemNo;
+    childOD.orderAmount = fatherOrderDetail.orderAmount;
+    childOD.orderNo = fatherOrderDetail.orderNo;
+    childOD.orderPrice = fatherOrderDetail.orderPrice;
+    childOD.orderQty = fatherOrderDetail.orderQty;
+    childOD.orderSeq = fatherOrderDetail.orderSeq;
+    
+    return childOD;
 }
 
 //新增單身資料
@@ -519,14 +627,19 @@
 
 -(void)saveToOrderMasterObject
 {
-    self.currentOM.orderNo = self.orderNoInput.text;
-    NSString *dateString = self.orderDateInput.text;
     NSDateFormatter *df = [NSDateFormatter new];
     [df setDateFormat:@"yyyy/MM/dd"];
-    self.currentOM.orderDate = [df dateFromString:dateString];
+    NSString *orderDateString = self.orderDateInput.text;
+    self.currentOM.orderDate = [df dateFromString:orderDateString];
+    NSString *orderExpectedString = self.orderExpectedDayInput.text;
+    self.currentOM.orderExpectedDay = [df dateFromString:orderExpectedString];
+    
+    self.currentOM.orderNo = self.orderNoInput.text;
     self.currentOM.orderUser = self.orderUserInput.text;
     self.currentOM.orderPartner = self.orderPartnerInput.text;
     self.currentOM.orderWarehouse = self.orderWarehouseInput.text;
+    self.currentOM.oderPreOrder = self.orderPreOrderInput.text;
+    
     [DataBaseManager updateToCoreData];
 }
 
@@ -571,6 +684,7 @@
 
 - (IBAction)saveOrder:(id)sender
 {
+    //不管如何先確認廠商必填
     if (self.orderPartnerInput.text.length == 0)
     {
         if ([self.orderNoBegin isEqualToString:@"P"])
@@ -582,16 +696,26 @@
             [AlertManager alert:@"客戶未填" controller:self];
         }
     }
-    else if (self.orderWarehouseInput.text.length==0)
-    {
-        [AlertManager alert:@"倉庫未填" controller:self];
-    }
     else
     {
-        [self saveToOrderMasterObject];
-        if ([self.whereFrom isEqualToString:@"bSegue"])
+        if ([self.whereFrom isEqualToString:@"aSegue"])
         {
-            [self calculateInventory];
+            [self saveToOrderMasterObject];
+        }
+        //若是b單
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            //還要填倉庫
+            if (self.orderWarehouseInput.text.length==0)
+            {
+                [AlertManager alert:@"倉庫未填" controller:self];
+            }
+            else
+            {
+                //才可存單頭跟計算庫存
+                [self saveToOrderMasterObject];
+                [self calculateInventory];
+            }
         }
         [self.navigationController popViewControllerAnimated:YES];
     }

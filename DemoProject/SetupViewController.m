@@ -47,7 +47,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showDBRestorePicker) name:@"dbDownloadOver" object:nil];
     
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupOK" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
          [df setDateFormat:@"yyMMdd_HHmmss"];
@@ -76,7 +76,7 @@
                }];
          }
      }];
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelected" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelectedYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
         [self deleteLocalDB];
         for (NSString *fileName in self.fileNameArray)
@@ -103,7 +103,6 @@
              }];
         }
     }];
-     
 }
 
 -(NSArray*)getLocalDBArray
@@ -234,7 +233,7 @@
 
 -(void)dropboxBackupAction
 {
-    [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackupOK"];
+    [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackup"];
 }
 
 -(void)dropboxRestoreButton

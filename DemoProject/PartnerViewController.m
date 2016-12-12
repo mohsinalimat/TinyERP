@@ -220,7 +220,10 @@
 
 - (IBAction)phoneCell:(id)sender
 {
-    
+    NSMutableString * telStr=[[NSMutableString alloc] initWithFormat:@"tel:%@",self.pTelInput.text];
+    UIWebView * callWebview = [[UIWebView alloc] init];
+    [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:telStr]]];
+    [self.view addSubview:callWebview];
 }
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations

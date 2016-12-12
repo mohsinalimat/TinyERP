@@ -18,4 +18,5 @@
 @dynamic orderWarehouse;
 @dynamic orderType;
 @dynamic orderCount;
+@dynamic orderExpectedDay;
 @end

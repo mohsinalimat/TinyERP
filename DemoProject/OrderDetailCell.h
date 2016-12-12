@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *odItemName;
 @property (weak, nonatomic) IBOutlet UILabel *odItemUnit;
 @property (weak, nonatomic) IBOutlet UITextField *odQty;
+@property (weak, nonatomic) IBOutlet UITextField *odAlreadyQty;
 @property (weak, nonatomic) IBOutlet UITextField *odPrice;
 @property (weak, nonatomic) IBOutlet UILabel *odAmount;
 @end
