@@ -23,6 +23,7 @@
 @interface OrderViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *partnerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *preOrderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *warehouseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 
 @property (weak, nonatomic) IBOutlet UITextField *orderNoInput;
@@ -100,6 +101,8 @@
         NSArray *naviArray = [self.navigationController viewControllers];
         NSInteger thisIndex = [naviArray indexOfObject:self];
         self.olvc = [naviArray objectAtIndex:thisIndex-1];
+        [self.orderWarehouseInput setHidden:YES];
+        [self.warehouseLabel setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
@@ -107,7 +110,8 @@
         NSInteger thisIndex = [naviArray indexOfObject:self];
         self.olvc = [naviArray objectAtIndex:thisIndex-1];
         self.olBvc = self.olvc.childViewControllers[0];
-        //self.olBvc = [self.olvc.childViewControllers objectAtIndex:0];
+        [self.orderDetailButtonForAdd setHidden:YES];
+        [self.orderDetailButtonForCopy setHidden:YES];
     }
     if ([self.orderNoBegin isEqualToString:@"P"])
     {

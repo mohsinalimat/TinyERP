@@ -326,9 +326,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YRn-0V-F0t">
-                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YRn-0V-F0t">
+                                <rect key="frame" x="0.0" y="130" width="414" height="606"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountingCell" textLabel="Vye-KB-SaS" style="IBUITableViewCellStyleDefault" id="Q0e-LE-2m4">
@@ -353,9 +352,8 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="51v-dM-vpK">
-                                <rect key="frame" x="89" y="83" width="239" height="29"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="51v-dM-vpK">
+                                <rect key="frame" x="87.666666666666686" y="82" width="239" height="29"/>
                                 <segments>
                                     <segment title="Partner"/>
                                     <segment title="月份"/>
@@ -369,6 +367,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="51v-dM-vpK" firstAttribute="top" secondItem="Uan-Bg-Kre" secondAttribute="bottom" constant="18" id="ESV-GB-qR6"/>
+                            <constraint firstAttribute="trailing" secondItem="YRn-0V-F0t" secondAttribute="trailing" id="LDk-2k-T3Y"/>
+                            <constraint firstItem="1Mq-Th-jii" firstAttribute="top" secondItem="YRn-0V-F0t" secondAttribute="bottom" id="e3b-IB-z20"/>
+                            <constraint firstItem="YRn-0V-F0t" firstAttribute="top" secondItem="Uan-Bg-Kre" secondAttribute="bottom" constant="66" id="stx-wD-CvQ"/>
+                            <constraint firstItem="51v-dM-vpK" firstAttribute="centerX" secondItem="5o9-Oo-sxs" secondAttribute="centerX" id="ufL-2X-F51"/>
+                            <constraint firstItem="YRn-0V-F0t" firstAttribute="leading" secondItem="5o9-Oo-sxs" secondAttribute="leading" id="vlO-4V-NOw"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="VU2-Yg-qtt" appends="YES" id="HNO-fo-td1"/>
                         </connections>
@@ -799,6 +805,7 @@
                         <outlet property="partnerLabel" destination="739-XG-D2j" id="UO2-xc-XGe"/>
                         <outlet property="preOrderLabel" destination="J7C-XH-fgH" id="QVL-1Q-ewI"/>
                         <outlet property="totalAmountLabel" destination="N3Y-Mn-z7O" id="R6a-at-77D"/>
+                        <outlet property="warehouseLabel" destination="sSj-5U-UGi" id="DId-lI-hMK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c8u-JM-17h" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1496,7 +1503,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="upd-Xs-GDu">
-                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <rect key="frame" x="0.0" y="130" width="414" height="606"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e42-ag-xw8">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1579,7 +1586,7 @@
                                 </collectionReusableView>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="FMs-8m-Qts">
-                                <rect key="frame" x="166" y="86" width="83" height="29"/>
+                                <rect key="frame" x="166" y="82" width="83" height="29"/>
                                 <segments>
                                     <segment title="倉庫"/>
                                     <segment title="品號"/>
@@ -1594,9 +1601,9 @@
                         <constraints>
                             <constraint firstItem="FMs-8m-Qts" firstAttribute="centerX" secondItem="t0l-hU-2AF" secondAttribute="centerX" id="Vfk-Az-sUd"/>
                             <constraint firstItem="y38-mF-xtP" firstAttribute="top" secondItem="upd-Xs-GDu" secondAttribute="bottom" id="WFI-OH-xeS"/>
-                            <constraint firstItem="FMs-8m-Qts" firstAttribute="top" secondItem="OL0-hQ-dfh" secondAttribute="bottom" constant="22" id="ghC-ej-IY9"/>
+                            <constraint firstItem="FMs-8m-Qts" firstAttribute="top" secondItem="OL0-hQ-dfh" secondAttribute="bottom" constant="18" id="ghC-ej-IY9"/>
                             <constraint firstItem="upd-Xs-GDu" firstAttribute="leading" secondItem="t0l-hU-2AF" secondAttribute="leading" id="qVD-yn-Xkh"/>
-                            <constraint firstItem="upd-Xs-GDu" firstAttribute="top" secondItem="OL0-hQ-dfh" secondAttribute="bottom" id="s8L-F6-jgP"/>
+                            <constraint firstItem="upd-Xs-GDu" firstAttribute="top" secondItem="OL0-hQ-dfh" secondAttribute="bottom" constant="66" id="s8L-F6-jgP"/>
                             <constraint firstAttribute="trailing" secondItem="upd-Xs-GDu" secondAttribute="trailing" id="yjo-Qk-i9V"/>
                         </constraints>
                         <connections>
@@ -1614,7 +1621,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1070" y="245"/>
+            <point key="canvasLocation" x="1069.5652173913045" y="244.56521739130437"/>
         </scene>
         <!--Item View Controller-->
         <scene sceneID="HmH-Tw-IlZ">

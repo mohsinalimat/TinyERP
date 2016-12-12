@@ -54,10 +54,6 @@
     //因為下面要設動態Constraint, 所以這個舊設定先關掉
     self.bannerAD.translatesAutoresizingMaskIntoConstraints = NO;
     [self.bannerAD loadRequest:[GADRequest request]];
-    //修改畫面VC
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = NO;
     
     //產生搜尋物件
     //ResultsController可以指定別的ViewController

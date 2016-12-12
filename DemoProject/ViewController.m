@@ -27,24 +27,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    //放廣告 storyboard統一設定
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    //一開始先藏 怕還沒登入時被偷看到
     self.view.hidden=YES;
+    //設定九個按鈕UI
     for (UIButton *btn in self.nineButton)
     {
         btn.layer.borderWidth = 1;
         btn.layer.borderColor = self.view.tintColor.CGColor;
         btn.layer.cornerRadius = 20;
     }
-    
-    dispatch_async(dispatch_get_main_queue(),
-    ^{
-        AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
-        if (appDLG.isLogin != YES)
-        {
-            WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
-            [self presentViewController:wvc animated:YES completion:nil];
-        }
-    });
+    //沒登入的話 秀登入畫面
+    AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    if (appDLG.isLogin != YES)
+    {
+        WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
+        [self presentViewController:wvc animated:YES completion:nil];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
