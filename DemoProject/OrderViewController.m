@@ -23,8 +23,10 @@
 @interface OrderViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *partnerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *preOrderLabel;
+@property (weak, nonatomic) IBOutlet UILabel *expectedDayLabel;
 @property (weak, nonatomic) IBOutlet UILabel *warehouseLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *orderDateLabel;
 
 @property (weak, nonatomic) IBOutlet UITextField *orderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *orderPreOrderInput;
@@ -32,10 +34,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *orderDateInput;
 @property (weak, nonatomic) IBOutlet UITextField *orderWarehouseInput;
 @property (weak, nonatomic) IBOutlet UITextField *orderUserInput;
+@property (weak, nonatomic) IBOutlet UITextField *orderExpectedDayInput;
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *dataPickerView;
 @property (weak, nonatomic) IBOutlet UITableView *orderDteailTableView;
+
+@property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
+@property (weak, nonatomic) IBOutlet UITextField *emptyInput;
 
 @property NSMutableArray *orderDetailList;
 @property NSMutableArray *firmList;
@@ -112,10 +118,15 @@
         self.olBvc = self.olvc.childViewControllers[0];
         [self.orderDetailButtonForAdd setHidden:YES];
         [self.orderDetailButtonForCopy setHidden:YES];
+        [self.expectedDayLabel setHidden:YES];
+        [self.orderExpectedDayInput setHidden:YES];
     }
     if ([self.orderNoBegin isEqualToString:@"P"])
     {
         self.partnerLabel.text = @"廠商";
+        self.orderDateLabel.text = @"採購日期";
+        [self.emptyLabel setHidden:YES];
+        [self.emptyInput setHidden:YES];
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
             self.orderPreOrderInput.placeholder = @"可輸入訂單號碼";
@@ -130,14 +141,19 @@
     else if ([self.orderNoBegin isEqualToString:@"S"])
     {
         self.partnerLabel.text = @"客戶";
+        self.orderDateLabel.text = @"訂單日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
+            self.emptyInput.layer.borderWidth = 1;
+            self.emptyInput.layer.borderColor = [[UIColor whiteColor]CGColor];
             [self.preOrderLabel setHidden:YES];
             [self.orderPreOrderInput setHidden:YES];
             self.title = @"訂單";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
+            [self.emptyLabel setHidden:YES];
+            [self.emptyInput setHidden:YES];
             self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
             self.title = @"銷貨單";
         }
