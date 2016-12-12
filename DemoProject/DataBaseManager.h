@@ -12,6 +12,7 @@
 @interface DataBaseManager : NSObject
 +(NSMutableArray*)queryFromCoreData:(NSString*)entity sortBy:(NSString*)sortString;
 +(NSMutableArray*)fiterFromCoreData:(NSString*)entity sortBy:(NSString*)sortString fiterFrom:(NSString*)fiterColumn fiterBy:(NSString*)fiterString;
++(NSMutableArray*)fiterFromCoreData:(NSString*)entity sortBy:(NSString*)sortString fiterFrom:(NSString*)fiterColumn fiterByArray:(NSArray*)fiterArray;
 +(Inventory*)fiterInventoryFromCoreDataWithItemNo:(NSString*)fiterItemNo WithWarehouse:(NSString*)fiterWarehouse;
 +(void)updateToCoreData;
 +(void)deleteDataAndObject:(id)entity array:(NSMutableArray*)list;

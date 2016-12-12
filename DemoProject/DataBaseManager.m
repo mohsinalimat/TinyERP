@@ -45,7 +45,7 @@
     NSSortDescriptor *sort=[[NSSortDescriptor alloc] initWithKey:sortString ascending:YES];
     request.sortDescriptors=@[sort];
     
-#pragma mark Q.為什麼條件直接傳進來不行？
+#pragma mark Q.為什麼條件直接傳進來不行？ (因為也會被包雙引號)
     //@"partnerType == \"F\""
     //NSPredicate *pred = [NSPredicate predicateWithFormat:@"%@",fiterString];
     NSPredicate *pred;
@@ -94,16 +94,51 @@
     //廠商編號
     else if ([fiterColumn isEqualToString:@"partnerIDtypeF"])
     {
-        //        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
         NSString *f = @"F";
         pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,f];
     }
     //客戶編號
     else if ([fiterColumn isEqualToString:@"partnerIDtypeC"])
     {
-        //        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
         NSString *c = @"C";
         pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,c];
+    }
+    
+    request.predicate = pred;
+    
+    NSArray *results = [helper.managedObjectContext executeFetchRequest:request error:&error];
+    NSMutableArray *returnResults = [[NSMutableArray alloc]init];
+    
+    if (error)
+    {
+        NSLog(@"%@",error);
+        returnResults = [NSMutableArray array];
+    }
+    else
+    {
+        returnResults = [NSMutableArray arrayWithArray:results];
+    }
+    return returnResults;
+}
+
++(NSMutableArray*)fiterFromCoreData:(NSString*)entity sortBy:(NSString*)sortString fiterFrom:(NSString*)fiterColumn fiterByArray:(NSArray *)fiterArray
+{
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entity];
+    NSError *error = nil;
+    
+    NSSortDescriptor *sort=[[NSSortDescriptor alloc] initWithKey:sortString ascending:YES];
+    request.sortDescriptors=@[sort];
+    NSPredicate *pred;
+    
+    if ([fiterColumn isEqualToString:@"orderNoAndSeq"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"(orderNo=%@) && (orderSeq=%@)",fiterArray[0],fiterArray[1]];
+    }
+    else if ([fiterColumn isEqualToString:@"orderNoAndNotYetQty"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"(orderNo=%@) && (orderNotYetQty!=%@)",fiterArray[0],fiterArray[1]];
     }
     
     request.predicate = pred;
@@ -129,9 +164,6 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"InventoryEntity"];
     NSError *error = nil;
     NSPredicate *pred;
-#pragma mark Q.為什麼不能兩個條件？
-    //又是一個奇怪的當法.......
-    //pred = [NSPredicate predicateWithFormat:@"(itemNo=%@) && (warehourse=%@)",fiterItemNo,fiterWarehouse];
     pred = [NSPredicate predicateWithFormat:@"(itemNo=%@)",fiterItemNo];
     request.predicate = pred;
     NSArray *results = [helper.managedObjectContext executeFetchRequest:request error:&error];

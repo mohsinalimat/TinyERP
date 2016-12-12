@@ -643,7 +643,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="w6g-L5-sPn">
-                                                    <rect key="frame" x="310" y="7" width="51.666666666666686" height="30"/>
+                                                    <rect key="frame" x="310" y="7" width="52" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TDq-Ci-Z0x">
+                                                    <rect key="frame" x="253.00000000000003" y="7" width="51.666666666666714" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -656,6 +662,7 @@
                                                 <constraint firstItem="EPT-VV-qvF" firstAttribute="leading" secondItem="9gu-29-dAr" secondAttribute="trailing" constant="5" id="3Ni-YL-BBG"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.1875" id="5lm-GD-s5T"/>
                                                 <constraint firstItem="w6g-L5-sPn" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.125" id="67g-E7-TVd"/>
+                                                <constraint firstItem="TDq-Ci-Z0x" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.125" id="7NH-6a-fhy"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="CEu-dk-g9W"/>
                                                 <constraint firstItem="3Kp-0r-dAF" firstAttribute="leading" secondItem="EPT-VV-qvF" secondAttribute="trailing" constant="5" id="DbW-PS-rgi"/>
                                                 <constraint firstAttribute="bottom" secondItem="pVk-L6-0Wd" secondAttribute="bottom" id="F3Z-35-8BR"/>
@@ -672,6 +679,7 @@
                                                 <constraint firstItem="3F1-a7-PUu" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="hg7-wB-8Uc"/>
                                                 <constraint firstItem="EPT-VV-qvF" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.1875" id="me9-nP-urx"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="9gu-29-dAr" secondAttribute="bottom" id="nK4-ff-bS0"/>
+                                                <constraint firstItem="TDq-Ci-Z0x" firstAttribute="leading" secondItem="EPT-VV-qvF" secondAttribute="trailing" constant="5" id="ney-7y-oct"/>
                                                 <constraint firstItem="YbX-9g-aHI" firstAttribute="leading" secondItem="3F1-a7-PUu" secondAttribute="trailing" constant="5" id="oQO-2p-aEl"/>
                                                 <constraint firstItem="3Kp-0r-dAF" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.125" id="oR9-cX-VYg"/>
                                                 <constraint firstItem="EPT-VV-qvF" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="sFH-gc-xD4"/>
@@ -680,19 +688,21 @@
                                                 <constraint firstItem="9gu-29-dAr" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="t5v-Pw-nd1"/>
                                                 <constraint firstItem="Dmp-iq-E5o" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="wPE-QS-lfs"/>
                                                 <constraint firstItem="pVk-L6-0Wd" firstAttribute="top" secondItem="VwO-1A-0O2" secondAttribute="top" id="wz0-iU-SF7"/>
+                                                <constraint firstItem="TDq-Ci-Z0x" firstAttribute="centerY" secondItem="VwO-1A-0O2" secondAttribute="centerY" id="zCl-c4-0zw"/>
                                                 <constraint firstItem="3F1-a7-PUu" firstAttribute="leading" secondItem="3Kp-0r-dAF" secondAttribute="trailing" constant="5" id="zEh-0W-NgW"/>
                                                 <constraint firstItem="pVk-L6-0Wd" firstAttribute="width" secondItem="VwO-1A-0O2" secondAttribute="width" multiplier="0.0625" id="zff-H8-YLy"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="odAlreadyQty" destination="w6g-L5-sPn" id="1ub-Lm-GYm"/>
-                                            <outlet property="odAmount" destination="YbX-9g-aHI" id="nOp-KN-Wjc"/>
-                                            <outlet property="odItemName" destination="9gu-29-dAr" id="PBB-uG-w8M"/>
+                                            <outlet property="odItemNameLabel" destination="9gu-29-dAr" id="sq3-Bp-TOC"/>
                                             <outlet property="odItemNo" destination="Dmp-iq-E5o" id="BNx-bX-qQE"/>
-                                            <outlet property="odItemUnit" destination="EPT-VV-qvF" id="aai-Gl-BzZ"/>
+                                            <outlet property="odItemUnitLabel" destination="EPT-VV-qvF" id="zUS-Jx-FeJ"/>
+                                            <outlet property="odNotYetQty" destination="TDq-Ci-Z0x" id="fum-HD-XSC"/>
                                             <outlet property="odPrice" destination="3F1-a7-PUu" id="2OG-m5-N3s"/>
                                             <outlet property="odQty" destination="3Kp-0r-dAF" id="IAr-cU-HSj"/>
+                                            <outlet property="odResultLabel" destination="YbX-9g-aHI" id="cGo-eh-SEO"/>
                                             <outlet property="odSeq" destination="pVk-L6-0Wd" id="sgf-tZ-voH"/>
+                                            <outlet property="odThisQty" destination="w6g-L5-sPn" id="2aP-44-6CN"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -839,7 +849,7 @@
                         <outlet property="orderDateLabel" destination="Pqg-Pz-dHf" id="YmE-MW-wtq"/>
                         <outlet property="orderDetailButtonForAdd" destination="xlr-dI-8xx" id="u2E-SG-RiN"/>
                         <outlet property="orderDetailButtonForCopy" destination="R0b-wZ-jRR" id="mME-dT-DsK"/>
-                        <outlet property="orderDteailTableView" destination="vfR-3c-5nQ" id="3jc-rP-dsC"/>
+                        <outlet property="orderDetailTableView" destination="vfR-3c-5nQ" id="F2n-do-sGA"/>
                         <outlet property="orderExpectedDayInput" destination="hw2-tC-0x1" id="86A-Qd-88U"/>
                         <outlet property="orderNoInput" destination="Ugi-Hc-KeP" id="PnR-Kl-Lit"/>
                         <outlet property="orderPartnerInput" destination="ZdE-Oy-0cI" id="CkN-vc-TEX"/>

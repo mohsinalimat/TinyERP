@@ -41,7 +41,7 @@
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *dataPickerView;
-@property (weak, nonatomic) IBOutlet UITableView *orderDteailTableView;
+@property (weak, nonatomic) IBOutlet UITableView *orderDetailTableView;
 
 @property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
 @property (weak, nonatomic) IBOutlet UITextField *emptyInput;
@@ -168,10 +168,9 @@
             [self.allDeliveryButton setTitle:@"全部出貨" forState:UIControlStateNormal];
         }
     }
-    
     //代理區
-    self.orderDteailTableView.delegate = self;
-    self.orderDteailTableView.dataSource = self;
+    self.orderDetailTableView.delegate = self;
+    self.orderDetailTableView.dataSource = self;
     
     self.dataPickerView.delegate = self;
     self.dataPickerView.dataSource = self;
@@ -185,10 +184,12 @@
     //監聽
     [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
-        NSArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
+        //撈單身
+        NSMutableArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNoAndNotYetQty" fiterByArray:@[self.orderPreOrderInput.text,@(0)]];
+        
         if (orderAOrderDetailList.count != 0)
         {
-            //撈單身
+            //撈單頭
             NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
             //如果有撈到單頭
             if (omArray.count != 0)
@@ -202,12 +203,17 @@
             for (OrderDetail *od in orderAOrderDetailList)
             {
                 OrderDetail *odB = [self birthOrderDetail:od];
+                //紀錄原A單的單號項次
+                odB.orderNoA = odB.orderNo;
+                odB.orderSeqA = odB.orderSeq;
                 //改單身的爸爸
                 odB.orderNo = self.currentOM.orderNo;
+                //項次重排
+                odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
                 [self.orderDetailList addObject:odB];
             }
             [DataBaseManager updateToCoreData];
-            [self.orderDteailTableView reloadData];
+            [self.orderDetailTableView reloadData];
         }
         else
         {
@@ -427,32 +433,36 @@
     //產生cell
     OrderDetailCell *odCell = [tableView dequeueReusableCellWithIdentifier:@"orderDetailCell"];
     //把殘留的信息清掉
-    odCell.odItemName.text = @"";
-    odCell.odItemUnit.text = @"";
+    odCell.odItemNameLabel.text = @"";
+    odCell.odItemUnitLabel.text = @"";
     odCell.odQty.text = @"";
     odCell.odPrice.text = @"";
-    odCell.odAmount.text = @"";
+    odCell.odResultLabel.text = @"";
     if ([self.whereFrom isEqualToString:@"aSegue"])
     {
-        [odCell.odAlreadyQty setHidden:YES];
+        [odCell.odNotYetQty setHidden:YES];
+        [odCell.odThisQty setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
         [odCell.odItemNo setEnabled:NO];
+        [odCell.odNotYetQty setEnabled:NO];
+        [odCell.odQty setHidden:YES];
         [odCell.odPrice setHidden:YES];
-        [odCell.odAmount setHidden:YES];
     }
     
     //監聽欄位
     [odCell.odItemNo addTarget:self action:@selector(odItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odQty addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odPrice addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
+    [odCell.odThisQty addTarget:self action:@selector(odThisQtyEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     //產生物件
     OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
     //根據序號區分tag
     odCell.odItemNo.tag = [od.orderSeq integerValue];
     odCell.odQty.tag = [od.orderSeq integerValue];
     odCell.odPrice.tag = [od.orderSeq integerValue];
+    odCell.odThisQty.tag = [od.orderSeq integerValue];
     //輸入提示
     odCell.odItemNo.placeholder = @"品號";
     odCell.odQty.placeholder = @"量";
@@ -464,8 +474,8 @@
     if (itemList.count != 0)
     {
         Item *item = [itemList objectAtIndex:0];
-        odCell.odItemName.text = item.itemName;
-        odCell.odItemUnit.text = item.itemUnit;
+        odCell.odItemNameLabel.text = item.itemName;
+        odCell.odItemUnitLabel.text = item.itemUnit;
     }
     if (![[od.orderQty stringValue] isEqualToString:@"0"])
     {
@@ -475,10 +485,19 @@
     {
         odCell.odPrice.text = [od.orderPrice stringValue];
     }
-    if (![[od.orderAmount stringValue] isEqualToString:@"0"])
+    if ([self.whereFrom isEqualToString:@"aSegue"])
     {
-        odCell.odAmount.text = [od.orderAmount stringValue];
+        if (![[od.orderAmount stringValue] isEqualToString:@"0"])
+        {
+            odCell.odResultLabel.text = [od.orderAmount stringValue];
+        }
     }
+    else if ([self.whereFrom isEqualToString:@"bSegue"])
+    {
+        odCell.odResultLabel.text = [@([od.orderNotYetQty floatValue]-[od.orderThisQty floatValue]) stringValue];
+    }
+    odCell.odNotYetQty.text = [od.orderNotYetQty stringValue];
+    odCell.odThisQty.text = [od.orderThisQty stringValue];
     return odCell;
 }
 
@@ -487,7 +506,7 @@
 {
     //產生cell
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
-    OrderDetailCell *odCell = [self.orderDteailTableView cellForRowAtIndexPath:ip];
+    OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
     
     //NSLog(@"%ld號呼叫",sender.tag);
     //產生資料
@@ -504,8 +523,8 @@
     if (itemList.count != 0)
     {
         Item *item = [itemList objectAtIndex:0];
-        odCell.odItemName.text = item.itemName;
-        odCell.odItemUnit.text = item.itemUnit;
+        odCell.odItemNameLabel.text = item.itemName;
+        odCell.odItemUnitLabel.text = item.itemUnit;
         //如果基本資料的價格不等於0 且 目前沒價格
         if (![[item.itemPrice stringValue]isEqualToString:@"0"] && [odCell.odPrice.text isEqualToString:@""])
         {
@@ -521,32 +540,86 @@
 {
     //取得cell的量價數值並相乘
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
-    OrderDetailCell *odc = [self.orderDteailTableView cellForRowAtIndexPath:ip];
-    NSNumber *qtyN = @([odc.odQty.text floatValue]);
-    NSNumber *priceN = @([odc.odPrice.text floatValue]);
-    NSNumber *amountN = @([odc.odQty.text floatValue]*[odc.odPrice.text floatValue]);
-    //取得物件
-    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
-    //存回物件並相乘
-    od.orderQty = qtyN;
-    od.orderPrice = priceN;
-    od.orderAmount = amountN;
-    od.orderNotYetAmount = amountN;
-    [DataBaseManager updateToCoreData];
-    //放到cell
-    if (![[od.orderAmount stringValue] isEqualToString:@"0"])
+    OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+    if ([odc.odQty.text floatValue] == 0)
     {
-        odc.odAmount.text = [amountN stringValue];
+        [AlertManager alert:@"數量不可為零" controller:self];
     }
-    //總計
-    NSNumber *totalAmount = [self.orderDetailList valueForKeyPath:@"@sum.orderAmount"];
-    self.currentOM.orderTotalAmount = totalAmount;
-    self.totalAmountLabel.text = [totalAmount stringValue];
+    else
+    {
+        NSNumber *qtyN = @([odc.odQty.text floatValue]);
+        NSNumber *priceN = @([odc.odPrice.text floatValue]);
+        NSNumber *amountN = @([odc.odQty.text floatValue]*[odc.odPrice.text floatValue]);
+        //取得物件
+        OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+        //存回物件並相乘
+        od.orderQty = qtyN;
+        od.orderNotYetQty = qtyN;
+        od.orderPrice = priceN;
+        od.orderAmount = amountN;
+        od.orderNotYetAmount = amountN;
+        [DataBaseManager updateToCoreData];
+        //放到cell
+        if (![[od.orderAmount stringValue] isEqualToString:@"0"])
+        {
+            odc.odResultLabel.text = [amountN stringValue];
+        }
+        //總計
+        NSNumber *totalAmount = [self.orderDetailList valueForKeyPath:@"@sum.orderAmount"];
+        self.currentOM.orderTotalAmount = totalAmount;
+        self.totalAmountLabel.text = [totalAmount stringValue];
+    }
+}
+
+//輸完本次異動
+-(IBAction)odThisQtyEditingEnd:(UITextField*)sender
+{
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
+    OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+    if ([odc.odThisQty.text floatValue] == 0)
+    {
+        [AlertManager alert:@"數量不可為零" controller:self];
+    }
+    else
+    {
+        CGFloat newNotYetQty = [odc.odNotYetQty.text floatValue] - [odc.odThisQty.text floatValue];
+        if (newNotYetQty < 0)
+        {
+            if ([self.orderNoBegin isEqualToString:@"P"])
+            {
+                [AlertManager alert:@"本次收貨量不可大於累積未收量" controller:self];
+            }
+            else if ([self.orderNoBegin isEqualToString:@"S"])
+            {
+                [AlertManager alert:@"本次出貨量不可大於累積未收量" controller:self];
+            }
+        }
+        else
+        {
+            odc.odResultLabel.text = [@(newNotYetQty) stringValue];
+            
+            OrderDetail *currentOD = [self.orderDetailList objectAtIndex:sender.tag-1];
+            NSArray *queryArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeq" fiterByArray:@[currentOD.orderNoA,currentOD.orderSeqA]];
+            OrderDetail *updateOD;
+            if (queryArray.count !=0)
+            {
+                currentOD.orderThisQty = @([odc.odThisQty.text floatValue]);
+                updateOD = queryArray[0];
+                updateOD.orderNotYetQty = @(newNotYetQty);
+                [DataBaseManager updateToCoreData];
+            }
+        }
+    }
 }
 
 - (IBAction)allDelivery:(id)sender
 {
-    
+    for (OrderDetail *od in self.orderDetailList)
+    {
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderDetailList indexOfObject:od] inSection:0];
+        OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+        odCell.odThisQty.text = [od.orderNotYetQty stringValue];
+    }
 }
 
 //新增單身
@@ -603,6 +676,7 @@
     childOD.orderPrice = fatherOrderDetail.orderPrice;
     childOD.orderQty = fatherOrderDetail.orderQty;
     childOD.orderSeq = fatherOrderDetail.orderSeq;
+    childOD.orderNotYetQty = fatherOrderDetail.orderNotYetQty;
     
     return childOD;
 }
@@ -621,8 +695,8 @@
     [DataBaseManager updateToCoreData];
     //加到TV
     NSIndexPath *ip = [NSIndexPath indexPathForRow:self.orderDetailList.count-1 inSection:0];
-    [self.orderDteailTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [self.orderDteailTableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self.orderDetailTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.orderDetailTableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 -(void)saveToOrderMasterObject
@@ -778,7 +852,7 @@
             for (NSInteger i=indexPath.row; i <= self.orderDetailList.count-1; i++)
             {
                 NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
-                OrderDetailCell *odCell = [self.orderDteailTableView cellForRowAtIndexPath:ip];
+                OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
                 odCell.odItemNo.tag -= 1 ;
                 odCell.odQty.tag -= 1;
                 odCell.odPrice.tag -= 1 ;
@@ -791,7 +865,7 @@
         }
         self.currentOM.orderCount = @(self.orderDetailList.count);
         [DataBaseManager updateToCoreData];
-        [self.orderDteailTableView reloadData];
+        [self.orderDetailTableView reloadData];
     }
 }
 

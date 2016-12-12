@@ -12,22 +12,14 @@
 @dynamic orderItemNo;
 @dynamic orderAmount;
 @dynamic orderNotYetQty;
+@dynamic orderThisQty;
 @dynamic orderNotYetAmount;
 @dynamic orderNo;
+@dynamic orderNoA;
 @dynamic orderPrice;
 @dynamic orderQty;
 @dynamic orderSeq;
+@dynamic orderSeqA;
 @dynamic isInventory;
-//-(id)copyWithZone:(NSZone *)zone
-//{
-//    OrderDetail *newOD = [[OrderDetail alloc]init];
-//    newOD.orderItemNo = self.orderItemNo;
-//    newOD.orderAmount = self.orderAmount;
-//    newOD.orderNo = self.orderNo;
-//    newOD.orderPrice = self.orderPrice;
-//    newOD.orderQty = self.orderQty;
-//    newOD.orderSeq = self.orderSeq;
-//    return newOD;
-//}
 @end
 

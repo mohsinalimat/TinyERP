@@ -14,9 +14,12 @@
 @property NSNumber *orderAmount;
 @property NSNumber *orderNotYetAmount;
 @property NSNumber *orderNotYetQty;
+@property NSNumber *orderThisQty;
 @property NSString *orderNo;
+@property NSString *orderNoA;
 @property NSNumber *orderPrice;
 @property NSNumber *orderQty;
 @property NSNumber *orderSeq;
+@property NSNumber *orderSeqA;
 @property NSNumber *isInventory;
 @end
