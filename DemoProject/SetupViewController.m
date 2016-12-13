@@ -43,26 +43,29 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
     
+    //1.
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(dbBackupOrRestore) name:@"dbLoginSuccess" object:nil];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showDBRestorePicker) name:@"dbDownloadOver" object:nil];
+    __weak SetupViewController *weakSelf = self;
     
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    //2.1
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
+         //9.1
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
          [df setDateFormat:@"yyMMdd_HHmmss"];
          NSString *backupDateString = [df stringFromDate:[NSDate date]];
          NSArray *dataArray = @[
-         [NSData dataWithContentsOfFile:[self getLocalDBArray][0]],
-         [NSData dataWithContentsOfFile:[self getLocalDBArray][1]],
-         [NSData dataWithContentsOfFile:[self getLocalDBArray][2]],
+         [NSData dataWithContentsOfFile:[weakSelf getLocalDBArray][0]],
+         [NSData dataWithContentsOfFile:[weakSelf getLocalDBArray][1]],
+         [NSData dataWithContentsOfFile:[weakSelf getLocalDBArray][2]],
          ];
          
-         for (NSString *fileName in self.fileNameArray)
+         for (NSString *fileName in weakSelf.fileNameArray)
          {
-             NSInteger index = [self.fileNameArray indexOfObject:fileName];
+             NSInteger index = [weakSelf.fileNameArray indexOfObject:fileName];
               NSString *uploadPath = [NSString stringWithFormat:@"/%@/%@",backupDateString,fileName];
-              DBUploadTask *task = [self.dbClient.filesRoutes uploadData:uploadPath inputData:dataArray[index]];
+              DBUploadTask *task = [weakSelf.dbClient.filesRoutes uploadData:uploadPath inputData:dataArray[index]];
               [task response:^(DBFILESMetadata* _Nullable md, DBFILESUploadError* _Nullable error, DBRequestError* _Nullable dberror)
                {
                    if (md)
@@ -76,13 +79,16 @@
                }];
          }
      }];
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelectedYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    
+    //2.2
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelectedYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
-        [self deleteLocalDB];
-        for (NSString *fileName in self.fileNameArray)
+        //7.2
+        [weakSelf deleteLocalDB];
+        for (NSString *fileName in weakSelf.fileNameArray)
         {
-            NSString *dbRestorePath = [NSString stringWithFormat:@"/%@/%@",self.dbSelectedFolderName,fileName];
-            DBDownloadDataTask *task = [self.dbClient.filesRoutes downloadData:dbRestorePath];
+            NSString *dbRestorePath = [NSString stringWithFormat:@"/%@/%@",weakSelf.dbSelectedFolderName,fileName];
+            DBDownloadDataTask *task = [weakSelf.dbClient.filesRoutes downloadData:dbRestorePath];
             [task response:^(DBFILESMetadata* _Nullable md, DBFILESDownloadError* _Nullable dberror, DBRequestError* _Nullable error, NSData* _Nonnull data)
              {
                  if (data)
@@ -93,16 +99,18 @@
                      BOOL isSuccess = [fileManager createFileAtPath:filePath contents:data attributes:nil];
                      if (isSuccess)
                      {
-                         NSLog(@"%ld.create success",[self.fileNameArray indexOfObject:fileName]);
+                         NSLog(@"%ld.create success",[weakSelf.fileNameArray indexOfObject:fileName]);
                      }
                      else
                      {
-                         NSLog(@"%ld.create fail",[self.fileNameArray indexOfObject:fileName]);
+                         NSLog(@"%ld.create fail",[weakSelf.fileNameArray indexOfObject:fileName]);
                      }
                  }
-             }];
-        }
+            }];
+         }
     }];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showDBRestorePicker) name:@"dbDownloadOver" object:nil];
 }
 
 -(NSArray*)getLocalDBArray
@@ -190,19 +198,23 @@
     return nil;
 }
 
+
 -(BOOL)isDropboxDidLogin
 {
     //先確認是否已登入,auth==nil就是沒認證
     if ([DropboxClientsManager authorizedClient] == nil)
     {
+        //4.A
         [DropboxClientsManager authorizeFromController:[UIApplication sharedApplication] controller:self openURL:^(NSURL * _Nonnull url)
          {
+             //5.輸完帳密先跑這邊
              [[UIApplication sharedApplication] openURL:url options:@{} completionHandler:nil];
          } browserAuth:NO];
         return NO;
     }
     else
     {
+        //4.B
         //有認證就拿來用
         self.dbClient = [DropboxClientsManager authorizedClient];
         return YES;
@@ -210,8 +222,10 @@
     return nil;
 }
 
+//7.成功才會跑這邊
 -(void)dbBackupOrRestore
 {
+    self.dbClient = [DropboxClientsManager authorizedClient];
     if ([self.dbAction isEqualToString:@"Backup"])
     {
         [self dropboxBackupAction];
@@ -222,6 +236,7 @@
     }
 }
 
+//3.1
 -(void)dropboxBackupButton
 {
     self.dbAction = @"Backup";
@@ -231,11 +246,13 @@
     }
 }
 
+//8.1
 -(void)dropboxBackupAction
 {
     [AlertManager alertYesAndNo:@"請確認是否備份至Dropbox\n產生新的資料紀錄？" yes:@"是" no:@"否" controller:self postNotificationName:@"dbBackup"];
 }
 
+//3.2
 -(void)dropboxRestoreButton
 {
     self.dbAction = @"Restore";
@@ -245,6 +262,7 @@
     }
 }
 
+//6.2
 -(void)dropboxRestoreAction
 {
     if (self.dbRestoreList == nil)
@@ -322,6 +340,11 @@
 - (IBAction)gesturePop:(id)sender
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning

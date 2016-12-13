@@ -15,7 +15,7 @@
 {
     if (self)
     {
-        [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+        [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
          {
              self.imageView.image = nil;
          }];
@@ -47,6 +47,16 @@
     pickerCtrl.delegate = self.vc;
     //秀挑照畫面
     [self.vc presentViewController:pickerCtrl animated:YES completion:nil];
+}
+
+-(void)putImage
+{
+    //得到圖片
+    UIImage *image = self.imageInfo[UIImagePickerControllerOriginalImage];
+    //放到相框
+    self.imageView.image = image;
+    //關掉挑照畫面
+    [self.vc dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)deleteImage

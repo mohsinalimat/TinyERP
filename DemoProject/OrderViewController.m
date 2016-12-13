@@ -182,7 +182,7 @@
     self.orderPreOrderInput.delegate = self;
     
     //監聽
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
         //撈單身
         NSMutableArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNoAndNotYetQty" fiterByArray:@[self.orderPreOrderInput.text,@(0)]];
@@ -220,7 +220,7 @@
             [AlertManager alert:@"此單號查無單身,請確認" controller:self];
         }
     }];
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailNo" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailNo" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
          self.orderPreOrderInput.text = @"";
      }];

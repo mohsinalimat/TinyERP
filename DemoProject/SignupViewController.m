@@ -13,13 +13,13 @@
 #import "Member.h"
 #import "ImageManager.h"
 
-@interface SignupViewController ()
+@interface SignupViewController () <UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *memberIDInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberPWInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberNameInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberBirthdayInput;
 @property (weak, nonatomic) IBOutlet UIImageView *memberImgView;
-
+@property ImageManager *imgManager;
 @end
 
 @implementation SignupViewController
@@ -31,7 +31,7 @@
     self.memberImgView.layer.borderWidth = 1;
     self.memberImgView.layer.borderColor =  self.view.tintColor.CGColor;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"memberSignupYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"memberSignupYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
     {
         CoreDataHelper *helper = [CoreDataHelper sharedInstance];
         Member *newMember = [NSEntityDescription insertNewObjectForEntityForName:@"MemberEntity" inManagedObjectContext:helper.managedObjectContext];
@@ -57,24 +57,37 @@
     [AlertManager alertYesAndNo:@"請確認資料是否正確並註冊會員" yes:@"是" no:@"否" controller:self postNotificationName:@"memberSignup"];
 }
 
+-(void)prepareForImage
+{
+    self.imgManager = [ImageManager new];
+    self.imgManager.vc = self;
+    self.imgManager.imageView = self.memberImgView;
+}
+
 - (IBAction)memberImg:(id)sender
 {
-    ImageManager *imgManager = [ImageManager new];
-    imgManager.vc = self;
-    [imgManager getImageByAlbum];
+    [self prepareForImage];
+    [self.imgManager getImageByAlbum];
 }
 
 - (IBAction)memberCamera:(id)sender
 {
-    
+    [self prepareForImage];
+    [self.imgManager getImageByCamera];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
+{
+    self.imgManager.imageInfo = info;
+    [self.imgManager putImage];
 }
 
 - (IBAction)memberImgDelete:(id)sender
 {
-    ImageManager *imgManager = [ImageManager new];
-    imgManager.vc = self;
-    imgManager.imageView = self.memberImgView;
-    [imgManager deleteImage];
+    self.imgManager = [ImageManager new];
+    self.imgManager.vc = self;
+    self.imgManager.imageView = self.memberImgView;
+    [self.imgManager deleteImage];
 }
 
 

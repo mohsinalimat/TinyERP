@@ -12,7 +12,9 @@
 @interface ImageManager : NSObject
 @property UIViewController *vc;
 @property UIImageView *imageView;
+@property NSDictionary *imageInfo;
 -(void)getImageByAlbum;
 -(void)getImageByCamera;
+-(void)putImage;
 -(void)deleteImage;
 @end

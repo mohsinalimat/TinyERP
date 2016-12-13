@@ -37,6 +37,7 @@
         }
         if ([authResilt isSuccess])
         {
+            //6.允許授權再跑這邊
             [[NSNotificationCenter defaultCenter] postNotificationName:@"dbLoginSuccess" object:nil];
         }
         else if ([authResilt isError])

@@ -367,7 +367,10 @@
 -(void)transferARVC:(UIButton*)btn
 {
     NSLog(@"%ld",btn.tag);
+    [self performSegueWithIdentifier:@"accSegue" sender:btn];
 }
+
+
 
 - (IBAction)gesturePop:(id)sender
 {

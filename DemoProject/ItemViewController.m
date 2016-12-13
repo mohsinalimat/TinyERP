@@ -12,6 +12,7 @@
 #import "DataBaseManager.h"
 #import "ItemListViewController.h"
 #import "AlertManager.h"
+#import "ImageManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 @interface ItemViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate,GADInterstitialDelegate>
@@ -37,7 +38,7 @@
 @property (nonatomic) NSMutableArray *itemKindList;
 @property (nonatomic) NSString *whichInput;
 @property (nonatomic) NSString *originalItemNo;
-
+@property ImageManager *imgManager;
 @end
 
 @implementation ItemViewController
@@ -78,12 +79,6 @@
     self.itemUnitInput.delegate = self;
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
-    
-    //監聽
-//    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
-//    {
-//        self.itemImageView.image = nil;
-//    }];
     
     //撈資料
     self.unitList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"單位"];
@@ -238,46 +233,38 @@
     }
 }
 
+-(void)prepareForImage
+{
+    self.imgManager = [ImageManager new];
+    self.imgManager.vc = self;
+    self.imgManager.imageView = self.itemImageView;
+}
+
 - (IBAction)itemIamge:(id)sender
 {
-    //產生物件
-    UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc]init];
-    //指定類型為抓圖庫
-    pickerCtrl.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    //代理
-    pickerCtrl.delegate = self;
-    //秀挑照畫面
-    [self presentViewController:pickerCtrl animated:YES completion:nil];
+    [self prepareForImage];
+    [self.imgManager getImageByAlbum];
 }
 
 - (IBAction)itemCamera:(id)sender
 {
-    //產生物件
-    UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc]init];
-    //指定類型為抓相機
-    pickerCtrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-    pickerCtrl.cameraDevice = UIImagePickerControllerCameraDeviceRear;
-    pickerCtrl.cameraCaptureMode = UIImagePickerControllerCameraCaptureModePhoto;
-    //代理
-    pickerCtrl.delegate = self;
-    //秀挑照畫面
-    [self presentViewController:pickerCtrl animated:YES completion:nil];
-}
-
-- (IBAction)itemImgDelete:(id)sender
-{
-    [AlertManager alertYesAndNo:@"是否確定刪除圖片" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteImg"];
+    [self prepareForImage];
+    [self.imgManager getImageByCamera];
 }
 
 //挑完照片
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
-    //得到圖片
-    UIImage *image = info[UIImagePickerControllerOriginalImage];
-    //放到相框
-    self.itemImageView.image = image;
-    //關掉挑照畫面
-    [self dismissViewControllerAnimated:YES completion:nil];
+    self.imgManager.imageInfo = info;
+    [self.imgManager putImage];
+}
+
+- (IBAction)itemImgDelete:(id)sender
+{
+    self.imgManager = [ImageManager new];
+    self.imgManager.vc = self;
+    self.imgManager.imageView = self.itemImageView;
+    [self.imgManager deleteImage];
 }
 
 //把值寫回當前物件

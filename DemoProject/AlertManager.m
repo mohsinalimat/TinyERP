@@ -41,7 +41,7 @@
     UIAlertAction *yesButton = [UIAlertAction actionWithTitle:yesString style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action)
         {
             NSString *postNameYes = [postName stringByAppendingString:@"Yes"];
-            [[NSNotificationCenter defaultCenter]postNotificationName:postNameYes object:vc];
+            [[NSNotificationCenter defaultCenter]postNotificationName:postNameYes object:nil];
         }];
     UIAlertAction *noButton = [UIAlertAction actionWithTitle:noString style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
         {
