@@ -3,10 +3,12 @@
     <entity name="BasicDataEntity" representedClassName="BasicData" syncable="YES">
         <attribute name="basicDataName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="basicDataType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="InventoryEntity" representedClassName="Inventory" syncable="YES">
         <attribute name="itemNo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="qty" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="warehouse" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ItemEntity" representedClassName="Item" syncable="YES">
@@ -19,6 +21,14 @@
         <attribute name="itemSafetyStock" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="itemSpec" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemUnit" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="MemberEntity" representedClassName="Member" syncable="YES" codeGenerationType="class">
+        <attribute name="memberBirthday" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="memberID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="memberImg" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="memberName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="memberPW" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="OrderDetailEntity" representedClassName="OrderDetail" syncable="YES">
         <attribute name="isInventory" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
@@ -33,6 +43,7 @@
         <attribute name="orderSeq" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="orderSeqA" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="orderThisQty" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="OrderMasterEntity" representedClassName="OrderMaster" syncable="YES">
         <attribute name="oderPreOrder" optional="YES" attributeType="String" syncable="YES"/>
@@ -45,6 +56,7 @@
         <attribute name="orderType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orderUser" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orderWarehouse" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="PartnerEntity" representedClassName="Partner" syncable="YES">
         <attribute name="partnerAddr" optional="YES" attributeType="String" syncable="YES"/>
@@ -56,13 +68,15 @@
         <attribute name="partnerTaxNum" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="partnerTel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="partnerType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="store" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="BasicDataEntity" positionX="-36" positionY="54" width="128" height="75"/>
-        <element name="InventoryEntity" positionX="-36" positionY="63" width="128" height="90"/>
-        <element name="ItemEntity" positionX="-63" positionY="-18" width="128" height="180"/>
-        <element name="OrderDetailEntity" positionX="-18" positionY="27" width="128" height="225"/>
-        <element name="OrderMasterEntity" positionX="-36" positionY="9" width="128" height="195"/>
-        <element name="PartnerEntity" positionX="-54" positionY="-9" width="128" height="180"/>
+        <element name="BasicDataEntity" positionX="-36" positionY="54" width="128" height="30"/>
+        <element name="InventoryEntity" positionX="-36" positionY="63" width="128" height="105"/>
+        <element name="ItemEntity" positionX="-63" positionY="-18" width="128" height="30"/>
+        <element name="OrderDetailEntity" positionX="-18" positionY="27" width="128" height="30"/>
+        <element name="OrderMasterEntity" positionX="-36" positionY="9" width="128" height="30"/>
+        <element name="PartnerEntity" positionX="-54" positionY="-9" width="128" height="30"/>
+        <element name="MemberEntity" positionX="-36" positionY="27" width="128" height="120"/>
     </elements>
 </model>

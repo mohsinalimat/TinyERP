@@ -51,6 +51,9 @@
 		27E73CCF1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */; };
 		27E73CD21DFA57FB00FA09BC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD11DFA57FB00FA09BC /* MapKit.framework */; };
 		27E73CD41DFA580B00FA09BC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD31DFA580B00FA09BC /* CoreLocation.framework */; };
+		27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CD71DFF8FA300FA09BC /* SignupViewController.m */; };
+		27E73CDB1DFF939B00FA09BC /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CDA1DFF939B00FA09BC /* Member.m */; };
+		27E73CDE1DFFA35700FA09BC /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CDD1DFFA35700FA09BC /* ImageManager.m */; };
 		27FEF6671DF521220084AE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27FEF6661DF521220084AE1E /* GoogleService-Info.plist */; };
 		27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF6691DF5239B0084AE1E /* Fabric.framework */; };
 		27FEF66C1DF5239B0084AE1E /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF66A1DF5239B0084AE1E /* Crashlytics.framework */; };
@@ -139,6 +142,12 @@
 		27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionReusableViewWithTitle.m; sourceTree = "<group>"; };
 		27E73CD11DFA57FB00FA09BC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		27E73CD31DFA580B00FA09BC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		27E73CD61DFF8FA300FA09BC /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		27E73CD71DFF8FA300FA09BC /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
+		27E73CD91DFF939B00FA09BC /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
+		27E73CDA1DFF939B00FA09BC /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
+		27E73CDC1DFFA35700FA09BC /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
+		27E73CDD1DFFA35700FA09BC /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 		27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		27FEF6661DF521220084AE1E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -198,10 +207,9 @@
 				272BB5601DC732A800A1AB11 /* AppDelegate.m */,
 				272BB5621DC732A800A1AB11 /* ViewController.h */,
 				272BB5631DC732A800A1AB11 /* ViewController.m */,
-				275147DD1DE7DC0D00FF888D /* WelcomeViewController.h */,
-				275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */,
 				27A4C99A1DEC34D5002476CD /* SetupViewController.h */,
 				27A4C99B1DEC34D5002476CD /* SetupViewController.m */,
+				27E73CD51DFF8F5400FA09BC /* MEMBERs */,
 				27FE0FFA1DEBD08800457049 /* FBs */,
 				27853CB21DD325B500C01E10 /* OBJECTs */,
 				27FE10311DEBE30E00457049 /* CELLs */,
@@ -243,6 +251,8 @@
 				272BB5861DC746A800A1AB11 /* Item.m */,
 				275147E31DE7FFB100FF888D /* Inventory.h */,
 				275147E41DE7FFB100FF888D /* Inventory.m */,
+				27E73CD91DFF939B00FA09BC /* Member.h */,
+				27E73CDA1DFF939B00FA09BC /* Member.m */,
 			);
 			name = OBJECTs;
 			sourceTree = "<group>";
@@ -280,6 +290,8 @@
 				272BB5831DC7457F00A1AB11 /* CoreDataHelper.m */,
 				275A12CA1DC8398200A8C52D /* DataBaseManager.h */,
 				275A12CB1DC8398200A8C52D /* DataBaseManager.m */,
+				27E73CDC1DFFA35700FA09BC /* ImageManager.h */,
+				27E73CDD1DFFA35700FA09BC /* ImageManager.m */,
 			);
 			name = MANAGERs;
 			sourceTree = "<group>";
@@ -326,6 +338,17 @@
 			children = (
 			);
 			name = FINANCEs;
+			sourceTree = "<group>";
+		};
+		27E73CD51DFF8F5400FA09BC /* MEMBERs */ = {
+			isa = PBXGroup;
+			children = (
+				275147DD1DE7DC0D00FF888D /* WelcomeViewController.h */,
+				275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */,
+				27E73CD61DFF8FA300FA09BC /* SignupViewController.h */,
+				27E73CD71DFF8FA300FA09BC /* SignupViewController.m */,
+			);
+			name = MEMBERs;
 			sourceTree = "<group>";
 		};
 		27FE0FFA1DEBD08800457049 /* FBs */ = {
@@ -532,6 +555,7 @@
 				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,
 				27A4C9D51DED6C6C002476CD /* InventoryCell.m in Sources */,
+				27E73CDB1DFF939B00FA09BC /* Member.m in Sources */,
 				27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */,
 				278DA2001DD17855000F23DE /* EditCell.m in Sources */,
 				272BB5871DC746A800A1AB11 /* Item.m in Sources */,
@@ -543,6 +567,7 @@
 				27A4C99C1DEC34D5002476CD /* SetupViewController.m in Sources */,
 				272BB5641DC732A800A1AB11 /* ViewController.m in Sources */,
 				275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */,
+				27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */,
 				27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */,
 				272BB5901DC7470E00A1AB11 /* OrderDetail.m in Sources */,
 				272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */,
@@ -554,6 +579,7 @@
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
 				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,
 				275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */,
+				27E73CDE1DFFA35700FA09BC /* ImageManager.m in Sources */,
 				275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */,
 				271A7F931DE4304700EEAFB3 /* AlertManager.m in Sources */,
 				272BB5751DC7399300A1AB11 /* BasicDataViewController.m in Sources */,

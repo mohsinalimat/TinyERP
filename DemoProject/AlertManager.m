@@ -21,6 +21,17 @@
     [vc presentViewController:ac animated:YES completion:nil];
 }
 
++(void)alert:(NSString*)message controller:(UIViewController*)vc postNotificationName:(NSString*)notification;
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:notification object:vc];
+    }];
+    [ac addAction:cfn];
+    [vc presentViewController:ac animated:YES completion:nil];
+}
+
 +(void)alertYesAndNo:(NSString*)message yes:(NSString*)yesString no:(NSString*)noString controller:(UIViewController*)vc postNotificationName:(NSString*)Notification
 {
     NSString *postName = Notification;

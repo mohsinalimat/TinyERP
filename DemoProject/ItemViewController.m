@@ -80,10 +80,10 @@
     self.pickerView.dataSource = self;
     
     //監聽
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
-    {
-        self.itemImageView.image = nil;
-    }];
+//    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteImgYes" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+//    {
+//        self.itemImageView.image = nil;
+//    }];
     
     //撈資料
     self.unitList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"單位"];
@@ -250,7 +250,7 @@
     [self presentViewController:pickerCtrl animated:YES completion:nil];
 }
 
-- (IBAction)ItemCamera:(id)sender
+- (IBAction)itemCamera:(id)sender
 {
     //產生物件
     UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc]init];
@@ -264,7 +264,7 @@
     [self presentViewController:pickerCtrl animated:YES completion:nil];
 }
 
-- (IBAction)ItemImgDelete:(id)sender
+- (IBAction)itemImgDelete:(id)sender
 {
     [AlertManager alertYesAndNo:@"是否確定刪除圖片" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteImg"];
 }
