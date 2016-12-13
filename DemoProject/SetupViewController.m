@@ -147,7 +147,7 @@
     {
         AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
         appDLG.isLogin = NO;
-        WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
+        WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeNC"];
         [self presentViewController:wvc animated:YES completion:nil];
         [self.navigationController popViewControllerAnimated:YES];
     }

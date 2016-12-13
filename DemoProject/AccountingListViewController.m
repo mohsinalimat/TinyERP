@@ -22,6 +22,12 @@
 @property (nonatomic) NSMutableArray *orderMonthTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderDayTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderNoTwoDimensionalList;
+
+@property (nonatomic) NSArray *orderNoSortedList;
+@property (nonatomic) NSArray *orderDaySortedList;
+@property (nonatomic) NSArray *orderMonthSortedList;
+@property (nonatomic) NSArray *orderPartnerSortedList;
+
 @property (nonatomic) NSString *partner;
 @end
 
@@ -36,6 +42,7 @@
     self.accountingTableView.delegate = self;
     self.accountingTableView.dataSource = self;
     //UI
+    //並撈出所有未沖單身
     if ([self.whereFrom isEqualToString:@"apSegue"])
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
@@ -48,28 +55,32 @@
         self.partner = @"客戶";
         self.title = @"未沖應收";
     }
+    //預設為零
     [self.accountingSegment setTitle:self.partner forSegmentAtIndex:0];
     
     //取得單號並去重
     NSSet *orederNoGroup = [NSSet setWithArray:[self.totalOrderDetailList valueForKey:@"orderNo"]];
     
-    //拿單身單號去找單頭
     NSMutableArray *orderDayList = [[NSMutableArray alloc]init];
     NSMutableArray *orderMonthList = [[NSMutableArray alloc]init];
     NSMutableArray *orderPartnerList = [[NSMutableArray alloc]init];
     for (NSString *orderNoString in orederNoGroup)
     {
+        //拿單身單號去找單頭 並存字串
         OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:orderNoString][0];
         
         NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
         [monthDF setDateFormat:@"yyyy/MM"];
         NSString *monthString = [monthDF stringFromDate:om.orderDate];
+        NSString *partnerMonthString = [om.orderPartner stringByAppendingFormat:@"_%@",monthString];
+        
         NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
         [dayDF setDateFormat:@"yyyy/MM/dd"];
         NSString *dayString = [dayDF stringFromDate:om.orderDate];
+        NSString *partnerDayString = [om.orderPartner stringByAppendingFormat:@"_%@",dayString];
         
-        [orderDayList addObject:dayString];
-        [orderMonthList addObject:monthString];
+        [orderMonthList addObject:partnerMonthString];
+        [orderDayList addObject:partnerDayString];
         [orderPartnerList addObject:om.orderPartner];
     }
     //交易對象跟日期再去重
@@ -79,14 +90,16 @@
     
     //排序
     NSArray *sortedArray = @[[[NSSortDescriptor alloc]initWithKey:nil ascending:YES]];
-    NSArray *orderNoSortedList = [orederNoGroup sortedArrayUsingDescriptors:sortedArray];
-    NSArray *orderDaySortedList = [orderDayGroup sortedArrayUsingDescriptors:sortedArray];
-    NSArray *orderMonthSortedList = [orderMonthGroup sortedArrayUsingDescriptors:sortedArray];
-    NSArray *orderPartnerSortedList = [orderPartnerGroup sortedArrayUsingDescriptors:sortedArray];
     
+    self.orderNoSortedList = [orederNoGroup sortedArrayUsingDescriptors:sortedArray];
+    self.orderDaySortedList = [orderDayGroup sortedArrayUsingDescriptors:sortedArray];
+    self.orderMonthSortedList = [orderMonthGroup sortedArrayUsingDescriptors:sortedArray];
+    self.orderPartnerSortedList = [orderPartnerGroup sortedArrayUsingDescriptors:sortedArray];
+    
+    //單號維度
     self.orderNoTwoDimensionalList = [[NSMutableArray alloc]init];
     //遍歷排序過的單號
-    for (NSString *orderNoString in orderNoSortedList)
+    for (NSString *orderNoString in self.orderNoSortedList)
     {
         NSMutableArray *orderDetailList = [[NSMutableArray alloc]init];
         for (OrderDetail *od in self.totalOrderDetailList)
@@ -101,8 +114,9 @@
         [self.orderNoTwoDimensionalList addObject:orderDetailList];
     }
     
+    //日期維度
     self.orderDayTwoDimensionalList = [[NSMutableArray alloc]init];
-    for (NSString *orderDayString in orderDaySortedList)
+    for (NSString *orderDayString in self.orderDaySortedList)
     {
         //先固定格式
         NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
@@ -112,9 +126,15 @@
         for (OrderDetail *od in self.totalOrderDetailList)
         {
             //先從單身找出單頭日期 再比
-            OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo][0];
+            NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo];
+            OrderMaster *om;
+            if (omArray.count != 0)
+            {
+                om = omArray[0];
+            }
             NSString *dayString = [dayDF stringFromDate:om.orderDate];
-            if ([orderDayString isEqualToString:dayString])
+            NSString *partnerDayString = [om.orderPartner stringByAppendingFormat:@"_%@",dayString];
+            if ([orderDayString isEqualToString:partnerDayString])
             {
                 [orderDetailList addObject:od];
             }
@@ -123,8 +143,9 @@
         [self.orderDayTwoDimensionalList addObject:orderDetailList];
     }
     
+    //月份維度
     self.orderMonthTwoDimensionalList = [[NSMutableArray alloc]init];
-    for (NSString *orderMonthString in orderMonthSortedList)
+    for (NSString *orderMonthString in self.orderMonthSortedList)
     {
         NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
         [monthDF setDateFormat:@"yyyy/MM"];
@@ -132,9 +153,16 @@
         NSMutableArray *orderDetailList = [[NSMutableArray alloc]init];
         for (OrderDetail *od in self.totalOrderDetailList)
         {
-            OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo][0];
+            NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo];
+            OrderMaster *om;
+            if (omArray.count != 0)
+            {
+                om = omArray[0];
+            }
+            
             NSString *monthString = [monthDF stringFromDate:om.orderDate];
-            if ([orderMonthString isEqualToString:monthString])
+            NSString *partnerMonthString = [om.orderPartner stringByAppendingFormat:@"_%@",monthString];
+            if ([orderMonthString isEqualToString:partnerMonthString])
             {
                 [orderDetailList addObject:od];
             }
@@ -142,8 +170,9 @@
         [self.orderMonthTwoDimensionalList addObject:orderDetailList];
     }
     
+    //交易對象維度
     self.orderPartnerTwoDimensionalList = [[NSMutableArray alloc]init];
-    for (NSString *orderPartnerString in orderPartnerSortedList)
+    for (NSString *orderPartnerString in self.orderPartnerSortedList)
     {
         NSMutableArray *orderDetailList = [[NSMutableArray alloc]init];
         for (OrderDetail *od in self.totalOrderDetailList)
@@ -158,6 +187,7 @@
     }
 }
 
+//改變維度
 - (IBAction)AccountingSummaryChanged:(UISegmentedControl*)sender
 {
     switch (sender.selectedSegmentIndex)
@@ -180,6 +210,7 @@
     [self.accountingTableView reloadData];
 }
 
+//幾個Seciton
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     switch (self.accountingSummaryType)
@@ -198,6 +229,7 @@
     return 0;
 }
 
+//幾個Row
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (self.accountingSummaryType)
@@ -226,6 +258,23 @@
             break;
     }
     return 0;
+}
+
+//Row資料呈現
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountingCell"];
+    
+    OrderDetail *od = [self getOD:indexPath];
+    //已沖
+    CGFloat orderAlreadyAmount = [od.orderAmount floatValue] - [od.orderNotYetAmount floatValue];
+    cell.textLabel.text = [NSString stringWithFormat:@"          [%ld]應收%.2f已收%.2f未收%.2f",
+                           [od.orderSeq integerValue],
+                           [od.orderAmount floatValue],
+                           orderAlreadyAmount,
+                           [od.orderNotYetAmount floatValue]];
+    
+    return cell;
 }
 
 -(OrderDetail*)getOD:(NSIndexPath*)indexPath
@@ -259,55 +308,13 @@
     return od;
 }
 
--(NSArray*)getOMArray:(OrderDetail*)od
-{
-    OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo][0];
-    
-    NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
-    [monthDF setDateFormat:@"yyyy/MM"];
-    NSString *monthString = [monthDF stringFromDate:om.orderDate];
-    NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
-    [dayDF setDateFormat:@"yyyy/MM/dd"];
-    NSString *dayString = [dayDF stringFromDate:om.orderDate];
-    NSMutableArray *findPartnerArray;
-    Partner *partner;
-    NSString *partnerName = @"";
-    if ([self.whereFrom isEqualToString:@"apSegue"])
-    {
-        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeF" fiterBy:om.orderPartner];
-    }
-    else if ([self.whereFrom isEqualToString:@"arSegue"])
-    {
-        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeC" fiterBy:om.orderPartner];
-    }
-    if (findPartnerArray.count != 0)
-    {
-        partner = findPartnerArray[0];
-        partnerName = partner.partnerName;
-    }
-    NSArray *omArray = @[partnerName,monthString,dayString,om.orderNo];
-    return omArray;
-}
-
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountingCell"];
-    
-    OrderDetail *od = [self getOD:indexPath];
-
-    CGFloat orderAlreadyAmount = [od.orderAmount floatValue] - [od.orderNotYetAmount floatValue];
-    cell.textLabel.text = [NSString stringWithFormat:@"          [%ld]應收%.2f已收%.2f未收%.2f",[od.orderSeq integerValue],[od.orderAmount floatValue],orderAlreadyAmount,[od.orderNotYetAmount floatValue]];
-    
-    return cell;
-}
-
 //沒有這個方法viewForHeader就不會出現
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return @" ";
 }
 
+//Section資料呈現
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     //不知這邊為何大小設0,0沒用
@@ -331,29 +338,33 @@
     
     NSString *sectionTitle;
     UILabel *sectionLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, self.accountingTableView.frame.size.width, 22)];
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:section];
-    OrderDetail *od = [self getOD:ip];
-    NSArray *omArray = [self getOMArray:od];
+//    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:section];
+//    OrderDetail *od = [self getOD:ip];
+//    NSArray *omArray = [self getOMArray:od];
     switch (self.accountingSummaryType)
     {
         case 0:
         {
-            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
+//            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
+            sectionTitle = self.orderPartnerSortedList[section];
             break;
         }
         case 1:
         {
-            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
+            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
+            sectionTitle = self.orderMonthSortedList[section];
             break;
         }
         case 2:
         {
-            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
+            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
+            sectionTitle = self.orderDaySortedList[section];
             break;
         }
         case 3:
         {
-            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
+            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
+            sectionTitle = self.orderNoSortedList[section];
             break;
         }
         default:
@@ -364,13 +375,50 @@
     return tableHeaderView;
 }
 
+//-(NSArray*)getOMArray:(OrderDetail*)od
+//{
+//    NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo];
+//    OrderMaster *om;
+//    if (omArray.count != 0)
+//    {
+//        om = omArray[0];
+//    }
+//    NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
+//    [monthDF setDateFormat:@"yyyy/MM"];
+//    NSString *monthString = [monthDF stringFromDate:om.orderDate];
+//    NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
+//    [dayDF setDateFormat:@"yyyy/MM/dd"];
+//    NSString *dayString = [dayDF stringFromDate:om.orderDate];
+//    NSMutableArray *findPartnerArray;
+//    Partner *partner;
+//    NSString *partnerName = @"";
+//    if ([self.whereFrom isEqualToString:@"apSegue"])
+//    {
+//        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeF" fiterBy:om.orderPartner];
+//    }
+//    else if ([self.whereFrom isEqualToString:@"arSegue"])
+//    {
+//        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeC" fiterBy:om.orderPartner];
+//    }
+//    if (findPartnerArray.count != 0)
+//    {
+//        partner = findPartnerArray[0];
+//        partnerName = partner.partnerName;
+//    }
+//    NSArray *omArrayType = @[partnerName,monthString,dayString,om.orderNo];
+//    return omArrayType;
+//}
+
 -(void)transferARVC:(UIButton*)btn
 {
-    NSLog(@"%ld",btn.tag);
+//    NSLog(@"%ld",btn.tag);
     [self performSegueWithIdentifier:@"accSegue" sender:btn];
 }
 
-
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIButton*)sender
+{
+    NSLog(@"%ld",sender.tag);
+}
 
 - (IBAction)gesturePop:(id)sender
 {

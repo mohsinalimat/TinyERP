@@ -284,11 +284,11 @@
     //帶單身
     if (textField == self.orderPreOrderInput)
     {
-        if ([self.whereFrom isEqualToString:@"aSegue"])
+        if ([self.whereFrom isEqualToString:@"aSegue"] && textField.text.length != 0)
         {
             [self checkPreOrderNo:@"SA"];
         }
-        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        else if ([self.whereFrom isEqualToString:@"bSegue"] && textField.text.length != 0)
         {
             if ([self.orderNoBegin isEqualToString:@"P"])
             {
@@ -319,7 +319,7 @@
     }
     else
     {
-        [AlertManager alert:@"單號類型錯誤\n請輸入訂單單號" controller:self];
+        [AlertManager alert:@"單號類型錯誤" controller:self];
     }
 }
 

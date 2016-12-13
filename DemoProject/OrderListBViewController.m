@@ -39,7 +39,7 @@
     self.whereFromB = olvc.whereFrom;
     if ([self.whereFromB isEqualToString:@"pSegue"])
     {
-        self.downBarLabel.text = @"收貨單";
+        self.downBarLabel.text = @"進貨單";
         [self.downBarButton setTitle:@"新增收貨" forState:UIControlStateNormal];
         
         if (self.isViewDidLoad == YES)
@@ -50,7 +50,7 @@
     }
     else if ([self.whereFromB isEqualToString:@"sSegue"])
     {
-        self.downBarLabel.text = @"出貨單";
+        self.downBarLabel.text = @"銷貨單";
         [self.downBarButton setTitle:@"新增出貨" forState:UIControlStateNormal];
         
         if (self.isViewDidLoad == YES)
