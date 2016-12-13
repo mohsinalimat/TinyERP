@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
-//#import "CoreDataHelper.h"
+#import "CoreDataHelper.h"
 
-@interface Member : NSObject
-//@interface Member : NSManagedObject
+//@interface Member : NSObject
+@interface Member : NSManagedObject
 @property NSString *memberID;
 @property NSString *memberPW;
 @property NSString *memberName;
 @property NSDate *memberBirthday;
 @property NSData *memberImg;
 @end
+

@@ -45,6 +45,7 @@
 		27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C391DDB45E600FAA604 /* OrderListViewController.m */; };
 		27BE8C431DDBE79400FAA604 /* OrderListBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C421DDBE79400FAA604 /* OrderListBViewController.m */; };
 		27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */; };
+		27D14F231DFFACCE008DA138 /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D14F221DFFACCE008DA138 /* Member.m */; };
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
 		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
@@ -52,7 +53,6 @@
 		27E73CD21DFA57FB00FA09BC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD11DFA57FB00FA09BC /* MapKit.framework */; };
 		27E73CD41DFA580B00FA09BC /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27E73CD31DFA580B00FA09BC /* CoreLocation.framework */; };
 		27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CD71DFF8FA300FA09BC /* SignupViewController.m */; };
-		27E73CDB1DFF939B00FA09BC /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CDA1DFF939B00FA09BC /* Member.m */; };
 		27E73CDE1DFFA35700FA09BC /* ImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CDD1DFFA35700FA09BC /* ImageManager.m */; };
 		27FEF6671DF521220084AE1E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27FEF6661DF521220084AE1E /* GoogleService-Info.plist */; };
 		27FEF66B1DF5239B0084AE1E /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FEF6691DF5239B0084AE1E /* Fabric.framework */; };
@@ -132,6 +132,8 @@
 		27BE8C421DDBE79400FAA604 /* OrderListBViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderListBViewController.m; sourceTree = "<group>"; };
 		27BE8C441DDBE7AC00FAA604 /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		27D14F211DFFACCE008DA138 /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
+		27D14F221DFFACCE008DA138 /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
 		27E1A62E1DF009A8002ADDF1 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		27E1A62F1DF009A8002ADDF1 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		27E73CC71DF7AAB500FA09BC /* AccountingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingListViewController.h; sourceTree = "<group>"; };
@@ -144,8 +146,6 @@
 		27E73CD31DFA580B00FA09BC /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		27E73CD61DFF8FA300FA09BC /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
 		27E73CD71DFF8FA300FA09BC /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
-		27E73CD91DFF939B00FA09BC /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
-		27E73CDA1DFF939B00FA09BC /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
 		27E73CDC1DFFA35700FA09BC /* ImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageManager.h; sourceTree = "<group>"; };
 		27E73CDD1DFFA35700FA09BC /* ImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageManager.m; sourceTree = "<group>"; };
 		27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -251,8 +251,8 @@
 				272BB5861DC746A800A1AB11 /* Item.m */,
 				275147E31DE7FFB100FF888D /* Inventory.h */,
 				275147E41DE7FFB100FF888D /* Inventory.m */,
-				27E73CD91DFF939B00FA09BC /* Member.h */,
-				27E73CDA1DFF939B00FA09BC /* Member.m */,
+				27D14F211DFFACCE008DA138 /* Member.h */,
+				27D14F221DFFACCE008DA138 /* Member.m */,
 			);
 			name = OBJECTs;
 			sourceTree = "<group>";
@@ -555,7 +555,6 @@
 				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,
 				27A4C9D51DED6C6C002476CD /* InventoryCell.m in Sources */,
-				27E73CDB1DFF939B00FA09BC /* Member.m in Sources */,
 				27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */,
 				278DA2001DD17855000F23DE /* EditCell.m in Sources */,
 				272BB5871DC746A800A1AB11 /* Item.m in Sources */,
@@ -566,6 +565,7 @@
 				27BE8C431DDBE79400FAA604 /* OrderListBViewController.m in Sources */,
 				27A4C99C1DEC34D5002476CD /* SetupViewController.m in Sources */,
 				272BB5641DC732A800A1AB11 /* ViewController.m in Sources */,
+				27D14F231DFFACCE008DA138 /* Member.m in Sources */,
 				275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */,
 				27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */,
 				27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */,
