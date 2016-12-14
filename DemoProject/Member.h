@@ -16,5 +16,8 @@
 @property NSString *memberName;
 @property NSDate *memberBirthday;
 @property NSData *memberImg;
+@property NSString *memberClass;
+@property NSString *memberType;
+@property BOOL memberApproved;
 @end
 

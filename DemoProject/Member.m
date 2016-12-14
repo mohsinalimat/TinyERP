@@ -14,5 +14,8 @@
 @dynamic memberName;
 @dynamic memberBirthday;
 @dynamic memberImg;
+@dynamic memberClass;
+@dynamic memberApproved;
+@dynamic memberType;
 @end
 

@@ -104,6 +104,11 @@
         pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,c];
     }
     
+    else if ([fiterColumn isEqualToString:@"memberID"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"memberID=%@",fiterString];
+    }
+    
     request.predicate = pred;
     
     NSArray *results = [helper.managedObjectContext executeFetchRequest:request error:&error];

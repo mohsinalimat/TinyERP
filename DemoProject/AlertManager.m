@@ -9,6 +9,7 @@
 #import "AlertManager.h"
 #import "ItemViewController.h"
 #import "SetupViewController.h"
+#import "ViewController.h"
 #import <UIKit/UIKit.h>
 
 @implementation AlertManager
@@ -17,6 +18,26 @@
 {
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:nil];
+    [ac addAction:cfn];
+    [vc presentViewController:ac animated:YES completion:nil];
+}
+
++(void)alert:(NSString*)message controller:(UIViewController*)vc command:(NSString*)action
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cfn;
+    if ([action isEqualToString:@"transferWVC"])
+    {
+        cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+        {
+            [(ViewController*)vc transferWVC];
+        }];
+    }
+    else
+    {
+        cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:nil];
+    }
+
     [ac addAction:cfn];
     [vc presentViewController:ac animated:YES completion:nil];
 }

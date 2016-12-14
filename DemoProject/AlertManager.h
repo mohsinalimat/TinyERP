@@ -12,6 +12,7 @@
 
 @interface AlertManager : NSObject
 +(void)alert:(NSString*)message controller:(UIViewController*)vc;
++(void)alert:(NSString*)message controller:(UIViewController*)vc command:(NSString*)action;
 +(void)alert:(NSString*)message controller:(UIViewController*)vc postNotificationName:(NSString*)notification;
 +(void)alertYesAndNo:(NSString*)message yes:(NSString*)yesString no:(NSString*)noString controller:(UIViewController*)vc postNotificationName:(NSString*)notification;
 @end

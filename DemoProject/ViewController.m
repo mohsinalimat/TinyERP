@@ -12,6 +12,9 @@
 #import "SetupViewController.h"
 #import "AccountingListViewController.h"
 #import "AppDelegate.h"
+#import "DataBaseManager.h"
+#import "AlertManager.h"
+#import "Member.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <ObjectiveDropboxOfficial.h>
 
@@ -44,8 +47,7 @@
     AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     if (appDLG.isLogin != YES)
     {
-        WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeNC"];
-        [self presentViewController:wvc animated:YES completion:nil];
+        [self transferWVC];
     }
 }
 
@@ -53,9 +55,24 @@
 {
     [super viewWillAppear:YES];
     AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    //已經登入了
     if (appDLG.isLogin == YES)
     {
-        [self.view setHidden:NO];
+        //但審核有過嗎？
+        NSArray *getMemberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:appDLG.currentUserID];
+        Member *getMember = nil;
+        if (getMemberArray.count != 0)
+        {
+            getMember = getMemberArray[0];
+        }
+        if (getMember.memberApproved != YES)
+        {
+            [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self command:@"transferWVC"];
+        }
+        else
+        {
+            [self.view setHidden:NO];
+        }
     }
     [FBSDKAppEvents activateApp];
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
@@ -70,6 +87,12 @@
 {
     self.fbProfileView.profileID = [FBSDKProfile currentProfile].userID;
     self.fbProfileName.text = [FBSDKProfile currentProfile].name;
+}
+
+-(void)transferWVC
+{
+    WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeNC"];
+    [self presentViewController:wvc animated:YES completion:nil];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -96,7 +119,8 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 

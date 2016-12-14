@@ -65,6 +65,8 @@
     if ([FBSDKProfile currentProfile])
     {
         self.isLogin = YES;
+        self.currentUserID = [FBSDKProfile currentProfile].userID;
+        self.currentUserName = [FBSDKProfile currentProfile].name;
         self.loginType = @"FaceBook";
     }
     return YES;
