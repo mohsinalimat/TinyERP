@@ -17,7 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *upBarLabel;
 @property (weak, nonatomic) IBOutlet UIButton *upBarButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *notYetOrder;
-@property BOOL isViewDidLoad;
 @end
 
 @implementation OrderListViewController
@@ -47,7 +46,6 @@
         [self.upBarButton setTitle:@"新增訂單" forState:UIControlStateNormal];
         self.orderList = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SA"];
     }
-    self.isViewDidLoad = YES;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -95,6 +93,7 @@
     else
     {
         BOOL isTodayOrderNo = NO;
+        NSMutableArray *todayOrderNoArray = [NSMutableArray array];
         //遍歷
         for (OrderMaster *om in self.orderList)
         {
@@ -102,7 +101,7 @@
             if ([orderNoDate isEqualToString:dateString])
             {
                 isTodayOrderNo = YES;
-                break;
+                [todayOrderNoArray addObject:@([[om.orderNo substringFromIndex:8] integerValue])];
             }
         }
         //如果今天都沒單
@@ -113,21 +112,8 @@
         }
         else
         {
-            OrderMaster *lastOM;
-            //順流 逆流
-            if (self.isViewDidLoad == YES)
-            {
-                //最後面
-                lastOM = [self.orderList objectAtIndex:self.orderList.count-1];
-            }
-            else
-            {
-                //第一個
-                lastOM = [self.orderList objectAtIndex:0];
-            }
-            waterNoString = [lastOM.orderNo substringFromIndex:8];
-            NSInteger waterNoInt = [waterNoString integerValue];
-            waterNoInt += 1;
+            NSNumber *maxOrderNo = [todayOrderNoArray valueForKeyPath: @"@max.integerValue"];
+            NSUInteger waterNoInt = [maxOrderNo integerValue] + 1;
             NSNumber *waterNo = @(waterNoInt);
             waterNoString = [waterNo stringValue];
             if (waterNoString.length == 1)
@@ -155,8 +141,6 @@
     ovc.whereFrom = @"aSegue";
     ovc.currentOM = om;
     ovc.orderListInDteail = self.orderList;
-    //這邊走之前也要改掉啊........
-    self.isViewDidLoad = NO;
     //換頁
     [self showViewController:ovc sender:self];
 }
@@ -177,7 +161,6 @@
         ovc.orderListInDteail = self.orderList;
     }
 #pragma mark Q.很奇怪為何一進這個VC就會跑到這裡？
-    self.isViewDidLoad = NO;
 }
 
 //啟用滑動編輯

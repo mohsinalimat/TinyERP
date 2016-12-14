@@ -94,7 +94,7 @@
     [formatter setDateFormat:@"YYMMdd"];
     NSDate *date = [NSDate date];
     NSString *dateString = [formatter stringFromDate:date];
-    //處理單號流水
+    //處理單號流水(如果單號再有問題 就改成加到最後面 馬的)
     NSString *waterNoString;
     if (self.orderListB.count == 0)
     {
@@ -102,28 +102,38 @@
     }
     else
     {
-        OrderMaster *lastOM;
-        //順流 逆流
-        if (self.isViewDidLoad == YES)
+        BOOL isTodayOrderNo = NO;
+        NSMutableArray *todayOrderNoArray = [NSMutableArray array];
+        //遍歷
+        for (OrderMaster *om in self.orderListB)
         {
-            lastOM = [self.orderListB objectAtIndex:self.orderListB.count-1];
+            NSString *orderNoDate = [om.orderNo substringWithRange:NSMakeRange(2,6)];
+            if ([orderNoDate isEqualToString:dateString])
+            {
+                isTodayOrderNo = YES;
+                NSString *sub = [om.orderNo substringFromIndex:8];
+                NSNumber *subN = @([sub integerValue]);
+                [todayOrderNoArray addObject:subN];
+            }
+        }
+        if (isTodayOrderNo == NO)
+        {
+            waterNoString = @"001";
         }
         else
         {
-            lastOM = [self.orderListB objectAtIndex:0];
-        }
-        waterNoString = [lastOM.orderNo substringFromIndex:8];
-        NSInteger waterNoInt = [waterNoString integerValue];
-        waterNoInt += 1;
-        NSNumber *waterNo = @(waterNoInt);
-        waterNoString = [waterNo stringValue];
-        if (waterNoString.length == 1)
-        {
-            waterNoString = [@"00" stringByAppendingString:waterNoString];
-        }
-        else if (waterNoString.length == 2)
-        {
-            waterNoString = [@"0" stringByAppendingString:waterNoString];
+            NSNumber *maxOrderNo = [todayOrderNoArray valueForKeyPath: @"@max.integerValue"];
+            NSUInteger waterNoInt = [maxOrderNo integerValue] + 1;
+            NSNumber *waterNo = @(waterNoInt);
+            waterNoString = [waterNo stringValue];
+            if (waterNoString.length == 1)
+            {
+                waterNoString = [@"00" stringByAppendingString:waterNoString];
+            }
+            else if (waterNoString.length == 2)
+            {
+                waterNoString = [@"0" stringByAppendingString:waterNoString];
+            }
         }
     }
     //組單號
@@ -141,6 +151,7 @@
     ovc.whereFrom = @"bSegue";
     ovc.currentOM = om;
     ovc.orderListInDteail = self.orderListB;
+    self.isViewDidLoad = NO;
     //換頁
     [self showViewController:ovc sender:self];
 }
@@ -159,6 +170,7 @@
         ovc.whereFrom = segue.identifier;
         ovc.currentOM = om;
         ovc.orderListInDteail = self.orderListB;
+        self.isViewDidLoad = NO;
     }
 }
 
