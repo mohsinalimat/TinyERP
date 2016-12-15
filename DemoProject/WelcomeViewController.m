@@ -16,7 +16,7 @@
 #import "AlertManager.h"
 #import "Member.h"
 
-@interface WelcomeViewController () <FBSDKLoginButtonDelegate>
+@interface WelcomeViewController () <FBSDKLoginButtonDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet FBSDKLoginButton *fbLoginButton;
 @property (weak, nonatomic) IBOutlet UITextField *userIDInput;
 @property (weak, nonatomic) IBOutlet UITextField *userPWInput;
@@ -30,6 +30,7 @@
     [super viewDidLoad];
     self.appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     self.fbLoginButton.delegate = self;
+    self.userIDInput.delegate = self;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -68,24 +69,26 @@
         //寫資料
         [self addMember:@"first"];
         [self dismissViewControllerAnimated:YES completion:nil];
-        [AlertManager alert:@"歡迎初次使用店惦三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
     }
     else
     {
         NSArray *memberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID];
-        //檢查這個User有無註冊
+        //檢查這個User有無註冊過了
         if (memberArray.count == 0)
         {
             [self addMember:@"other"];
-            [AlertManager alert:@"歡迎初次使用店惦三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
         }
         else
         {
             Member *getMember = memberArray[0];
+            //再檢查審核過了沒？
             if (getMember.memberApproved != YES)
             {
                 [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self];
             }
+            //註冊通過
             else
             {
                 self.appDLG.isSignup = YES;
@@ -113,8 +116,49 @@
 
 - (IBAction)userLoginButton:(id)sender
 {
+    NSArray *memberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.userIDInput.text];
+    if (memberArray.count == 0)
+    {
+        [AlertManager alert:@"查無帳號\n請重新輸入" controller:self];
+        [self cleanTextFeild];
+    }
+    else
+    {
+        Member *checkMember = memberArray[0];
+        if (checkMember.memberID==self.userIDInput.text && checkMember.memberPW==self.userPWInput.text)
+        {
+            if (checkMember.memberApproved != YES)
+            {
+                [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self];
+                [self cleanTextFeild];
+            }
+            else
+            {
+                self.appDLG.isLogin = YES;
+                self.appDLG.isSignup = YES;
+                self.appDLG.loginType = @"inside";
+                self.appDLG.currentUserID = checkMember.memberID;
+                self.appDLG.currentUserName = checkMember.memberName;
+                self.appDLG.currentUserImg = [UIImage imageWithData:checkMember.memberImg];
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+        }
+        else
+        {
+            [AlertManager alert:@"帳號密碼錯誤\n請重新輸入" controller:self];
+            [self cleanTextFeild];
+        }
+    }
     
 }
+
+-(void)cleanTextFeild
+{
+    self.userIDInput.text = @"";
+    self.userPWInput.text = @"";
+    [self.userIDInput becomeFirstResponder];
+}
+
 
 - (void)didReceiveMemoryWarning
 {

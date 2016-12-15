@@ -12,8 +12,9 @@
 @property (strong, nonatomic) UIWindow *window;
 @property BOOL isLogin;
 @property BOOL isSignup;
+@property NSString *loginType;
 @property NSString *currentUserID;
 @property NSString *currentUserName;
-@property NSString *loginType;
+@property UIImage *currentUserImg;
 @end
 

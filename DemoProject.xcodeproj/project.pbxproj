@@ -46,7 +46,6 @@
 		27BE8C431DDBE79400FAA604 /* OrderListBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C421DDBE79400FAA604 /* OrderListBViewController.m */; };
 		27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */; };
 		27D14F231DFFACCE008DA138 /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D14F221DFFACCE008DA138 /* Member.m */; };
-		27DA2D231E022BB6002BEA63 /* MemberManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D221E022BB6002BEA63 /* MemberManager.m */; };
 		27DA2D261E026D97002BEA63 /* accRevCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D251E026D97002BEA63 /* accRevCell.m */; };
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
@@ -136,8 +135,6 @@
 		27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		27D14F211DFFACCE008DA138 /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
 		27D14F221DFFACCE008DA138 /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
-		27DA2D211E022BB6002BEA63 /* MemberManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberManager.h; sourceTree = "<group>"; };
-		27DA2D221E022BB6002BEA63 /* MemberManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberManager.m; sourceTree = "<group>"; };
 		27DA2D241E026D97002BEA63 /* accRevCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = accRevCell.h; sourceTree = "<group>"; };
 		27DA2D251E026D97002BEA63 /* accRevCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = accRevCell.m; sourceTree = "<group>"; };
 		27E1A62E1DF009A8002ADDF1 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
@@ -298,8 +295,6 @@
 				275A12CB1DC8398200A8C52D /* DataBaseManager.m */,
 				27E73CDC1DFFA35700FA09BC /* ImageManager.h */,
 				27E73CDD1DFFA35700FA09BC /* ImageManager.m */,
-				27DA2D211E022BB6002BEA63 /* MemberManager.h */,
-				27DA2D221E022BB6002BEA63 /* MemberManager.m */,
 			);
 			name = MANAGERs;
 			sourceTree = "<group>";
@@ -569,7 +564,6 @@
 				278DA2001DD17855000F23DE /* EditCell.m in Sources */,
 				272BB5871DC746A800A1AB11 /* Item.m in Sources */,
 				27E73CCF1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m in Sources */,
-				27DA2D231E022BB6002BEA63 /* MemberManager.m in Sources */,
 				27A4C99F1DEC3758002476CD /* FBLogoutCell.m in Sources */,
 				27BE8C0B1DD5C81200FAA604 /* CustomerListViewController.m in Sources */,
 				278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */,

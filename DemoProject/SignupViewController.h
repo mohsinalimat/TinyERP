@@ -9,9 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SignupViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UITextField *memberIDInput;
-@property (weak, nonatomic) IBOutlet UITextField *memberPWInput;
-@property (weak, nonatomic) IBOutlet UITextField *memberNameInput;
-@property (weak, nonatomic) IBOutlet UITextField *memberBirthdayInput;
-@property (weak, nonatomic) IBOutlet UIImageView *memberImgView;
+
 @end

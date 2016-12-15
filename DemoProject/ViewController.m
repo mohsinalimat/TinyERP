@@ -22,6 +22,8 @@
 
 @property (weak, nonatomic) IBOutlet FBSDKProfilePictureView *fbProfileView;
 @property (weak, nonatomic) IBOutlet UILabel *fbProfileName;
+@property (weak, nonatomic) IBOutlet UIImageView *insideProfileView;
+@property (weak, nonatomic) IBOutlet UILabel *insideProfileName;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *nineButton;
 @end
 
@@ -36,6 +38,8 @@
     self.navigationController.navigationBar.translucent = NO;
     //一開始先藏 怕還沒登入時被偷看到
     self.view.hidden=YES;
+    [self.fbProfileView setHidden:YES];
+    [self.fbProfileName setHidden:YES];
     //設定九個按鈕UI
     for (UIButton *btn in self.nineButton)
     {
@@ -72,6 +76,13 @@
         else
         {
             [self.view setHidden:NO];
+            if ([appDLG.loginType isEqualToString:@"inside"])
+            {
+                [self.fbProfileView setHidden:YES];
+                [self.fbProfileName setHidden:YES];
+                self.insideProfileName.text = appDLG.currentUserName;
+                self.insideProfileView.image = appDLG.currentUserImg;
+            }
         }
     }
     [FBSDKAppEvents activateApp];

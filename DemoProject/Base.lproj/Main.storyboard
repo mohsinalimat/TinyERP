@@ -148,36 +148,54 @@
                     <navigationItem key="navigationItem" id="89I-Zn-c1G">
                         <nil key="title"/>
                         <view key="titleView" contentMode="scaleToFill" id="sqS-4o-5Vb">
-                            <rect key="frame" x="148" y="5.5" width="118" height="33"/>
+                            <rect key="frame" x="148" y="6" width="118" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z76-aC-gdT">
+                                    <rect key="frame" x="81" y="6" width="4.6666666666666714" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gNc-A5-rvy" customClass="FBSDKProfilePictureView">
-                                    <rect key="frame" x="0.0" y="0.0" width="33" height="33"/>
+                                    <rect key="frame" x="37" y="-5.6666666666666679" width="44" height="44.333333333333329"/>
                                     <color key="backgroundColor" red="0.21100763950000001" green="0.55004929960000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="gNc-A5-rvy" secondAttribute="height" multiplier="1:1" id="36L-eZ-PZT"/>
+                                        <constraint firstAttribute="height" constant="44" id="m7W-co-EZr"/>
                                     </constraints>
                                 </view>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fHN-Td-zbp">
+                                    <rect key="frame" x="37" y="-6" width="44" height="44"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="JTp-qx-KN3"/>
+                                        <constraint firstAttribute="width" secondItem="fHN-Td-zbp" secondAttribute="height" id="O6v-Oj-GDb"/>
+                                    </constraints>
+                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGd-F2-y6J">
-                                    <rect key="frame" x="33" y="6" width="85" height="21"/>
+                                    <rect key="frame" x="81" y="6.3333333333333321" width="41.666666666666671" height="20.333333333333336"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="gNc-A5-rvy" firstAttribute="leading" secondItem="sqS-4o-5Vb" secondAttribute="leading" id="1PW-el-Arh"/>
-                                <constraint firstAttribute="bottom" secondItem="gNc-A5-rvy" secondAttribute="bottom" id="5FK-UX-T7s"/>
-                                <constraint firstItem="vGd-F2-y6J" firstAttribute="centerY" secondItem="sqS-4o-5Vb" secondAttribute="centerY" id="Bls-KI-93Y"/>
-                                <constraint firstAttribute="trailing" secondItem="vGd-F2-y6J" secondAttribute="trailing" id="F2T-cy-8NA"/>
-                                <constraint firstItem="vGd-F2-y6J" firstAttribute="leading" secondItem="gNc-A5-rvy" secondAttribute="trailing" id="Ur3-Sy-FBk"/>
-                                <constraint firstItem="gNc-A5-rvy" firstAttribute="height" secondItem="sqS-4o-5Vb" secondAttribute="height" id="Zlk-qH-Wic"/>
+                                <constraint firstItem="vGd-F2-y6J" firstAttribute="centerY" secondItem="sqS-4o-5Vb" secondAttribute="centerY" id="6Nu-LZ-FQF"/>
+                                <constraint firstItem="gNc-A5-rvy" firstAttribute="centerX" secondItem="sqS-4o-5Vb" secondAttribute="centerX" id="Pke-Hg-NHN"/>
+                                <constraint firstItem="z76-aC-gdT" firstAttribute="leading" secondItem="fHN-Td-zbp" secondAttribute="trailing" id="TaO-aT-lCu"/>
+                                <constraint firstItem="fHN-Td-zbp" firstAttribute="centerX" secondItem="sqS-4o-5Vb" secondAttribute="centerX" id="W0T-My-4dh"/>
+                                <constraint firstItem="vGd-F2-y6J" firstAttribute="leading" secondItem="fHN-Td-zbp" secondAttribute="trailing" id="XYP-N1-dZF"/>
+                                <constraint firstItem="gNc-A5-rvy" firstAttribute="centerY" secondItem="sqS-4o-5Vb" secondAttribute="centerY" id="YdF-k2-NXy"/>
+                                <constraint firstItem="fHN-Td-zbp" firstAttribute="centerY" secondItem="sqS-4o-5Vb" secondAttribute="centerY" id="hkA-MZ-9Vt"/>
+                                <constraint firstItem="z76-aC-gdT" firstAttribute="centerY" secondItem="sqS-4o-5Vb" secondAttribute="centerY" id="oAR-Hv-J5M"/>
                             </constraints>
                         </view>
                     </navigationItem>
                     <connections>
                         <outlet property="fbProfileName" destination="vGd-F2-y6J" id="aEK-4D-icx"/>
                         <outlet property="fbProfileView" destination="gNc-A5-rvy" id="U3i-Pa-4sG"/>
+                        <outlet property="insideProfileName" destination="z76-aC-gdT" id="eqV-e4-hIZ"/>
+                        <outlet property="insideProfileView" destination="fHN-Td-zbp" id="jYu-Ew-h3T"/>
                         <outletCollection property="nineButton" destination="Qjh-Fk-rSQ" id="ZeZ-2S-BNx"/>
                         <outletCollection property="nineButton" destination="ZPd-ET-RzI" id="fsP-lp-941"/>
                         <outletCollection property="nineButton" destination="yaB-MS-4Y3" id="tGE-FZ-Ns5"/>
