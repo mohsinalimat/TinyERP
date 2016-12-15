@@ -677,6 +677,7 @@
     childOD.orderQty = fatherOrderDetail.orderQty;
     childOD.orderSeq = fatherOrderDetail.orderSeq;
     childOD.orderNotYetQty = fatherOrderDetail.orderNotYetQty;
+    childOD.orderNotYetAmount = fatherOrderDetail.orderNotYetAmount;
     
     return childOD;
 }

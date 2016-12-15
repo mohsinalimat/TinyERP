@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface AccountingReverseViewController : UIViewController
-
+@property NSMutableArray *accOrderDetailList;
 @end

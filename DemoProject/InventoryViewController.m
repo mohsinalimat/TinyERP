@@ -21,6 +21,7 @@
 @property NSMutableArray *warehouseListSorted;
 @property NSArray *itemGroupSortedArray;
 @property NSArray *warehouseGroupSortedArray;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *inventorySegment;
 @property BOOL isShowByItem;
 @end
 
@@ -183,9 +184,28 @@
     NSLog(@"%@",indexPath);
 }
 
-- (IBAction)gesturePop:(id)sender
+- (IBAction)gestureLeft:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.isShowByItem != YES)
+    {
+        self.isShowByItem = YES;
+        self.inventorySegment.selectedSegmentIndex = 1;
+        [self.inventoryCollectionView reloadData];
+    }
+}
+
+- (IBAction)gestureRight:(id)sender
+{
+    if (self.isShowByItem != YES)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        self.isShowByItem = NO;
+        self.inventorySegment.selectedSegmentIndex = 0;
+        [self.inventoryCollectionView reloadData];
+    }
 }
 
 - (void)didReceiveMemoryWarning

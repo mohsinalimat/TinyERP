@@ -338,32 +338,24 @@
     
     NSString *sectionTitle;
     UILabel *sectionLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, self.accountingTableView.frame.size.width, 22)];
-//    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:section];
-//    OrderDetail *od = [self getOD:ip];
-//    NSArray *omArray = [self getOMArray:od];
     switch (self.accountingSummaryType)
     {
         case 0:
         {
-//            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[0]];
             sectionTitle = self.orderPartnerSortedList[section];
             break;
         }
         case 1:
-        {
-            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[1]];
-            sectionTitle = self.orderMonthSortedList[section];
+        {            sectionTitle = self.orderMonthSortedList[section];
             break;
         }
         case 2:
         {
-            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[2]];
             sectionTitle = self.orderDaySortedList[section];
             break;
         }
         case 3:
         {
-            //            sectionTitle = [NSString stringWithFormat:@"[%ld]%@",section,omArray[3]];
             sectionTitle = self.orderNoSortedList[section];
             break;
         }
@@ -375,43 +367,8 @@
     return tableHeaderView;
 }
 
-//-(NSArray*)getOMArray:(OrderDetail*)od
-//{
-//    NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:od.orderNo];
-//    OrderMaster *om;
-//    if (omArray.count != 0)
-//    {
-//        om = omArray[0];
-//    }
-//    NSDateFormatter *monthDF = [[NSDateFormatter alloc]init];
-//    [monthDF setDateFormat:@"yyyy/MM"];
-//    NSString *monthString = [monthDF stringFromDate:om.orderDate];
-//    NSDateFormatter *dayDF = [[NSDateFormatter alloc]init];
-//    [dayDF setDateFormat:@"yyyy/MM/dd"];
-//    NSString *dayString = [dayDF stringFromDate:om.orderDate];
-//    NSMutableArray *findPartnerArray;
-//    Partner *partner;
-//    NSString *partnerName = @"";
-//    if ([self.whereFrom isEqualToString:@"apSegue"])
-//    {
-//        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeF" fiterBy:om.orderPartner];
-//    }
-//    else if ([self.whereFrom isEqualToString:@"arSegue"])
-//    {
-//        findPartnerArray = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerIDtypeC" fiterBy:om.orderPartner];
-//    }
-//    if (findPartnerArray.count != 0)
-//    {
-//        partner = findPartnerArray[0];
-//        partnerName = partner.partnerName;
-//    }
-//    NSArray *omArrayType = @[partnerName,monthString,dayString,om.orderNo];
-//    return omArrayType;
-//}
-
 -(void)transferARVC:(UIButton*)btn
 {
-//    NSLog(@"%ld",btn.tag);
     [self performSegueWithIdentifier:@"accSegue" sender:btn];
 }
 
@@ -420,9 +377,35 @@
     NSLog(@"%ld",sender.tag);
 }
 
-- (IBAction)gesturePop:(id)sender
+- (IBAction)gestureLeft:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    switch (self.accountingSummaryType)
+    {
+        case 0:
+        case 1:
+        case 2:
+            self.accountingSummaryType += 1;
+            self.accountingSegment.selectedSegmentIndex += 1;
+            [self.accountingTableView reloadData];
+            break;
+        default:
+            break;
+    }
+}
+
+- (IBAction)gestureRight:(id)sender
+{
+    switch (self.accountingSummaryType)
+    {
+        case 0:
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        default:
+            self.accountingSummaryType -= 1;
+            self.accountingSegment.selectedSegmentIndex -= 1;
+            [self.accountingTableView reloadData];
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning
