@@ -46,7 +46,8 @@
 		27BE8C431DDBE79400FAA604 /* OrderListBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C421DDBE79400FAA604 /* OrderListBViewController.m */; };
 		27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */; };
 		27D14F231DFFACCE008DA138 /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D14F221DFFACCE008DA138 /* Member.m */; };
-		27DA2D261E026D97002BEA63 /* accRevCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D251E026D97002BEA63 /* accRevCell.m */; };
+		27DA2D291E03A624002BEA63 /* AccRevCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D281E03A624002BEA63 /* AccRevCell.m */; };
+		27DA2D2F1E03D457002BEA63 /* AccountingReversedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D2E1E03D457002BEA63 /* AccountingReversedListViewController.m */; };
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
 		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
@@ -135,8 +136,10 @@
 		27BE8C451DDBE7AC00FAA604 /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		27D14F211DFFACCE008DA138 /* Member.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Member.h; sourceTree = "<group>"; };
 		27D14F221DFFACCE008DA138 /* Member.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Member.m; sourceTree = "<group>"; };
-		27DA2D241E026D97002BEA63 /* accRevCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = accRevCell.h; sourceTree = "<group>"; };
-		27DA2D251E026D97002BEA63 /* accRevCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = accRevCell.m; sourceTree = "<group>"; };
+		27DA2D271E03A624002BEA63 /* AccRevCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccRevCell.h; sourceTree = "<group>"; };
+		27DA2D281E03A624002BEA63 /* AccRevCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccRevCell.m; sourceTree = "<group>"; };
+		27DA2D2D1E03D457002BEA63 /* AccountingReversedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingReversedListViewController.h; sourceTree = "<group>"; };
+		27DA2D2E1E03D457002BEA63 /* AccountingReversedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingReversedListViewController.m; sourceTree = "<group>"; };
 		27E1A62E1DF009A8002ADDF1 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		27E1A62F1DF009A8002ADDF1 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		27E73CC71DF7AAB500FA09BC /* AccountingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingListViewController.h; sourceTree = "<group>"; };
@@ -332,6 +335,8 @@
 				27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */,
 				27E73CCA1DF7AB3C00FA09BC /* AccountingReverseViewController.h */,
 				27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */,
+				27DA2D2D1E03D457002BEA63 /* AccountingReversedListViewController.h */,
+				27DA2D2E1E03D457002BEA63 /* AccountingReversedListViewController.m */,
 			);
 			name = ACCOUNTINGs;
 			sourceTree = "<group>";
@@ -381,8 +386,8 @@
 				27A4CA131DEECE41002476CD /* DropBoxCell.m */,
 				27E1A62E1DF009A8002ADDF1 /* UserCell.h */,
 				27E1A62F1DF009A8002ADDF1 /* UserCell.m */,
-				27DA2D241E026D97002BEA63 /* accRevCell.h */,
-				27DA2D251E026D97002BEA63 /* accRevCell.m */,
+				27DA2D271E03A624002BEA63 /* AccRevCell.h */,
+				27DA2D281E03A624002BEA63 /* AccRevCell.m */,
 				27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */,
 				27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */,
 			);
@@ -580,13 +585,14 @@
 				27BE8C371DDAA79F00FAA604 /* BasicData.m in Sources */,
 				272BB5841DC7457F00A1AB11 /* CoreDataHelper.m in Sources */,
 				275147E51DE7FFB100FF888D /* Inventory.m in Sources */,
+				27DA2D2F1E03D457002BEA63 /* AccountingReversedListViewController.m in Sources */,
 				272BB55E1DC732A800A1AB11 /* main.m in Sources */,
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
-				27DA2D261E026D97002BEA63 /* accRevCell.m in Sources */,
 				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,
 				275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */,
 				27E73CDE1DFFA35700FA09BC /* ImageManager.m in Sources */,
 				275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */,
+				27DA2D291E03A624002BEA63 /* AccRevCell.m in Sources */,
 				271A7F931DE4304700EEAFB3 /* AlertManager.m in Sources */,
 				272BB5751DC7399300A1AB11 /* BasicDataViewController.m in Sources */,
 				27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */,

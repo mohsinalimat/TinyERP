@@ -15,11 +15,11 @@
 @dynamic orderThisQty;
 @dynamic orderNotYetAmount;
 @dynamic orderNo;
-@dynamic orderNoA;
+@dynamic orderNoOld;
 @dynamic orderPrice;
 @dynamic orderQty;
 @dynamic orderSeq;
-@dynamic orderSeqA;
+@dynamic orderSeqOld;
 @dynamic isInventory;
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import "AccountingListViewController.h"
+#import "AccountingReverseViewController.h"
 #import "CoreDataHelper.h"
 #import "DataBaseManager.h"
 #import "OrderMaster.h"
@@ -367,6 +368,11 @@
     return tableHeaderView;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.accountingTableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
 -(void)transferARVC:(UIButton*)btn
 {
     [self performSegueWithIdentifier:@"accSegue" sender:btn];
@@ -374,7 +380,35 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIButton*)sender
 {
-    NSLog(@"%ld",sender.tag);
+    if ([segue.identifier isEqualToString:@"accSegue"])
+    {
+        AccountingReverseViewController *arvc = segue.destinationViewController;
+        switch (self.accountingSummaryType)
+        {
+            case 0:
+            {
+                arvc.accOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
+                break;
+            }
+            case 1:
+            {
+                arvc.accOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
+                break;
+            }
+            case 2:
+            {
+                arvc.accOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
+                break;
+            }
+            case 3:
+            {
+                arvc.accOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 - (IBAction)gestureLeft:(id)sender

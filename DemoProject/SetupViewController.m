@@ -25,6 +25,7 @@
 @property NSString *dbSelectedFolderName;
 @property NSArray *fileNameArray;
 @property NSString *dbAction;
+@property AppDelegate *appDLG;
 @end
 
 @implementation SetupViewController
@@ -32,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     self.title = @"系統設定";
     self.fileNameArray = @[@"System.sqlite",@"System.sqlite-shm",@"System.sqlite-wal"];
     self.steupTableView.delegate = self;
@@ -312,7 +313,7 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     self.dbSelectedFolderName = [self.dbRestoreList objectAtIndex:row];
-    NSString *message = [NSString stringWithFormat:@"您選擇的是%@的檔案\n請確認是否從Dropbox還原\n覆蓋現有資料",self.dbSelectedFolderName];
+    NSString *message = [NSString stringWithFormat:@"您選擇的檔案為：%@\n請確認是否從Dropbox還原\n覆蓋現有資料",self.dbSelectedFolderName];
     [AlertManager alertYesAndNo:message yes:@"是" no:@"否" controller:self postNotificationName:@"dbRestoreSelected"];
 }
 
@@ -331,7 +332,14 @@
 
 -(void)askUserLogOut
 {
-    [AlertManager alert:@"是否確定登出？" controller:self command:@"userShouldLogout"];
+    if (![self.appDLG.loginType isEqualToString:@"inside"])
+    {
+        [AlertManager alert:@"目前並非一般登入\n請使用外部登出按鈕" controller:self];
+    }
+    else
+    {
+        [AlertManager alert:@"是否確定登出？" controller:self command:@"userShouldLogout"];
+    }
 }
 
 -(void)userShouldLogout

@@ -9,6 +9,7 @@
 #import "AlertManager.h"
 #import "ItemViewController.h"
 #import "SetupViewController.h"
+#import "SignupViewController.h"
 #import "ViewController.h"
 #import <UIKit/UIKit.h>
 
@@ -38,6 +39,13 @@
         cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
                {
                    [(SetupViewController*)vc userShouldLogout];
+               }];
+    }
+    else if ([action isEqualToString:@"popViewController"])
+    {
+        cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+               {
+                   [vc.navigationController popViewControllerAnimated:YES];
                }];
     }
     else
@@ -74,7 +82,7 @@
     UIAlertAction *noButton = [UIAlertAction actionWithTitle:noString style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
         {
             NSString *postNameNo = [postName stringByAppendingString:@"No"];
-            [[NSNotificationCenter defaultCenter]postNotificationName:postNameNo object:vc];
+            [[NSNotificationCenter defaultCenter]postNotificationName:postNameNo object:nil];
         }];
     [ac addAction:noButton];
     [ac addAction:yesButton];

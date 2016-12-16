@@ -68,22 +68,31 @@
         if (getMemberArray.count != 0)
         {
             getMember = getMemberArray[0];
-        }
-        if (getMember.memberApproved != YES)
-        {
-            [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self command:@"transferWVC"];
+            if (getMember.memberApproved != YES)
+            {
+                [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self command:@"transferWVC"];
+            }
+            else
+            {
+                [self.view setHidden:NO];
+                if ([appDLG.loginType isEqualToString:@"inside"])
+                {
+                    self.insideProfileName.text = appDLG.currentUserName;
+                    self.insideProfileView.image = appDLG.currentUserImg;
+                }
+                else if ([appDLG.loginType isEqualToString:@"FaceBook"])
+                {
+                    [self.fbProfileView setHidden:NO];
+                    [self.fbProfileName setHidden:NO];
+                    [self updateFBProfile];
+                }
+            }
         }
         else
         {
-            [self.view setHidden:NO];
-            if ([appDLG.loginType isEqualToString:@"inside"])
-            {
-                [self.fbProfileView setHidden:YES];
-                [self.fbProfileName setHidden:YES];
-                self.insideProfileName.text = appDLG.currentUserName;
-                self.insideProfileView.image = appDLG.currentUserImg;
-            }
+            [AlertManager alert:@"查無此帳號" controller:self command:@"transferWVC"];
         }
+        
     }
     [FBSDKAppEvents activateApp];
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
@@ -91,10 +100,10 @@
     self.fbProfileView.profileID = [FBSDKProfile currentProfile].userID;
     self.fbProfileName.text = [FBSDKProfile currentProfile].name;
     //一登入 狀態改變 所以更新 不然這頁早已Appear 那時還沒登入 頭像名稱已固定
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateProfile) name:FBSDKProfileDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFBProfile) name:FBSDKProfileDidChangeNotification object:nil];
 }
 
--(void)updateProfile
+-(void)updateFBProfile
 {
     self.fbProfileView.profileID = [FBSDKProfile currentProfile].userID;
     self.fbProfileName.text = [FBSDKProfile currentProfile].name;

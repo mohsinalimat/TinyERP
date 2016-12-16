@@ -67,9 +67,15 @@
     if ([DataBaseManager queryFromCoreData:@"MemberEntity" sortBy:@"memberID"].count == 0)
     {
         //寫資料
-        [self addMember:@"first"];
-        [self dismissViewControllerAnimated:YES completion:nil];
-        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+        if([self addMember:@"first"]==YES)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+            [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+        }
+        else
+        {
+            [AlertManager alert:@"無法註冊\n請聯絡系統管理員" controller:self];
+        }
     }
     else
     {
@@ -77,8 +83,15 @@
         //檢查這個User有無註冊過了
         if (memberArray.count == 0)
         {
-            [self addMember:@"other"];
-            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+            if([self addMember:@"other"]==YES)
+            {
+                [self dismissViewControllerAnimated:YES completion:nil];
+                [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+            }
+            else
+            {
+                [AlertManager alert:@"無法註冊\n請聯絡系統管理員" controller:self];
+            }
         }
         else
         {
@@ -99,19 +112,24 @@
     return NO;
 }
 
--(void)addMember:(NSString*)type
+//已經先確認沒有找到ID(就代表沒有重複)才來執行這個方法
+-(BOOL)addMember:(NSString*)type
 {
-    //已經先確認沒有找到ID(就代表沒有重複)才來執行這個方法
-    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-    Member *addMember = [NSEntityDescription insertNewObjectForEntityForName:@"MemberEntity" inManagedObjectContext:helper.managedObjectContext];
-    addMember.memberID = self.appDLG.currentUserID;
-    addMember.memberName = self.appDLG.currentUserName;
-    addMember.memberType = self.appDLG.loginType;
-    if ([type isEqualToString:@"first"])
+    if (self.appDLG.currentUserID != nil)
     {
-        addMember.memberApproved = YES;
+        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+        Member *addMember = [NSEntityDescription insertNewObjectForEntityForName:@"MemberEntity" inManagedObjectContext:helper.managedObjectContext];
+        addMember.memberID = self.appDLG.currentUserID;
+        addMember.memberName = self.appDLG.currentUserName;
+        addMember.memberType = self.appDLG.loginType;
+        if ([type isEqualToString:@"first"])
+        {
+            addMember.memberApproved = YES;
+        }
+        [DataBaseManager updateToCoreData];
+        return YES;
     }
-    [DataBaseManager updateToCoreData];
+    return NO;
 }
 
 - (IBAction)userLoginButton:(id)sender

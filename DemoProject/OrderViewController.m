@@ -42,6 +42,8 @@
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePickerView;
 @property (weak, nonatomic) IBOutlet UIPickerView *dataPickerView;
 @property (weak, nonatomic) IBOutlet UITableView *orderDetailTableView;
+@property (weak, nonatomic) IBOutlet UILabel *orderExpectedReverseDayLabel;
+@property (weak, nonatomic) IBOutlet UITextField *orderExpectedReverseDayInput;
 
 @property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
 @property (weak, nonatomic) IBOutlet UITextField *emptyInput;
@@ -113,6 +115,8 @@
         [self.orderWarehouseInput setHidden:YES];
         [self.warehouseLabel setHidden:YES];
         [self.allDeliveryButton setHidden:YES];
+        [self.orderExpectedReverseDayLabel setHidden:YES];
+        [self.orderExpectedReverseDayInput setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
@@ -127,6 +131,9 @@
         [self.expectedDayLabel setHidden:YES];
         [self.orderExpectedDayInput setHidden:YES];
         [self.orderPartnerInput setEnabled:NO];
+//        CGRect frame = self.orderExpectedReverseDayInput.frame;
+//        frame.size.width = 130.0;
+//        self.orderExpectedReverseDayInput.frame = frame;
     }
     if ([self.orderNoBegin isEqualToString:@"P"])
     {
@@ -143,6 +150,7 @@
         {
             self.orderPreOrderInput.placeholder = @"請輸入採購單號";
             self.title = @"進貨單";
+            self.orderExpectedReverseDayLabel.text = @"預付日期";
             [self.allDeliveryButton setTitle:@"全部收貨" forState:UIControlStateNormal];
         }
     }
@@ -164,6 +172,7 @@
             [self.emptyLabel setHidden:YES];
             [self.emptyInput setHidden:YES];
             self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
+            self.orderExpectedReverseDayLabel.text = @"預收日期";
             self.title = @"銷貨單";
             [self.allDeliveryButton setTitle:@"全部出貨" forState:UIControlStateNormal];
         }
@@ -181,49 +190,8 @@
     self.orderWarehouseInput.delegate = self;
     self.orderPreOrderInput.delegate = self;
     
-    //監聽
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
-    {
-        //撈單身
-        NSMutableArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNoAndNotYetQty" fiterByArray:@[self.orderPreOrderInput.text,@(0)]];
-        
-        if (orderAOrderDetailList.count != 0)
-        {
-            //撈單頭
-            NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
-            //如果有撈到單頭
-            if (omArray.count != 0)
-            {
-                //assign交易對象
-                OrderMaster *om = omArray[0];
-                self.orderPartnerInput.text = om.orderPartner;
-            }
-            //清空單身
-            self.orderDetailList = [NSMutableArray array];
-            for (OrderDetail *od in orderAOrderDetailList)
-            {
-                OrderDetail *odB = [self birthOrderDetail:od];
-                //紀錄原A單的單號項次
-                odB.orderNoA = odB.orderNo;
-                odB.orderSeqA = odB.orderSeq;
-                //改單身的爸爸
-                odB.orderNo = self.currentOM.orderNo;
-                //項次重排
-                odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
-                [self.orderDetailList addObject:odB];
-            }
-            [DataBaseManager updateToCoreData];
-            [self.orderDetailTableView reloadData];
-        }
-        else
-        {
-            [AlertManager alert:@"此單號查無單身,請確認" controller:self];
-        }
-    }];
-    [[NSNotificationCenter defaultCenter]addObserverForName:@"deleteAndGetOrderDetailNo" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
-     {
-         self.orderPreOrderInput.text = @"";
-     }];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteAndGetOrderDetail) name:@"deleteAndGetOrderDetailYes" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearPreOrderNo) name:@"deleteAndGetOrderDetailNo" object:nil];
     
     //DataMode
     self.orderDetailList = [[NSMutableArray alloc]init];
@@ -231,6 +199,51 @@
     self.firmList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"F"];
     self.custList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"C"];
     self.warehouseList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"倉庫"];
+}
+
+-(void)deleteAndGetOrderDetail
+{
+    //撈單身
+    NSMutableArray *orderAOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNoAndNotYetQty" fiterByArray:@[self.orderPreOrderInput.text,@(0)]];
+    
+    if (orderAOrderDetailList.count != 0)
+    {
+        //撈單頭
+        NSArray *omArray = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:self.orderPreOrderInput.text];
+        //如果有撈到單頭
+        if (omArray.count != 0)
+        {
+            //assign交易對象
+            OrderMaster *om = omArray[0];
+            self.orderPartnerInput.text = om.orderPartner;
+        }
+        //清空單身
+        self.orderDetailList = [NSMutableArray array];
+        for (OrderDetail *od in orderAOrderDetailList)
+        {
+            OrderDetail *odB = [self birthOrderDetail:od];
+            //紀錄原A單的單號項次
+            odB.orderNoOld = odB.orderNo;
+            odB.orderSeqOld = odB.orderSeq;
+            //改單身的爸爸
+            odB.orderNo = self.currentOM.orderNo;
+            //項次重排
+            odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
+            [self.orderDetailList addObject:odB];
+        }
+        [DataBaseManager updateToCoreData];
+        [self.orderDetailTableView reloadData];
+    }
+    else
+    {
+        [AlertManager alert:@"此單號查無單身,請確認" controller:self];
+    }
+
+}
+
+-(void)clearPreOrderNo
+{
+    self.orderPreOrderInput.text = @"";
 }
 
 //觸碰self.view縮鍵盤
@@ -599,7 +612,7 @@
             odc.odResultLabel.text = [@(newNotYetQty) stringValue];
             
             OrderDetail *currentOD = [self.orderDetailList objectAtIndex:sender.tag-1];
-            NSArray *queryArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeq" fiterByArray:@[currentOD.orderNoA,currentOD.orderSeqA]];
+            NSArray *queryArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeq" fiterByArray:@[currentOD.orderNoOld,currentOD.orderSeqOld]];
             OrderDetail *updateOD;
             if (queryArray.count !=0)
             {
@@ -619,7 +632,9 @@
         NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderDetailList indexOfObject:od] inSection:0];
         OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
         odCell.odThisQty.text = [od.orderNotYetQty stringValue];
+        odCell.odResultLabel.text = [@([od.orderNotYetQty floatValue]-[od.orderThisQty floatValue]) stringValue];
     }
+    [self.orderDetailTableView reloadData];
 }
 
 //新增單身

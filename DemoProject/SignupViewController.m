@@ -31,39 +31,40 @@
     self.memberImgView.layer.borderWidth = 1;
     self.memberImgView.layer.borderColor =  self.view.tintColor.CGColor;
     
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"memberSignupYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
-     {
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(signupMember) name:@"memberSignupYes" object:nil];
 
-         //檢查有無user資料
-         if ([DataBaseManager queryFromCoreData:@"MemberEntity" sortBy:@"memberID"].count == 0)
-         {
-             //寫資料
-             [self addMember:@"first"];
-             [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self postNotificationName:@"signupOver"];
-         }
-         else
-         {
-             NSArray *memberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.memberIDInput.text];
-             //檢查這個User有無註冊過了
-             if (memberArray.count == 0)
-             {
-                 [self addMember:@"other"];
-                 [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self postNotificationName:@"signupOver"];
-             }
-             else
-             {
-                 [AlertManager alert:@"帳號重複\n請重新輸入" controller:self];
-                 self.memberIDInput.text = @"";
-                 self.memberPWInput.text = @"";
-                 [self.memberIDInput becomeFirstResponder];
-             }
-         }
-    }];
-    
-    [[NSNotificationCenter defaultCenter] addObserverForName:@"signupOver" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
-     {
-         [self.navigationController popViewControllerAnimated:NO];
-     }];
+//    [[NSNotificationCenter defaultCenter] addObserverForName:@"signupOver" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
+//     {
+//         [self.navigationController popViewControllerAnimated:NO];
+//     }];
+}
+
+-(void)signupMember
+{
+    //檢查有無user資料
+    if ([DataBaseManager queryFromCoreData:@"MemberEntity" sortBy:@"memberID"].count == 0)
+    {
+        //寫資料
+        [self addMember:@"first"];
+        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self  command:@"popViewController"];
+    }
+    else
+    {
+        NSArray *memberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.memberIDInput.text];
+        //檢查這個User有無註冊過了
+        if (memberArray.count == 0)
+        {
+            [self addMember:@"other"];
+            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self command:@"popViewController"];
+        }
+        else
+        {
+            [AlertManager alert:@"帳號重複\n請重新輸入" controller:self];
+            self.memberIDInput.text = @"";
+            self.memberPWInput.text = @"";
+            [self.memberIDInput becomeFirstResponder];
+        }
+    }
 }
 
 - (IBAction)signupButton:(id)sender

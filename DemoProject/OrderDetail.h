@@ -16,10 +16,10 @@
 @property NSNumber *orderNotYetQty;
 @property NSNumber *orderThisQty;
 @property NSString *orderNo;
-@property NSString *orderNoA;
+@property NSString *orderNoOld;
 @property NSNumber *orderPrice;
 @property NSNumber *orderQty;
 @property NSNumber *orderSeq;
-@property NSNumber *orderSeqA;
+@property NSNumber *orderSeqOld;
 @property NSNumber *isInventory;
 @end
