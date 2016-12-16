@@ -10,5 +10,4 @@
 
 @interface UserCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *userLogoutButton;
-
 @end

@@ -68,7 +68,14 @@
 
 - (IBAction)signupButton:(id)sender
 {
-    [AlertManager alertYesAndNo:@"請確認資料是否正確並註冊會員" yes:@"是" no:@"否" controller:self postNotificationName:@"memberSignup"];
+    if (self.memberIDInput.text.length == 0 || self.memberPWInput.text.length == 0)
+    {
+        [AlertManager alert:@"帳號或密碼未填" controller:self];
+    }
+    else
+    {
+        [AlertManager alertYesAndNo:@"請確認資料是否正確並註冊會員" yes:@"是" no:@"否" controller:self postNotificationName:@"memberSignup"];
+    }
 }
 
 -(void)addMember:(NSString*)type
@@ -79,12 +86,12 @@
     addMember.memberID = self.memberIDInput.text;
     addMember.memberPW = self.memberPWInput.text;
     addMember.memberName = self.memberNameInput.text;
+    addMember.memberType = @"inside";
     NSDateFormatter *df = [NSDateFormatter new];
     [df setDateFormat:@"yyyy/MM/dd"];
     addMember.memberBirthday = [df dateFromString:self.memberBirthdayInput.text];
     addMember.memberImg = UIImagePNGRepresentation(self.memberImgView.image);
     [DataBaseManager updateToCoreData];
-    
     if ([type isEqualToString:@"first"])
     {
         addMember.memberApproved = YES;

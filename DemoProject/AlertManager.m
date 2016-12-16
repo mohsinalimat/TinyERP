@@ -33,6 +33,13 @@
             [(ViewController*)vc transferWVC];
         }];
     }
+    else if ([action isEqualToString:@"userShouldLogout"])
+    {
+        cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+               {
+                   [(SetupViewController*)vc userShouldLogout];
+               }];
+    }
     else
     {
         cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:nil];

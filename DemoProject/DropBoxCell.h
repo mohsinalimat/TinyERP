@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *dbBackupButton;
 @property (weak, nonatomic) IBOutlet UIButton *dbRestoreIcon;
 @property (weak, nonatomic) IBOutlet UIButton *dbRestoreButton;
+@property (weak, nonatomic) IBOutlet UIButton *dbLogoutIcon;
 @property (weak, nonatomic) IBOutlet UIButton *dbLogoutButton;
 @end

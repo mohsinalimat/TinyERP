@@ -170,7 +170,7 @@
         case 0:
         {
             UserCell *userCell = [tableView dequeueReusableCellWithIdentifier:@"userCell"];
-            [userCell.userLogoutButton addTarget:self action:@selector(userDidLogOut) forControlEvents:UIControlEventTouchUpInside];
+            [userCell.userLogoutButton addTarget:self action:@selector(askUserLogOut) forControlEvents:UIControlEventTouchUpInside];
             return userCell;
             break;
         }
@@ -188,6 +188,7 @@
             [dropboxCell.dbBackupButton addTarget:self action:@selector(dropboxBackupButton) forControlEvents:UIControlEventTouchUpInside];
             [dropboxCell.dbRestoreIcon addTarget:self action:@selector(dropboxRestoreButton) forControlEvents:UIControlEventTouchUpInside];
             [dropboxCell.dbRestoreButton addTarget:self action:@selector(dropboxRestoreButton) forControlEvents:UIControlEventTouchUpInside];
+            [dropboxCell.dbLogoutIcon addTarget:self action:@selector(dropboxLogoutButton) forControlEvents:UIControlEventTouchUpInside];
             [dropboxCell.dbLogoutButton addTarget:self action:@selector(dropboxLogoutButton) forControlEvents:UIControlEventTouchUpInside];
             return dropboxCell;
             break;
@@ -328,12 +329,23 @@
     }
 }
 
--(void)userDidLogOut
+-(void)askUserLogOut
+{
+    [AlertManager alert:@"是否確定登出？" controller:self command:@"userShouldLogout"];
+}
+
+-(void)userShouldLogout
 {
     AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     appDLG.isLogin = NO;
+    appDLG.isSignup = NO;
+    appDLG.loginType = @"";
+    appDLG.currentUserID = @"";
+    appDLG.currentUserName = @"";
+    appDLG.currentUserImg = nil;
     WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
     [self presentViewController:wvc animated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 

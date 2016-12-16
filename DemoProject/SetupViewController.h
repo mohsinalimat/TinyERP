@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface SetupViewController : UIViewController
-
+-(void)userShouldLogout;
 @end
