@@ -218,7 +218,10 @@
             self.orderPartnerInput.text = om.orderPartner;
         }
         //清空單身
-        self.orderDetailList = [NSMutableArray array];
+        if (self.orderDetailList.count !=0)
+        {
+            self.orderDetailList = [NSMutableArray array];
+        }
         for (OrderDetail *od in orderAOrderDetailList)
         {
             OrderDetail *odB = [self birthOrderDetail:od];
@@ -328,7 +331,14 @@
 {
     if ([[self.orderPreOrderInput.text substringToIndex:2] isEqualToString:type])
     {
-        [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
+        if (self.orderDetailList.count !=0)
+        {
+            [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
+        }
+        else
+        {
+            [self deleteAndGetOrderDetail];
+        }
     }
     else
     {

@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderMaster.h"
 
 @interface AccountingReverseViewController : UIViewController
 @property NSMutableArray *accOrderDetailList;
+@property OrderMaster *currentReverseOM;
 @end

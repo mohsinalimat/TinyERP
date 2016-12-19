@@ -7,6 +7,7 @@
 //
 
 #import "AccountingReverseViewController.h"
+#import "AccountingReversedListViewController.h"
 #import "OrderDetail.h"
 #import "AccRevCell.h"
 #import "DataBaseManager.h"
@@ -32,6 +33,7 @@
     [super viewDidLoad];
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
+    self.accOrderNoInput.text = self.currentReverseOM.orderNo;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -69,14 +71,45 @@
     return accRevCell;
 }
 
--(void)odThisAmountEditingEnd
+-(void)odThisAmountEditingEnd:(UITextField*)sender
 {
     
 }
 
-- (IBAction)allReverse:(id)sender {
+- (IBAction)allReverse:(id)sender
+{
+    
 }
 
+- (IBAction)saveReverse:(id)sender
+{
+    [DataBaseManager updateToCoreData];
+}
+
+- (IBAction)deleteReverse:(id)sender
+{
+    
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"accRevSegue"])
+    {
+        AccountingReversedListViewController *arlvc = segue.destinationViewController;
+        if ([[self.currentReverseOM.orderNo substringToIndex:2]isEqualToString:@"PC"])
+        {
+            arlvc.whereFrom = @"apSegue";
+        }
+        else if ([[self.currentReverseOM.orderNo substringToIndex:2]isEqualToString:@"SC"])
+        {
+            arlvc.whereFrom = @"arSegue";
+        }
+    }
+}
+- (IBAction)backRootView:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
 
 - (void)didReceiveMemoryWarning
 {

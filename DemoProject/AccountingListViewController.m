@@ -8,11 +8,13 @@
 
 #import "AccountingListViewController.h"
 #import "AccountingReverseViewController.h"
+#import "AccountingReversedListViewController.h"
 #import "CoreDataHelper.h"
 #import "DataBaseManager.h"
 #import "OrderMaster.h"
 #import "OrderDetail.h"
 #import "Partner.h"
+#import "OrderMasterManager.h"
 
 @interface AccountingListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *accountingTableView;
@@ -23,6 +25,7 @@
 @property (nonatomic) NSMutableArray *orderMonthTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderDayTwoDimensionalList;
 @property (nonatomic) NSMutableArray *orderNoTwoDimensionalList;
+@property (nonatomic) NSMutableArray *orderListReverse;
 
 @property (nonatomic) NSArray *orderNoSortedList;
 @property (nonatomic) NSArray *orderDaySortedList;
@@ -47,12 +50,14 @@
     if ([self.whereFrom isEqualToString:@"apSegue"])
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
+        self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
         self.partner = @"廠商";
         self.title = @"未沖應付";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
+        self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
         self.partner = @"客戶";
         self.title = @"未沖應收";
     }
@@ -383,6 +388,16 @@
     if ([segue.identifier isEqualToString:@"accSegue"])
     {
         AccountingReverseViewController *arvc = segue.destinationViewController;
+        OrderMaster *rom;
+        if ([self.whereFrom isEqualToString:@"apSegue"])
+        {
+            rom = [OrderMasterManager createOrderMaster:@"PC" orderList:self.orderListReverse];
+        }
+        else if ([self.whereFrom isEqualToString:@"arSegue"])
+        {
+            rom = [OrderMasterManager createOrderMaster:@"SC" orderList:self.orderListReverse];
+        }
+        arvc.currentReverseOM = rom;
         switch (self.accountingSummaryType)
         {
             case 0:
@@ -408,6 +423,11 @@
             default:
                 break;
         }
+    }
+    else if ([segue.identifier isEqualToString:@"accRevSegue"])
+    {
+        AccountingReversedListViewController *arlvc = segue.destinationViewController;
+        arlvc.whereFrom = self.whereFrom;
     }
 }
 

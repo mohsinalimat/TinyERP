@@ -398,7 +398,7 @@
                     <navigationItem key="navigationItem" id="7bd-dD-eUy">
                         <barButtonItem key="rightBarButtonItem" title="已沖查詢" id="fGs-Ps-LZS">
                             <connections>
-                                <segue destination="sTQ-PT-MRd" kind="show" id="8W9-N1-xFn"/>
+                                <segue destination="sTQ-PT-MRd" kind="show" identifier="accRevSegue" id="8W9-N1-xFn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -422,10 +422,10 @@
             </objects>
             <point key="canvasLocation" x="1069.5652173913045" y="1863.5869565217392"/>
         </scene>
-        <!--View Controller-->
+        <!--Accounting Reversed List View Controller-->
         <scene sceneID="Usl-qR-8R4">
             <objects>
-                <viewController id="sTQ-PT-MRd" sceneMemberID="viewController">
+                <viewController id="sTQ-PT-MRd" customClass="AccountingReversedListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6RL-iN-EFs"/>
                         <viewControllerLayoutGuide type="bottom" id="eyj-EV-8U1"/>
@@ -435,32 +435,60 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hjx-lk-HHy">
-                                <rect key="frame" x="0.0" y="64" width="414" height="672"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="628"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="qLd-bb-DrN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accDidRevCell" textLabel="HKU-rv-SWf" style="IBUITableViewCellStyleDefault" id="qLd-bb-DrN">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qLd-bb-DrN" id="nqu-K6-qEy">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HKU-rv-SWf">
+                                                    <rect key="frame" x="15" y="0.0" width="384" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="sTQ-PT-MRd" id="HZh-Vx-5K9"/>
+                                    <outlet property="delegate" destination="sTQ-PT-MRd" id="XMb-MD-U0m"/>
+                                </connections>
                             </tableView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fw5-Ea-urK">
+                                <rect key="frame" x="0.0" y="692" width="414" height="44"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="ygS-zo-XXH"/>
+                                    <barButtonItem title="回首頁" id="nHs-Fm-VJS">
+                                        <connections>
+                                            <action selector="backRootView:" destination="sTQ-PT-MRd" id="FCF-sf-a1b"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="pWy-W1-YLY"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Hjx-lk-HHy" firstAttribute="leading" secondItem="TGQ-3Z-IUt" secondAttribute="leading" id="IfP-05-Ivs"/>
+                            <constraint firstAttribute="trailing" secondItem="Fw5-Ea-urK" secondAttribute="trailing" id="JRb-Xr-DwF"/>
                             <constraint firstItem="Hjx-lk-HHy" firstAttribute="top" secondItem="6RL-iN-EFs" secondAttribute="bottom" id="VUx-D0-Fng"/>
+                            <constraint firstItem="eyj-EV-8U1" firstAttribute="top" secondItem="Fw5-Ea-urK" secondAttribute="bottom" id="cgg-Ov-F1N"/>
                             <constraint firstAttribute="trailing" secondItem="Hjx-lk-HHy" secondAttribute="trailing" id="dnv-aR-1pt"/>
-                            <constraint firstItem="eyj-EV-8U1" firstAttribute="top" secondItem="Hjx-lk-HHy" secondAttribute="bottom" id="uwo-9h-GYH"/>
+                            <constraint firstItem="Fw5-Ea-urK" firstAttribute="leading" secondItem="TGQ-3Z-IUt" secondAttribute="leading" id="eIM-T1-dfJ"/>
+                            <constraint firstItem="Fw5-Ea-urK" firstAttribute="top" secondItem="Hjx-lk-HHy" secondAttribute="bottom" id="eit-NY-Cch"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MVG-DL-t1K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1977" y="1864"/>
+            <point key="canvasLocation" x="1976.8115942028987" y="1863.5869565217392"/>
         </scene>
         <!--Accounting Reverse View Controller-->
         <scene sceneID="Vki-IC-HWV">
@@ -474,8 +502,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nl9-b0-eSh">
+                                <rect key="frame" x="70" y="652" width="274" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.084063489120000001" blue="0.035628859880000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="0.97715141660000004" green="1" blue="0.9482826647" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="deleteOrder:" destination="LDr-cX-G5j" eventType="touchUpInside" id="BbG-P8-DCG"/>
+                                    <action selector="deleteReverse:" destination="Bua-Gx-lz3" eventType="touchUpInside" id="QIU-8b-B57"/>
+                                </connections>
+                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Qu-RZ-7SU">
-                                <rect key="frame" x="0.0" y="184" width="414" height="508"/>
+                                <rect key="frame" x="0.0" y="184" width="414" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accRevCell" id="ETM-Yy-V10" customClass="AccRevCell">
@@ -579,9 +618,17 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="akP-Dm-DcL"/>
-                                    <barButtonItem title="　　回首頁" id="g9d-o4-aZH"/>
+                                    <barButtonItem title="　　回首頁" id="g9d-o4-aZH">
+                                        <connections>
+                                            <action selector="backRootView:" destination="Bua-Gx-lz3" id="7bJ-Id-vZI"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="jUB-4e-Dfu"/>
-                                    <barButtonItem title="儲存" id="yW2-wk-k3o"/>
+                                    <barButtonItem title="儲存" id="yW2-wk-k3o">
+                                        <connections>
+                                            <action selector="saveReverse:" destination="Bua-Gx-lz3" id="pip-13-Jgk"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFM-QY-qJ0">
@@ -720,9 +767,10 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="ABk-Sl-Uah" secondAttribute="trailing" id="21P-o2-ckN"/>
-                            <constraint firstItem="ABk-Sl-Uah" firstAttribute="top" secondItem="8Qu-RZ-7SU" secondAttribute="bottom" id="6Vp-rS-GZO"/>
                             <constraint firstItem="8Qu-RZ-7SU" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leading" id="98t-sJ-nOD"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Nl9-b0-eSh" secondAttribute="trailing" constant="50" id="9xQ-Bc-2BH"/>
                             <constraint firstItem="KyT-sr-3tX" firstAttribute="top" secondItem="ABk-Sl-Uah" secondAttribute="bottom" id="E1s-C8-rJ6"/>
+                            <constraint firstItem="Nl9-b0-eSh" firstAttribute="top" secondItem="8Qu-RZ-7SU" secondAttribute="bottom" constant="10" id="ENG-ow-ANe"/>
                             <constraint firstItem="8Qu-RZ-7SU" firstAttribute="top" secondItem="wFM-QY-qJ0" secondAttribute="bottom" constant="-44" id="GPi-8O-L6x"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="width" secondItem="7LP-C8-3bd" secondAttribute="width" id="MS3-Ko-Kdn"/>
                             <constraint firstItem="Lnh-Of-FpG" firstAttribute="top" secondItem="eFM-Mo-U9C" secondAttribute="bottom" constant="10" id="P2T-Je-Mfd"/>
@@ -730,7 +778,9 @@
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="centerX" secondItem="gHB-HM-aOG" secondAttribute="centerX" id="Wqu-Gy-EtH"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="height" secondItem="Lnh-Of-FpG" secondAttribute="height" multiplier="0.6" id="X2U-wq-T2v"/>
                             <constraint firstItem="Lnh-Of-FpG" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leadingMargin" id="X7s-wa-51u"/>
+                            <constraint firstItem="ABk-Sl-Uah" firstAttribute="top" secondItem="Nl9-b0-eSh" secondAttribute="bottom" constant="10" id="dGB-Xr-Bv3"/>
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="width" secondItem="gHB-HM-aOG" secondAttribute="width" id="hC6-nY-ggP"/>
+                            <constraint firstItem="Nl9-b0-eSh" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leadingMargin" constant="50" id="jzb-6K-BJh"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="leading" secondItem="7LP-C8-3bd" secondAttribute="leading" id="kd6-A2-bYl"/>
                             <constraint firstItem="ABk-Sl-Uah" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leading" id="lUk-su-oXU"/>
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="top" secondItem="Lnh-Of-FpG" secondAttribute="bottom" constant="10" id="liY-7Y-xpx"/>
@@ -744,7 +794,7 @@
                     <navigationItem key="navigationItem" id="dAz-Qx-JQ7">
                         <barButtonItem key="rightBarButtonItem" title="已沖查詢" id="2fx-Xz-VpS">
                             <connections>
-                                <segue destination="sTQ-PT-MRd" kind="show" id="QF1-5Q-6C1"/>
+                                <segue destination="sTQ-PT-MRd" kind="show" identifier="accRevSegue" id="QF1-5Q-6C1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -762,7 +812,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uGw-23-DGk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="right" id="Zyo-VB-JSR"/>
             </objects>
-            <point key="canvasLocation" x="1977" y="2603"/>
+            <point key="canvasLocation" x="1976.8115942028987" y="2602.989130434783"/>
         </scene>
         <!--Order View Controller-->
         <scene sceneID="cDi-6H-oU1">
