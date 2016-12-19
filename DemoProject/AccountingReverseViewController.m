@@ -20,10 +20,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *accDiscountInput;
 
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UITextField *accUserInput;
 @property (weak, nonatomic) IBOutlet UITextView *accRemarkInput;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *accountingReverseTableView;
+//@property NSMutableArray *accOrderDetailList;
 @end
 
 @implementation AccountingReverseViewController
@@ -34,6 +36,32 @@
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
+    self.accOrderDetailList = [NSMutableArray new];
+    self.title = @"沖帳明細";
+    if ([self.whereFrom isEqualToString:@"accQuerySegue"])
+    {
+        [self.accDidRevListBtn setEnabled:NO];
+        [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
+        self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
+    }
+    else if ([self.whereFrom isEqualToString:@"accCreateSegue"])
+    {
+        for (OrderDetail *fatherOrderDetail in self.orginalOrderDetailList)
+        {
+            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+            OrderDetail *childOD = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
+            //賦值
+            childOD.orderNo = self.currentReverseOM.orderNo;
+            childOD.orderSeq = @([self.orginalOrderDetailList indexOfObject:fatherOrderDetail]);
+            childOD.orderItemNo = fatherOrderDetail.orderItemNo;
+            childOD.orderPrice = fatherOrderDetail.orderPrice;
+            childOD.orderAmount = fatherOrderDetail.orderAmount;
+            childOD.orderNotYetAmount = fatherOrderDetail.orderNotYetAmount;
+            childOD.orderNoOld = fatherOrderDetail.orderNoOld;
+            childOD.orderSeqOld = fatherOrderDetail.orderSeqOld;
+            [self.accOrderDetailList addObject:childOD];
+        }
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -55,8 +83,10 @@
     //取物件
     OrderDetail *od = [self.accOrderDetailList objectAtIndex:indexPath.row];
     //賦值
+    accRevCell.odSeq.text = [od.orderSeq stringValue];
     accRevCell.odItemNo.text = od.orderItemNo;
     [accRevCell.odItemNo setEnabled:NO];
+    accRevCell.odThisAmount.tag = [od.orderSeq integerValue];
     //料號
     NSMutableArray *itemList = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:od.orderItemNo];
     if (itemList.count != 0)

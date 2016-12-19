@@ -822,6 +822,8 @@
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
             [self saveToOrderMasterObject];
+            [DataBaseManager updateToCoreData];
+            [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
         }
         //若是b單
         else if ([self.whereFrom isEqualToString:@"bSegue"])

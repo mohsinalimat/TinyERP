@@ -193,6 +193,20 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    if ([self.whereFrom isEqualToString:@"apSegue"])
+    {
+        self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
+        self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
+    }
+    else if ([self.whereFrom isEqualToString:@"arSegue"])
+    {
+        self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
+        self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
+    }
+}
+
 //改變維度
 - (IBAction)AccountingSummaryChanged:(UISegmentedControl*)sender
 {
@@ -380,12 +394,12 @@
 
 -(void)transferARVC:(UIButton*)btn
 {
-    [self performSegueWithIdentifier:@"accSegue" sender:btn];
+    [self performSegueWithIdentifier:@"accCreateSegue" sender:btn];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(UIButton*)sender
 {
-    if ([segue.identifier isEqualToString:@"accSegue"])
+    if ([segue.identifier isEqualToString:@"accCreateSegue"])
     {
         AccountingReverseViewController *arvc = segue.destinationViewController;
         OrderMaster *rom;
@@ -398,26 +412,31 @@
             rom = [OrderMasterManager createOrderMaster:@"SC" orderList:self.orderListReverse];
         }
         arvc.currentReverseOM = rom;
+        arvc.whereFrom = @"accCreateSegue";
         switch (self.accountingSummaryType)
         {
             case 0:
             {
-                arvc.accOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
+//                arvc.accOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
+                arvc.orginalOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
                 break;
             }
             case 1:
             {
-                arvc.accOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
+//                arvc.accOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
+                arvc.orginalOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
                 break;
             }
             case 2:
             {
-                arvc.accOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
+//                arvc.accOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
+                arvc.orginalOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
                 break;
             }
             case 3:
             {
-                arvc.accOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
+//                arvc.accOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
+                arvc.orginalOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
                 break;
             }
             default:

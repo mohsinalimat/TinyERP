@@ -7,10 +7,12 @@
 //
 
 #import "AccountingReversedListViewController.h"
+#import "AccountingReverseViewController.h"
 #import "DataBaseManager.h"
 #import "OrderMaster.h"
 
 @interface AccountingReversedListViewController () <UITableViewDelegate,UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *accountingReversedTableView;
 @property NSMutableArray *orderListDidReversed;
 @end
 
@@ -28,6 +30,14 @@
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
     }
+    if ([self.whereFrom isEqualToString:@"apSegue"])
+    {
+        self.title = @"已沖應收";
+    }
+    else if ([self.whereFrom isEqualToString:@"arSegue"])
+    {
+        self.title = @"已沖應付";
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -42,6 +52,14 @@
     cell.textLabel.text = om.orderNo;
     return cell;
 }
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    AccountingReverseViewController *arvc = segue.destinationViewController;
+    arvc.whereFrom = @"accQuerySegue";
+    arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
+}
+
 - (IBAction)backRootView:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];

@@ -405,7 +405,7 @@
                     <connections>
                         <outlet property="accountingSegment" destination="51v-dM-vpK" id="hZo-KK-WLR"/>
                         <outlet property="accountingTableView" destination="YRn-0V-F0t" id="Zu8-UQ-veG"/>
-                        <segue destination="Bua-Gx-lz3" kind="push" identifier="accSegue" id="sOl-5j-AiF"/>
+                        <segue destination="Bua-Gx-lz3" kind="push" identifier="accCreateSegue" id="sOl-5j-AiF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iKr-ac-mxw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -435,18 +435,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hjx-lk-HHy">
-                                <rect key="frame" x="0.0" y="64" width="414" height="628"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="672"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accDidRevCell" textLabel="HKU-rv-SWf" style="IBUITableViewCellStyleDefault" id="qLd-bb-DrN">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="accDidRevCell" textLabel="unH-mC-9i2" style="IBUITableViewCellStyleDefault" id="qLd-bb-DrN">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qLd-bb-DrN" id="nqu-K6-qEy">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HKU-rv-SWf">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="43"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="unH-mC-9i2">
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -454,6 +454,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Bua-Gx-lz3" kind="show" identifier="accQuerySegue" id="DuU-bd-kTb"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -485,6 +488,9 @@
                             <constraint firstItem="Fw5-Ea-urK" firstAttribute="top" secondItem="Hjx-lk-HHy" secondAttribute="bottom" id="eit-NY-Cch"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="accountingReversedTableView" destination="Hjx-lk-HHy" id="Pec-vS-eDL"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MVG-DL-t1K" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -632,7 +638,7 @@
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFM-QY-qJ0">
-                                <rect key="frame" x="0.0" y="184" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="140" width="414" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sz-4v-WEd">
                                         <rect key="frame" x="342" y="7" width="62" height="30"/>
@@ -666,13 +672,13 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Lnh-Of-FpG">
-                                <rect key="frame" x="20" y="74" width="374" height="100"/>
+                                <rect key="frame" x="20" y="30" width="374" height="100"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qfw-tr-bK4">
                                         <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="沖帳單號" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djo-Fg-6Jy">
-                                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="33.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="33.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -684,7 +690,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="交易對象" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9h-lD-3ce">
-                                                <rect key="frame" x="0.0" y="66.666666666666657" width="69.333333333333329" height="33.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="66.666666666666686" width="69.333333333333329" height="33.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -718,7 +724,7 @@
                                         <rect key="frame" x="198.33333333333331" y="0.0" width="51.999999999999972" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="使用者" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LuO-tD-OU0">
-                                                <rect key="frame" x="0.0" y="0.0" width="51.999999999999972" height="33.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="51.999999999999972" height="33.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -730,7 +736,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-3B-Ack">
-                                                <rect key="frame" x="0.0" y="66.666666666666657" width="51.999999999999972" height="33.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="66.666666666666686" width="51.999999999999972" height="33.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -757,7 +763,7 @@
                                 </constraints>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="tKU-c5-iOv">
-                                <rect key="frame" x="275.33333333333326" y="107.33333333333334" width="118.66666666666669" height="60.000000000000028"/>
+                                <rect key="frame" x="275.33333333333326" y="63.333333333333329" width="118.66666666666669" height="59.999999999999986"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -771,9 +777,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Nl9-b0-eSh" secondAttribute="trailing" constant="50" id="9xQ-Bc-2BH"/>
                             <constraint firstItem="KyT-sr-3tX" firstAttribute="top" secondItem="ABk-Sl-Uah" secondAttribute="bottom" id="E1s-C8-rJ6"/>
                             <constraint firstItem="Nl9-b0-eSh" firstAttribute="top" secondItem="8Qu-RZ-7SU" secondAttribute="bottom" constant="10" id="ENG-ow-ANe"/>
-                            <constraint firstItem="8Qu-RZ-7SU" firstAttribute="top" secondItem="wFM-QY-qJ0" secondAttribute="bottom" constant="-44" id="GPi-8O-L6x"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="width" secondItem="7LP-C8-3bd" secondAttribute="width" id="MS3-Ko-Kdn"/>
                             <constraint firstItem="Lnh-Of-FpG" firstAttribute="top" secondItem="eFM-Mo-U9C" secondAttribute="bottom" constant="10" id="P2T-Je-Mfd"/>
+                            <constraint firstItem="8Qu-RZ-7SU" firstAttribute="top" secondItem="wFM-QY-qJ0" secondAttribute="bottom" id="Phe-D3-Ace"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="top" secondItem="QkO-cK-PyV" secondAttribute="top" id="Rlt-r2-q40"/>
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="centerX" secondItem="gHB-HM-aOG" secondAttribute="centerX" id="Wqu-Gy-EtH"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="height" secondItem="Lnh-Of-FpG" secondAttribute="height" multiplier="0.6" id="X2U-wq-T2v"/>
@@ -799,6 +805,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="accDidRevListBtn" destination="2fx-Xz-VpS" id="mcC-yo-uf1"/>
                         <outlet property="accDiscountInput" destination="Tqm-25-xXX" id="WHx-sn-mBG"/>
                         <outlet property="accOrderDate" destination="PJ2-ao-4JT" id="PfX-WN-vOs"/>
                         <outlet property="accOrderNoInput" destination="FM6-5n-L78" id="qyA-Ek-BuY"/>
@@ -2986,8 +2993,9 @@ StoreApp
         <segue reference="LNu-av-hvY"/>
         <segue reference="dmz-ny-uAI"/>
         <segue reference="YQU-cy-WNj"/>
-        <segue reference="QF1-5Q-6C1"/>
         <segue reference="WdU-cR-wrs"/>
         <segue reference="Nve-gu-a0o"/>
+        <segue reference="QF1-5Q-6C1"/>
+        <segue reference="DuU-bd-kTb"/>
     </inferredMetricsTieBreakers>
 </document>

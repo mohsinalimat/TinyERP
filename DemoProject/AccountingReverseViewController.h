@@ -10,6 +10,8 @@
 #import "OrderMaster.h"
 
 @interface AccountingReverseViewController : UIViewController
+@property NSMutableArray *orginalOrderDetailList;
 @property NSMutableArray *accOrderDetailList;
 @property OrderMaster *currentReverseOM;
+@property NSString *whereFrom;
 @end
