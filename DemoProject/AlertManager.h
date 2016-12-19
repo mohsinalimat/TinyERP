@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 
 @interface AlertManager : NSObject
++(void)alertWithoutButton:(NSString*)message controller:(UIViewController*)vc time:(CGFloat)time action:(NSString*)action;
 +(void)alert:(NSString*)message controller:(UIViewController*)vc;
 +(void)alert:(NSString*)message controller:(UIViewController*)vc command:(NSString*)action;
 +(void)alert:(NSString*)message controller:(UIViewController*)vc postNotificationName:(NSString*)notification;

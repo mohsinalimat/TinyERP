@@ -60,6 +60,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *orderDetailButtonForAdd;
 @property (weak, nonatomic) IBOutlet UIButton * orderDetailButtonForCopy;
 
+@property NSString *originalPreOrderNo;
+
 @end
 
 @implementation OrderViewController
@@ -192,6 +194,7 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteAndGetOrderDetail) name:@"deleteAndGetOrderDetailYes" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearPreOrderNo) name:@"deleteAndGetOrderDetailNo" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
     
     //DataMode
     self.orderDetailList = [[NSMutableArray alloc]init];
@@ -199,6 +202,11 @@
     self.firmList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"F"];
     self.custList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"C"];
     self.warehouseList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"倉庫"];
+}
+
+-(void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)deleteAndGetOrderDetail
@@ -220,7 +228,10 @@
         //清空單身
         if (self.orderDetailList.count !=0)
         {
-            self.orderDetailList = [NSMutableArray array];
+            for (OrderDetail *od in self.orderDetailList)
+            {
+                [DataBaseManager deleteDataAndObject:od array:self.orderDetailList];
+            }
         }
         for (OrderDetail *od in orderAOrderDetailList)
         {
@@ -234,7 +245,7 @@
             odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
             [self.orderDetailList addObject:odB];
         }
-        [DataBaseManager updateToCoreData];
+//        [DataBaseManager updateToCoreData];
         [self.orderDetailTableView reloadData];
     }
     else
@@ -266,14 +277,14 @@
 }
 
 //開始編輯
-//只有有這個Method, setEnable:NO跟shouldChangeCharactersInRange return NO; 都無效
+//只要有這個Method, setEnable:NO跟shouldChangeCharactersInRange return NO; 都無效
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.orderDateInput)
     {
         [self.datePickerView setHidden:NO];
     }
-    if (textField == self.orderPartnerInput)
+    else if (textField == self.orderPartnerInput)
     {
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
@@ -288,6 +299,10 @@
         [self.dataPickerView setHidden:NO];
         [self.dataPickerView reloadAllComponents];
     }
+    else if (textField == self.orderPreOrderInput)
+    {
+        self.originalPreOrderNo = self.orderPreOrderInput.text;
+    }
 }
 
 //結束編輯
@@ -300,19 +315,22 @@
     //帶單身
     if (textField == self.orderPreOrderInput)
     {
-        if ([self.whereFrom isEqualToString:@"aSegue"] && textField.text.length != 0)
+        if (![self.originalPreOrderNo isEqualToString:self.orderPreOrderInput.text])
         {
-            [self checkPreOrderNo:@"SA"];
-        }
-        else if ([self.whereFrom isEqualToString:@"bSegue"] && textField.text.length != 0)
-        {
-            if ([self.orderNoBegin isEqualToString:@"P"])
-            {
-                [self checkPreOrderNo:@"PA"];
-            }
-            else if ([self.orderNoBegin isEqualToString:@"S"])
+            if ([self.whereFrom isEqualToString:@"aSegue"] && textField.text.length != 0)
             {
                 [self checkPreOrderNo:@"SA"];
+            }
+            else if ([self.whereFrom isEqualToString:@"bSegue"] && textField.text.length != 0)
+            {
+                if ([self.orderNoBegin isEqualToString:@"P"])
+                {
+                    [self checkPreOrderNo:@"PA"];
+                }
+                else if ([self.orderNoBegin isEqualToString:@"S"])
+                {
+                    [self checkPreOrderNo:@"SA"];
+                }
             }
         }
     }
@@ -331,6 +349,7 @@
 {
     if ([[self.orderPreOrderInput.text substringToIndex:2] isEqualToString:type])
     {
+        //單身有東西才確認
         if (self.orderDetailList.count !=0)
         {
             [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
@@ -555,7 +574,7 @@
             od.orderPrice = item.itemPrice;
         }
     }
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
 }
 
 //輸完量價
@@ -581,7 +600,7 @@
         od.orderPrice = priceN;
         od.orderAmount = amountN;
         od.orderNotYetAmount = amountN;
-        [DataBaseManager updateToCoreData];
+//        [DataBaseManager updateToCoreData];
         //放到cell
         if (![[od.orderAmount stringValue] isEqualToString:@"0"])
         {
@@ -629,7 +648,7 @@
                 currentOD.orderThisQty = @([odc.odThisQty.text floatValue]);
                 updateOD = queryArray[0];
                 updateOD.orderNotYetQty = @(newNotYetQty);
-                [DataBaseManager updateToCoreData];
+//                [DataBaseManager updateToCoreData];
             }
         }
     }
@@ -637,14 +656,16 @@
 
 - (IBAction)allDelivery:(id)sender
 {
+    NSLog(@"%@",self);
     for (OrderDetail *od in self.orderDetailList)
     {
         NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderDetailList indexOfObject:od] inSection:0];
         OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
         odCell.odThisQty.text = [od.orderNotYetQty stringValue];
-        odCell.odResultLabel.text = [@([od.orderNotYetQty floatValue]-[od.orderThisQty floatValue]) stringValue];
+        odCell.odResultLabel.text = [@(0) stringValue];
+        OrderDetail *od = [self.orderDetailList objectAtIndex:ip.row];
+        od.orderThisQty = @([odCell.odThisQty.text floatValue]);
     }
-    [self.orderDetailTableView reloadData];
 }
 
 //新增單身
@@ -718,7 +739,7 @@
     od.orderSeq = newCount;
     //加到陣列並存檔
     [self.orderDetailList insertObject:od atIndex:self.orderDetailList.count];
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
     //加到TV
     NSIndexPath *ip = [NSIndexPath indexPathForRow:self.orderDetailList.count-1 inSection:0];
     [self.orderDetailTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -740,7 +761,7 @@
     self.currentOM.orderWarehouse = self.orderWarehouseInput.text;
     self.currentOM.oderPreOrder = self.orderPreOrderInput.text;
     
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
 }
 
 //計算庫存
@@ -757,13 +778,13 @@
                 if ([self.orderNoBegin isEqualToString:@"P"])
                 {
                     getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
-                    [DataBaseManager updateToCoreData];
+//                    [DataBaseManager updateToCoreData];
                 }
                 else if ([self.orderNoBegin isEqualToString:@"S"])
                 {
                     getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
                     //這邊還需要判斷庫存不足
-                    [DataBaseManager updateToCoreData];
+//                    [DataBaseManager updateToCoreData];
                 }
             }
             else
@@ -773,7 +794,7 @@
                 newInventory.itemNo = od.orderItemNo;
                 newInventory.warehouse = self.currentOM.orderWarehouse;
                 newInventory.qty = od.orderQty;
-                [DataBaseManager updateToCoreData];
+//                [DataBaseManager updateToCoreData];
                 //這邊也要判斷庫存不足
             }
             //算過了
@@ -815,9 +836,10 @@
                 //才可存單頭跟計算庫存
                 [self saveToOrderMasterObject];
                 [self calculateInventory];
+                [DataBaseManager updateToCoreData];
+                [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
             }
         }
-        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -886,7 +908,7 @@
                 int newSeq = [od.orderSeq intValue];
                 newSeq -= 1;
                 od.orderSeq = @(newSeq);
-                [DataBaseManager updateToCoreData];
+//                [DataBaseManager updateToCoreData];
             }
         }
         self.currentOM.orderCount = @(self.orderDetailList.count);

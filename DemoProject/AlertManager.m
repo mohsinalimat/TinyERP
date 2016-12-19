@@ -15,6 +15,36 @@
 
 @implementation AlertManager
 
++ (void)dismissAlertController:(UIAlertController *)alert
+{
+    [alert dismissViewControllerAnimated:YES completion:nil];
+}
+
+//+ (void)dismissAlertController:(UIAlertController *)alert controller:(UIViewController*)vc
++ (void)dismissAlertControllerWithPop:(UIAlertController *)alert
+{
+    [alert dismissViewControllerAnimated:YES completion:
+    ^{
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"popVC" object:nil];
+    }];
+}
+
++(void)alertWithoutButton:(NSString*)message controller:(UIViewController*)vc time:(CGFloat)time action:(NSString*)action
+{
+    UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
+    [vc presentViewController:ac animated:YES completion:nil];
+    if ([action isEqualToString:@"popVC"])
+    {
+        [self performSelector:@selector(dismissAlertControllerWithPop:) withObject:ac afterDelay:time];
+    }
+    else
+    {
+        [self performSelector:@selector(dismissAlertController:) withObject:ac afterDelay:time];
+    }
+#pragma mark Q.不知為何多參就不能Delay
+//    [self performSelector:@selector(dismissAlertController:controller:) withObject:ac withObject:vc  afterDelay:time];
+}
+
 +(void)alert:(NSString*)message controller:(UIViewController*)vc
 {
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
