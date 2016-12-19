@@ -48,6 +48,7 @@
 		27D14F231DFFACCE008DA138 /* Member.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D14F221DFFACCE008DA138 /* Member.m */; };
 		27DA2D291E03A624002BEA63 /* AccRevCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D281E03A624002BEA63 /* AccRevCell.m */; };
 		27DA2D2F1E03D457002BEA63 /* AccountingReversedListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D2E1E03D457002BEA63 /* AccountingReversedListViewController.m */; };
+		27DA2D321E076E1B002BEA63 /* OrderMasterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DA2D311E076E1B002BEA63 /* OrderMasterManager.m */; };
 		27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E1A62F1DF009A8002ADDF1 /* UserCell.m */; };
 		27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CC81DF7AAB500FA09BC /* AccountingListViewController.m */; };
 		27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27E73CCB1DF7AB3C00FA09BC /* AccountingReverseViewController.m */; };
@@ -140,6 +141,8 @@
 		27DA2D281E03A624002BEA63 /* AccRevCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccRevCell.m; sourceTree = "<group>"; };
 		27DA2D2D1E03D457002BEA63 /* AccountingReversedListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingReversedListViewController.h; sourceTree = "<group>"; };
 		27DA2D2E1E03D457002BEA63 /* AccountingReversedListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountingReversedListViewController.m; sourceTree = "<group>"; };
+		27DA2D301E076E1B002BEA63 /* OrderMasterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderMasterManager.h; sourceTree = "<group>"; };
+		27DA2D311E076E1B002BEA63 /* OrderMasterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderMasterManager.m; sourceTree = "<group>"; };
 		27E1A62E1DF009A8002ADDF1 /* UserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserCell.h; sourceTree = "<group>"; };
 		27E1A62F1DF009A8002ADDF1 /* UserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserCell.m; sourceTree = "<group>"; };
 		27E73CC71DF7AAB500FA09BC /* AccountingListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountingListViewController.h; sourceTree = "<group>"; };
@@ -298,6 +301,8 @@
 				275A12CB1DC8398200A8C52D /* DataBaseManager.m */,
 				27E73CDC1DFFA35700FA09BC /* ImageManager.h */,
 				27E73CDD1DFFA35700FA09BC /* ImageManager.m */,
+				27DA2D301E076E1B002BEA63 /* OrderMasterManager.h */,
+				27DA2D311E076E1B002BEA63 /* OrderMasterManager.m */,
 			);
 			name = MANAGERs;
 			sourceTree = "<group>";
@@ -576,6 +581,7 @@
 				27A4C99C1DEC34D5002476CD /* SetupViewController.m in Sources */,
 				272BB5641DC732A800A1AB11 /* ViewController.m in Sources */,
 				27D14F231DFFACCE008DA138 /* Member.m in Sources */,
+				27DA2D321E076E1B002BEA63 /* OrderMasterManager.m in Sources */,
 				275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */,
 				27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */,
 				27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */,

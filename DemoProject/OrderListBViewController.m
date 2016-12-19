@@ -12,6 +12,7 @@
 #import "DataBaseManager.h"
 #import "CoreDataHelper.h"
 #import "OrderDetail.h"
+#import "OrderMasterManager.h"
 
 @interface OrderListBViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *downBarLabel;
@@ -76,69 +77,15 @@
 
 - (IBAction)downBarButton:(id)sender
 {
-    //產生單頭物件
-    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-    OrderMaster *om = [NSEntityDescription insertNewObjectForEntityForName:@"OrderMasterEntity" inManagedObjectContext:helper.managedObjectContext];
-    //單頭初值
+    OrderMaster *om;
     if ([self.whereFromB isEqualToString:@"pSegue"])
     {
-        om.orderType = @"PB";
+        om = [OrderMasterManager createOrderMaster:@"PB" orderList:self.orderListB];
     }
     else if ([self.whereFromB isEqualToString:@"sSegue"])
     {
-        om.orderType = @"SB";
+        om = [OrderMasterManager createOrderMaster:@"SB" orderList:self.orderListB];
     }
-    om.orderCount = 0;
-    //處理單號日期
-    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"YYMMdd"];
-    NSDate *date = [NSDate date];
-    NSString *dateString = [formatter stringFromDate:date];
-    //處理單號流水(如果單號再有問題 就改成加到最後面 馬的)
-    NSString *waterNoString;
-    if (self.orderListB.count == 0)
-    {
-        waterNoString = @"001";
-    }
-    else
-    {
-        BOOL isTodayOrderNo = NO;
-        NSMutableArray *todayOrderNoArray = [NSMutableArray array];
-        //遍歷
-        for (OrderMaster *om in self.orderListB)
-        {
-            NSString *orderNoDate = [om.orderNo substringWithRange:NSMakeRange(2,6)];
-            if ([orderNoDate isEqualToString:dateString])
-            {
-                isTodayOrderNo = YES;
-                NSString *sub = [om.orderNo substringFromIndex:8];
-                NSNumber *subN = @([sub integerValue]);
-                [todayOrderNoArray addObject:subN];
-            }
-        }
-        if (isTodayOrderNo == NO)
-        {
-            waterNoString = @"001";
-        }
-        else
-        {
-            NSNumber *maxOrderNo = [todayOrderNoArray valueForKeyPath: @"@max.integerValue"];
-            NSUInteger waterNoInt = [maxOrderNo integerValue] + 1;
-            NSNumber *waterNo = @(waterNoInt);
-            waterNoString = [waterNo stringValue];
-            if (waterNoString.length == 1)
-            {
-                waterNoString = [@"00" stringByAppendingString:waterNoString];
-            }
-            else if (waterNoString.length == 2)
-            {
-                waterNoString = [@"0" stringByAppendingString:waterNoString];
-            }
-        }
-    }
-    //組單號
-    NSString *orderNoString = [om.orderType stringByAppendingFormat:@"%@%@",dateString,waterNoString];
-    om.orderNo = orderNoString;
     
     [self.orderListB insertObject:om atIndex:0];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
