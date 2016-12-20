@@ -31,6 +31,7 @@
     self.appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     self.fbLoginButton.delegate = self;
     self.userIDInput.delegate = self;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(helloFB) name:FBSDKProfileDidChangeNotification object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -39,17 +40,21 @@
     self.fbLoginButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
 }
 
+-(void)helloFB
+{
+    NSLog(@"FBSDKProfileDidChangeNotification,WelcomeVC,helloFB");
+    self.appDLG.currentUserID = [FBSDKProfile currentProfile].userID;
+    self.appDLG.currentUserName = [FBSDKProfile currentProfile].name;
+    self.appDLG.loginType = @"FaceBook";
+    if (self.appDLG.currentUserID != nil)
+    {
+        [self login];
+    }
+}
+
 -(void)loginButton:(FBSDKLoginButton *)loginButton didCompleteWithResult:(FBSDKLoginManagerLoginResult *)result error:(NSError *)error
 {
     [FBSDKProfile enableUpdatesOnAccessTokenChange:YES];
-    if([FBSDKAccessToken currentAccessToken])
-    {
-        //這時還抓不到ID是嗎.....
-        self.appDLG.currentUserID = [FBSDKProfile currentProfile].userID;
-        self.appDLG.currentUserName = [FBSDKProfile currentProfile].name;
-        self.appDLG.loginType = @"FaceBook";
-        [self login];
-    }
 }
 
 -(void)login
@@ -66,16 +71,8 @@
     //檢查有無user資料
     if ([DataBaseManager queryFromCoreData:@"MemberEntity" sortBy:@"memberID"].count == 0)
     {
-        //寫資料
-        if([self addMember:@"first"]==YES)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-            [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
-        }
-        else
-        {
-            [AlertManager alert:@"無法註冊\n請聯絡系統管理員" controller:self];
-        }
+        [self addMember:@"first"];
+        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self command:@"dismissViewController"];
     }
     else
     {
@@ -83,15 +80,8 @@
         //檢查這個User有無註冊過了
         if (memberArray.count == 0)
         {
-            if([self addMember:@"other"]==YES)
-            {
-                [self dismissViewControllerAnimated:YES completion:nil];
-                [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
-            }
-            else
-            {
-                [AlertManager alert:@"無法註冊\n請聯絡系統管理員" controller:self];
-            }
+            [self addMember:@"other"];
+            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
         }
         else
         {
@@ -100,6 +90,7 @@
             if (getMember.memberApproved != YES)
             {
                 [AlertManager alert:@"您的帳號尚未審核\n請通知管理員\n謝謝" controller:self];
+                self.appDLG.isSignup = NO;
             }
             //註冊通過
             else
@@ -113,7 +104,7 @@
 }
 
 //已經先確認沒有找到ID(就代表沒有重複)才來執行這個方法
--(BOOL)addMember:(NSString*)type
+-(void)addMember:(NSString*)type
 {
     if (self.appDLG.currentUserID != nil)
     {
@@ -127,9 +118,7 @@
             addMember.memberApproved = YES;
         }
         [DataBaseManager updateToCoreData];
-        return YES;
     }
-    return NO;
 }
 
 - (IBAction)userLoginButton:(id)sender
@@ -143,7 +132,7 @@
     else
     {
         Member *checkMember = memberArray[0];
-        if (checkMember.memberID==self.userIDInput.text && checkMember.memberPW==self.userPWInput.text)
+        if ([checkMember.memberID isEqualToString:self.userIDInput.text] && [checkMember.memberPW isEqualToString:self.userPWInput.text])
         {
             if (checkMember.memberApproved != YES)
             {
@@ -177,6 +166,17 @@
     [self.userIDInput becomeFirstResponder];
 }
 
+//按Return縮鍵盤
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)loginButtonDidLogOut:(FBSDKLoginButton *)loginButton;
+{
+    //沒有這個delegate method會報錯
+}
 
 - (void)didReceiveMemoryWarning
 {

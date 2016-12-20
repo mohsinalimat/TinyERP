@@ -280,11 +280,7 @@
     self.thisItem.itemSafetyStock = safe;
     self.thisItem.itemSpec = self.itemSpecInput.text;
     self.thisItem.itemRemark = self.itemRemarkInput.text;
-    //轉成NSData
-    //self.itemImageView.image.imageOrientation;
-    NSData *imageData = UIImagePNGRepresentation(self.itemImageView.image);
-    //存回物件
-    self.thisItem.itemImg = imageData;
+    self.thisItem.itemImg = UIImageJPEGRepresentation(self.itemImageView.image,1);
     [DataBaseManager updateToCoreData];
 }
 

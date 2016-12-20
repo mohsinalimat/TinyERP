@@ -78,6 +78,13 @@
                    [vc.navigationController popViewControllerAnimated:YES];
                }];
     }
+    else if ([action isEqualToString:@"dismissViewController"])
+    {
+        cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action)
+               {
+                   [vc dismissViewControllerAnimated:YES completion:nil];
+               }];
+    }
     else
     {
         cfn = [UIAlertAction actionWithTitle:@"確定" style:UIAlertActionStyleDefault handler:nil];

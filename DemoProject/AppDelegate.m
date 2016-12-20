@@ -64,6 +64,7 @@
     
     if ([FBSDKProfile currentProfile])
     {
+        //這邊抓得到
         self.isLogin = YES;
         self.currentUserID = [FBSDKProfile currentProfile].userID;
         self.currentUserName = [FBSDKProfile currentProfile].name;

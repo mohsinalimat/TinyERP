@@ -111,6 +111,7 @@
 
 -(void)transferWVC
 {
+    NSLog(@"FBSDKProfileDidChangeNotification,SetupVC,transferWVC");
     WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeNC"];
     [self presentViewController:wvc animated:YES completion:nil];
 }

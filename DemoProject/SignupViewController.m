@@ -13,9 +13,10 @@
 #import "Member.h"
 #import "ImageManager.h"
 
-@interface SignupViewController () <UIImagePickerControllerDelegate>
+@interface SignupViewController () <UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *memberIDInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberPWInput;
+@property (weak, nonatomic) IBOutlet UITextField *memberPWCheckInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberNameInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberBirthdayInput;
 @property (weak, nonatomic) IBOutlet UIImageView *memberImgView;
@@ -31,12 +32,14 @@
     self.memberImgView.layer.borderWidth = 1;
     self.memberImgView.layer.borderColor =  self.view.tintColor.CGColor;
     
+    //代理Zone
+    self.memberIDInput.delegate = self;
+    self.memberPWInput.delegate = self;
+    self.memberPWCheckInput.delegate = self;
+    self.memberNameInput.delegate = self;
+    self.memberBirthdayInput.delegate = self;
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(signupMember) name:@"memberSignupYes" object:nil];
-
-//    [[NSNotificationCenter defaultCenter] addObserverForName:@"signupOver" object:self queue:nil usingBlock:^(NSNotification * _Nonnull note)
-//     {
-//         [self.navigationController popViewControllerAnimated:NO];
-//     }];
 }
 
 -(void)signupMember
@@ -72,6 +75,10 @@
     if (self.memberIDInput.text.length == 0 || self.memberPWInput.text.length == 0)
     {
         [AlertManager alert:@"帳號或密碼未填" controller:self];
+    }
+    else if (![self.memberPWInput.text isEqualToString:self.memberPWCheckInput.text])
+    {
+        [AlertManager alert:@"密碼輸入不一致" controller:self];
     }
     else
     {
@@ -133,6 +140,12 @@
     [self.imgManager deleteImage];
 }
 
+//按Return縮鍵盤
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
 
 - (void)didReceiveMemoryWarning
 {
