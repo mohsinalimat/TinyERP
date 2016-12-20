@@ -11,6 +11,7 @@
 #import "OrderDetail.h"
 #import "AccRevCell.h"
 #import "DataBaseManager.h"
+#import "AlertManager.h"
 #import "Item.h"
 
 @interface AccountingReverseViewController () <UITableViewDelegate,UITableViewDataSource>
@@ -18,11 +19,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *accOrderDate;
 @property (weak, nonatomic) IBOutlet UITextField *accOrderPartner;
 @property (weak, nonatomic) IBOutlet UITextField *accDiscountInput;
-
-
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UITextField *accUserInput;
 @property (weak, nonatomic) IBOutlet UITextView *accRemarkInput;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *accountingReverseTableView;
 //@property NSMutableArray *accOrderDetailList;
@@ -52,7 +52,8 @@
             OrderDetail *childOD = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
             //賦值
             childOD.orderNo = self.currentReverseOM.orderNo;
-            childOD.orderSeq = @([self.orginalOrderDetailList indexOfObject:fatherOrderDetail]);
+            NSUInteger seq = [self.orginalOrderDetailList indexOfObject:fatherOrderDetail] + 1;
+            childOD.orderSeq = @(seq);
             childOD.orderItemNo = fatherOrderDetail.orderItemNo;
             childOD.orderPrice = fatherOrderDetail.orderPrice;
             childOD.orderAmount = fatherOrderDetail.orderAmount;
@@ -62,6 +63,11 @@
             [self.accOrderDetailList addObject:childOD];
         }
     }
+}
+
+-(void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -113,7 +119,15 @@
 
 - (IBAction)saveReverse:(id)sender
 {
+    NSDateFormatter *df = [NSDateFormatter new];
+    [df setDateFormat:@"yyyy/MM/dd"];
+    NSString *orderDateString = self.accOrderDate.text;
+    self.currentReverseOM.orderDate = [df dateFromString:orderDateString];
+    self.currentReverseOM.orderNo = self.accOrderNoInput.text;
+    self.currentReverseOM.orderUser = self.accUserInput.text;
+    self.currentReverseOM.orderPartner = self.accOrderPartner.text;
     [DataBaseManager updateToCoreData];
+    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
 }
 
 - (IBAction)deleteReverse:(id)sender

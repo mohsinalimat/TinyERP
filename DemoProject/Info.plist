@@ -78,6 +78,8 @@
 	<string>是否允取存取定位？(只在地址導航時使用, 不會於背景收集您的個人資訊)</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>是否允許存取相簿？</string>
+	<key>UIFileSharingEnabled</key>
+	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

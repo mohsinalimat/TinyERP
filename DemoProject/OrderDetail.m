@@ -14,6 +14,7 @@
 @dynamic orderNotYetQty;
 @dynamic orderThisQty;
 @dynamic orderNotYetAmount;
+@dynamic orderThisAmount;
 @dynamic orderNo;
 @dynamic orderNoOld;
 @dynamic orderPrice;

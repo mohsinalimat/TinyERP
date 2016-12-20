@@ -44,7 +44,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *orderDetailTableView;
 @property (weak, nonatomic) IBOutlet UILabel *orderExpectedReverseDayLabel;
 @property (weak, nonatomic) IBOutlet UITextField *orderExpectedReverseDayInput;
-
+@property OrderDetailCell *lastODCell;
+//單頭UI排列比較好看
 @property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
 @property (weak, nonatomic) IBOutlet UITextField *emptyInput;
 
@@ -199,6 +200,10 @@
     //DataMode
     self.orderDetailList = [[NSMutableArray alloc]init];
     self.orderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentOM.orderNo];
+    if (self.orderDetailList.count == 0)
+    {
+        [self.navigationItem setHidesBackButton:YES animated:YES];
+    }
     self.firmList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"F"];
     self.custList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"C"];
     self.warehouseList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"倉庫"];
@@ -494,6 +499,12 @@
     }
     
     //監聽欄位
+    
+    [odCell.odItemNo addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [odCell.odQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [odCell.odPrice addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    [odCell.odThisQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    
     [odCell.odItemNo addTarget:self action:@selector(odItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odQty addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odPrice addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
@@ -575,6 +586,14 @@
         }
     }
 //    [DataBaseManager updateToCoreData];
+}
+
+
+//紀錄最後欄位的單身
+-(IBAction)anyoneEditingBegin:(UITextField*)sender
+{
+    NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
+    self.lastODCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
 }
 
 //輸完量價
@@ -817,29 +836,72 @@
             [AlertManager alert:@"客戶未填" controller:self];
         }
     }
+    else if (self.orderDetailList.count == 0)
+    {
+        [AlertManager alert:@"沒有單身不可儲存" controller:self];
+    }
     else
     {
+        //假設最後一格沒離開 就幫他做離開要做的事(無法分辨哪一格做不同的事 只好全做)
+        
+        
+        BOOL invalidOrderDteail = NO;
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
-            [self saveToOrderMasterObject];
-            [DataBaseManager updateToCoreData];
-            [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+            [self odItemNoEditingEnd:self.lastODCell.odItemNo];
+            [self odQtyOrPriceEditingEnd:self.lastODCell.odQty];
+            [self odQtyOrPriceEditingEnd:self.lastODCell.odPrice];
+            for (OrderDetail *od in self.orderDetailList)
+            {
+                if (od.orderItemNo==nil || od.orderQty==nil || [od.orderQty isEqual:@(0)] || od.orderPrice==nil)
+                {
+                    invalidOrderDteail = YES;
+                    break;
+                }
+            }
         }
-        //若是b單
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
-            //還要填倉庫
-            if (self.orderWarehouseInput.text.length==0)
+            [self odThisQtyEditingEnd:self.lastODCell.odThisQty];
+            for (OrderDetail *od in self.orderDetailList)
             {
-                [AlertManager alert:@"倉庫未填" controller:self];
+                if (od.orderThisQty==nil || [od.orderThisQty isEqual:@(0)])
+                {
+                    invalidOrderDteail = YES;
+                    break;
+                }
             }
-            else
+        }
+        
+        
+        if (invalidOrderDteail == YES)
+        {
+            [AlertManager alert:@"有單身資料不齊全\n請檢查" controller:self];
+        }
+        else
+        {
+            if ([self.whereFrom isEqualToString:@"aSegue"])
             {
-                //才可存單頭跟計算庫存
                 [self saveToOrderMasterObject];
-                [self calculateInventory];
                 [DataBaseManager updateToCoreData];
                 [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+            }
+            //若是b單
+            else if ([self.whereFrom isEqualToString:@"bSegue"])
+            {
+                //還要填倉庫
+                if (self.orderWarehouseInput.text.length==0)
+                {
+                    [AlertManager alert:@"倉庫未填" controller:self];
+                }
+                else
+                {
+                    //才可存單頭跟計算庫存
+                    [self saveToOrderMasterObject];
+                    [self calculateInventory];
+                    [DataBaseManager updateToCoreData];
+                    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+                }
             }
         }
     }

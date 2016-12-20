@@ -71,8 +71,10 @@ static CoreDataHelper *instance;
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"System.sqlite"];
     NSError *error = nil;
     
-    //自動根據schema更新,將options放入addPersistentStoreWithType中的options參數 78行
+    //自動根據schema更新,將options放入addPersistentStoreWithType中的options參數
     NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption:@(YES),NSInferMappingModelAutomaticallyOption:@(YES)};
+    //加上最後一個參數 sqlite檔就只會產生一個 試試看可否解決實機讀不到圖
+    //    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption:@(YES),NSInferMappingModelAutomaticallyOption:@(YES),NSSQLitePragmasOption:@{@"journal_mode":@"DELETE"}};
 
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {

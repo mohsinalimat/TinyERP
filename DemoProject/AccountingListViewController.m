@@ -417,25 +417,21 @@
         {
             case 0:
             {
-//                arvc.accOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
                 arvc.orginalOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
                 break;
             }
             case 1:
             {
-//                arvc.accOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
                 arvc.orginalOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
                 break;
             }
             case 2:
             {
-//                arvc.accOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
                 arvc.orginalOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
                 break;
             }
             case 3:
             {
-//                arvc.accOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
                 arvc.orginalOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
                 break;
             }

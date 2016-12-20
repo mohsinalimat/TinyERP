@@ -49,6 +49,12 @@
     }
 }
 
+//這樣交易對象才不會是null
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.orderListTableView reloadData];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.orderList.count;

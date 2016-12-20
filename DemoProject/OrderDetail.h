@@ -13,6 +13,7 @@
 @property NSString *orderItemNo;
 @property NSNumber *orderAmount;
 @property NSNumber *orderNotYetAmount;
+@property NSNumber *orderThisAmount;
 @property NSNumber *orderNotYetQty;
 @property NSNumber *orderThisQty;
 @property NSString *orderNo;
