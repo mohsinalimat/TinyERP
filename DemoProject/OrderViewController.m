@@ -240,12 +240,7 @@
         }
         for (OrderDetail *od in orderAOrderDetailList)
         {
-            OrderDetail *odB = [self birthOrderDetail:od];
-            //紀錄原A單的單號項次
-            odB.orderNoOld = odB.orderNo;
-            odB.orderSeqOld = odB.orderSeq;
-            //改單身的爸爸
-            odB.orderNo = self.currentOM.orderNo;
+            OrderDetail *odB = [self birthOrderDetail:od type:@"inherit"];
             //項次重排
             odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
             [self.orderDetailList addObject:odB];
@@ -487,14 +482,12 @@
     odCell.odResultLabel.text = @"";
     if ([self.whereFrom isEqualToString:@"aSegue"])
     {
-        [odCell.odNotYetQty setHidden:YES];
         [odCell.odThisQty setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
         [odCell.odItemNo setEnabled:NO];
-        [odCell.odNotYetQty setEnabled:NO];
-        [odCell.odQty setHidden:YES];
+        [odCell.odQty setEnabled:NO];
         [odCell.odPrice setHidden:YES];
     }
     
@@ -549,7 +542,6 @@
     {
         odCell.odResultLabel.text = [@([od.orderNotYetQty floatValue]-[od.orderThisQty floatValue]) stringValue];
     }
-    odCell.odNotYetQty.text = [od.orderNotYetQty stringValue];
     odCell.odThisQty.text = [od.orderThisQty stringValue];
     return odCell;
 }
@@ -639,11 +631,11 @@
     OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
     if ([odc.odThisQty.text floatValue] == 0)
     {
-        [AlertManager alert:@"數量不可為零" controller:self];
+        [AlertManager alert:@"異動量不可為零" controller:self];
     }
     else
     {
-        CGFloat newNotYetQty = [odc.odNotYetQty.text floatValue] - [odc.odThisQty.text floatValue];
+        CGFloat newNotYetQty = [odc.odQty.text floatValue] - [odc.odThisQty.text floatValue];
         if (newNotYetQty < 0)
         {
             if ([self.orderNoBegin isEqualToString:@"P"])
@@ -657,14 +649,18 @@
         }
         else
         {
+            //差額
             odc.odResultLabel.text = [@(newNotYetQty) stringValue];
-            
+            //抓物件賦值
             OrderDetail *currentOD = [self.orderDetailList objectAtIndex:sender.tag-1];
+            currentOD.orderThisQty = @([odc.odThisQty.text floatValue]);
+            currentOD.orderAmount = @([odc.odThisQty.text floatValue]*[currentOD.orderPrice floatValue]);
+            currentOD.orderNotYetAmount = currentOD.orderAmount;
+            //找前單
             NSArray *queryArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeq" fiterByArray:@[currentOD.orderNoOld,currentOD.orderSeqOld]];
             OrderDetail *updateOD;
             if (queryArray.count !=0)
             {
-                currentOD.orderThisQty = @([odc.odThisQty.text floatValue]);
                 updateOD = queryArray[0];
                 updateOD.orderNotYetQty = @(newNotYetQty);
 //                [DataBaseManager updateToCoreData];
@@ -724,25 +720,41 @@
     {
         //取得複製對象
         OrderDetail *selectedOD = [self.orderDetailList objectAtIndex:self.selectedRowIndex];
-        OrderDetail *copyOD = [self birthOrderDetail:selectedOD];
+        OrderDetail *copyOD = [self birthOrderDetail:selectedOD type:@"copy"];
         [self newOrderDetail:copyOD];
     }
 }
 
--(OrderDetail*)birthOrderDetail:(OrderDetail*)fatherOrderDetail
+-(OrderDetail*)birthOrderDetail:(OrderDetail*)fatherOrderDetail type:(NSString*)type
 {
     //生新物件
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     OrderDetail *childOD = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
     //賦值
+    
     childOD.orderItemNo = fatherOrderDetail.orderItemNo;
-    childOD.orderAmount = fatherOrderDetail.orderAmount;
-    childOD.orderNo = fatherOrderDetail.orderNo;
     childOD.orderPrice = fatherOrderDetail.orderPrice;
-    childOD.orderQty = fatherOrderDetail.orderQty;
-    childOD.orderSeq = fatherOrderDetail.orderSeq;
-    childOD.orderNotYetQty = fatherOrderDetail.orderNotYetQty;
-    childOD.orderNotYetAmount = fatherOrderDetail.orderNotYetAmount;
+    if ([type isEqualToString:@"copy"])
+    {
+        childOD.orderNo = fatherOrderDetail.orderNo;
+        childOD.orderSeq = fatherOrderDetail.orderSeq;
+        childOD.orderNotYetAmount = @(0);
+        childOD.orderAmount = fatherOrderDetail.orderAmount;
+        childOD.orderQty = fatherOrderDetail.orderQty;
+        childOD.orderNoOld = fatherOrderDetail.orderNoOld;
+        childOD.orderSeqOld = fatherOrderDetail.orderSeqOld;
+    }
+    else if ([type isEqualToString:@"inherit"])
+    {
+        //紀錄原A單的單號項次
+        childOD.orderNoOld = fatherOrderDetail.orderNo;
+        childOD.orderSeqOld = fatherOrderDetail.orderSeq;
+        //改單身的爸爸
+        childOD.orderNo = self.currentOM.orderNo;
+        childOD.orderNotYetAmount = @(0);
+        childOD.orderAmount = @(0);
+        childOD.orderQty = fatherOrderDetail.orderNotYetQty;
+    }
     
     return childOD;
 }
@@ -842,9 +854,6 @@
     }
     else
     {
-        //假設最後一格沒離開 就幫他做離開要做的事(無法分辨哪一格做不同的事 只好全做)
-        
-        
         BOOL invalidOrderDteail = NO;
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
