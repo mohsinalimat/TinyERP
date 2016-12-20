@@ -40,6 +40,8 @@
     self.view.hidden=YES;
     [self.fbProfileView setHidden:YES];
     [self.fbProfileName setHidden:YES];
+    [self.insideProfileView setHidden:YES];
+    [self.insideProfileName setHidden:YES];
     //設定九個按鈕UI
     for (UIButton *btn in self.nineButton)
     {
@@ -79,11 +81,17 @@
                 {
                     self.insideProfileName.text = appDLG.currentUserName;
                     self.insideProfileView.image = appDLG.currentUserImg;
+                    [self.insideProfileView setHidden:NO];
+                    [self.insideProfileName setHidden:NO];
+                    [self.fbProfileView setHidden:YES];
+                    [self.fbProfileName setHidden:YES];
                 }
                 else if ([appDLG.loginType isEqualToString:@"FaceBook"])
                 {
                     [self.fbProfileView setHidden:NO];
                     [self.fbProfileName setHidden:NO];
+                    [self.insideProfileView setHidden:YES];
+                    [self.insideProfileName setHidden:YES];
                     [self updateFBProfile];
                 }
             }

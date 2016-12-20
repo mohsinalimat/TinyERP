@@ -42,6 +42,8 @@
     self.dbRestorePicker.dataSource = self;
     [self.dbRestorePicker setHidden:YES];
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userShouldLogout) name:@"userShouldLogoutYes" object:nil];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(transferWVC) name:FBSDKProfileDidChangeNotification object:nil];
     
     //1.
@@ -156,7 +158,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 2;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -170,19 +172,22 @@
     {
         case 0:
         {
-            UserCell *userCell = [tableView dequeueReusableCellWithIdentifier:@"userCell"];
-            [userCell.userLogoutButton addTarget:self action:@selector(askUserLogOut) forControlEvents:UIControlEventTouchUpInside];
-            return userCell;
-            break;
+            if ([self.appDLG.loginType isEqualToString:@"inside"])
+            {
+                UserCell *userCell = [tableView dequeueReusableCellWithIdentifier:@"userCell"];
+                [userCell.userLogoutButton addTarget:self action:@selector(askUserLogOut) forControlEvents:UIControlEventTouchUpInside];
+                return userCell;
+                break;
+            }
+            else if ([self.appDLG.loginType isEqualToString:@"FaceBook"])
+            {
+                FBLogoutCell *fbLogoutCell = [tableView dequeueReusableCellWithIdentifier:@"fbCell"];
+                [fbLogoutCell.fbLogoutButton addTarget:self action:@selector(loginButtonDidLogOut:) forControlEvents:UIControlEventTouchUpInside];
+                return fbLogoutCell;
+                break;
+            }
         }
         case 1:
-        {
-            FBLogoutCell *fbLogoutCell = [tableView dequeueReusableCellWithIdentifier:@"fbCell"];
-            [fbLogoutCell.fbLogoutButton addTarget:self action:@selector(loginButtonDidLogOut:) forControlEvents:UIControlEventTouchUpInside];
-            return fbLogoutCell;
-            break;
-        }
-        case 2:
         {
             DropBoxCell *dropboxCell = [tableView dequeueReusableCellWithIdentifier:@"dbCell"];
             [dropboxCell.dbBackupIcon addTarget:self action:@selector(dropboxBackupButton) forControlEvents:UIControlEventTouchUpInside];
@@ -332,14 +337,7 @@
 
 -(void)askUserLogOut
 {
-    if (![self.appDLG.loginType isEqualToString:@"inside"])
-    {
-        [AlertManager alert:@"目前並非一般登入\n請使用外部登出按鈕" controller:self];
-    }
-    else
-    {
-        [AlertManager alert:@"是否確定登出？" controller:self command:@"userShouldLogout"];
-    }
+    [AlertManager alertYesAndNo:@"是否確定登出" yes:@"是" no:@"否" controller:self postNotificationName:@"userShouldLogout"];
 }
 
 -(void)userShouldLogout
