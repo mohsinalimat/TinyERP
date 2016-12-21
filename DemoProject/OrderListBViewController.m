@@ -91,7 +91,7 @@
     [self.orderListB insertObject:om atIndex:0];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.orderListBTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
     
     //生成ViewController
     OrderViewController *ovc = [self.storyboard instantiateViewControllerWithIdentifier:@"orderViewController"];

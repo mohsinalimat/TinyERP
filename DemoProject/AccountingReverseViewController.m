@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *accDiscountInput;
 @property (weak, nonatomic) IBOutlet UITextField *accUserInput;
 @property (weak, nonatomic) IBOutlet UITextView *accRemarkInput;
+@property (weak, nonatomic) IBOutlet UITextField *accBankAccountInput;
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
@@ -115,6 +116,9 @@
 - (IBAction)allReverse:(id)sender
 {
     
+}
+
+- (IBAction)moneyTypeChange:(id)sender {
 }
 
 - (IBAction)saveReverse:(id)sender

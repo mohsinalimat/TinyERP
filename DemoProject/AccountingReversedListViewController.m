@@ -13,6 +13,7 @@
 
 @interface AccountingReversedListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *accountingReversedTableView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *navigationBackButton;
 @property NSMutableArray *orderListDidReversed;
 @end
 
@@ -21,22 +22,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationItem setHidesBackButton:YES animated:YES];
     self.orderListDidReversed = [[NSMutableArray alloc]init];
     if ([self.whereFrom isEqualToString:@"apSegue"])
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
+        self.title = @"已沖應付";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
-    }
-    if ([self.whereFrom isEqualToString:@"apSegue"])
-    {
         self.title = @"已沖應收";
-    }
-    else if ([self.whereFrom isEqualToString:@"arSegue"])
-    {
-        self.title = @"已沖應付";
     }
 }
 
@@ -53,11 +49,23 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [DataBaseManager deleteOM:self.orderListDidReversed omtableView:tableView indexPath:indexPath];
+    }
+}
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     AccountingReverseViewController *arvc = segue.destinationViewController;
     arvc.whereFrom = @"accQuerySegue";
     arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
+}
+- (IBAction)navigationBack:(id)sender
+{
+    [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES];
 }
 
 - (IBAction)backRootView:(id)sender

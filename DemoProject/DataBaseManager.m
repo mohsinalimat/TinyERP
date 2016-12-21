@@ -208,11 +208,38 @@
     }
 }
 
++(void)rollbackFromCoreData
+{
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    [helper.managedObjectContext rollback];
+}
+
 +(void)deleteDataAndObject:(id)entity array:(NSMutableArray*)list
 {
     CoreDataHelper *help = [CoreDataHelper sharedInstance];
     [help.managedObjectContext deleteObject:entity];
     [list removeObject:entity];
+    [DataBaseManager updateToCoreData];
+}
+
++(void)deleteOM:(NSMutableArray*)omArray omtableView:(UITableView*)omtableView indexPath:(NSIndexPath*)indexPath
+{
+    //生成物件
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    OrderMaster *om = [omArray objectAtIndex:indexPath.row];
+    //刪DB
+    [helper.managedObjectContext deleteObject:om];
+    //刪陣列
+    [omArray removeObjectAtIndex:indexPath.row];
+    //刪cell
+    [omtableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    //單身也要刪
+    NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:om.orderNo];
+    for (OrderDetail *deadOD in deadList)
+    {
+        [helper.managedObjectContext deleteObject:deadOD];
+    }
+    //寫DB
     [DataBaseManager updateToCoreData];
 }
 @end
