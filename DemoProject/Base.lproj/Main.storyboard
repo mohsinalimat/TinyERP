@@ -348,17 +348,24 @@
                                 <rect key="frame" x="0.0" y="130" width="414" height="606"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountingCell" textLabel="Vye-KB-SaS" style="IBUITableViewCellStyleDefault" id="Q0e-LE-2m4">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accountingCell" textLabel="Vye-KB-SaS" detailTextLabel="cHl-cM-PuA" style="IBUITableViewCellStyleSubtitle" id="Q0e-LE-2m4">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q0e-LE-2m4" id="6YP-59-FTA">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vye-KB-SaS">
-                                                    <rect key="frame" x="15" y="0.0" width="384" height="43.666666666666664"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vye-KB-SaS">
+                                                    <rect key="frame" x="15" y="4" width="34" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cHl-cM-PuA">
+                                                    <rect key="frame" x="15" y="25" width="44" height="15"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -442,11 +449,11 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qLd-bb-DrN" id="nqu-K6-qEy">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="unH-mC-9i2">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -614,10 +621,10 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="odAmount" destination="qZ8-mr-HDi" id="bog-8k-EjH"/>
                                             <outlet property="odItemNameLabel" destination="NLA-lz-geQ" id="4sb-qr-VGU"/>
                                             <outlet property="odItemNo" destination="8F0-ZU-Rvm" id="APp-c5-rgX"/>
                                             <outlet property="odItemUnitLabel" destination="uS3-Lx-51b" id="txI-w1-Bz6"/>
-                                            <outlet property="odNotYetAmount" destination="qZ8-mr-HDi" id="yHf-Bn-Oxo"/>
                                             <outlet property="odResultLabel" destination="YcM-ZY-g6f" id="kBe-jA-fR1"/>
                                             <outlet property="odSeq" destination="lo0-yu-oKa" id="BYV-D2-d8Z"/>
                                             <outlet property="odThisAmount" destination="VUi-KL-CLR" id="b0x-jc-Zq2"/>
@@ -783,9 +790,6 @@
                                     <segment title="現金"/>
                                     <segment title="無"/>
                                 </segments>
-                                <connections>
-                                    <action selector="moneyTypeChange:" destination="Bua-Gx-lz3" eventType="valueChanged" id="Oby-ln-gW3"/>
-                                </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="帳號" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohv-SW-v7F">
                                 <rect key="frame" x="218.33333333333337" y="133" width="34.666666666666657" height="20.333333333333343"/>
@@ -847,12 +851,14 @@
                         <outlet property="accBankAccountInput" destination="fzE-HL-fxh" id="qlz-7M-N5B"/>
                         <outlet property="accDidRevListBtn" destination="2fx-Xz-VpS" id="mcC-yo-uf1"/>
                         <outlet property="accDiscountInput" destination="Tqm-25-xXX" id="WHx-sn-mBG"/>
-                        <outlet property="accOrderDate" destination="PJ2-ao-4JT" id="PfX-WN-vOs"/>
+                        <outlet property="accFinanceType" destination="3nn-gT-52m" id="k8u-UJ-1cJ"/>
+                        <outlet property="accOrderDateInput" destination="PJ2-ao-4JT" id="ZDH-Nc-zxg"/>
                         <outlet property="accOrderNoInput" destination="FM6-5n-L78" id="qyA-Ek-BuY"/>
-                        <outlet property="accOrderPartner" destination="xSL-EF-5tc" id="bcV-An-dLe"/>
+                        <outlet property="accOrderPartnerInput" destination="xSL-EF-5tc" id="Kdr-kF-cii"/>
                         <outlet property="accRemarkInput" destination="tKU-c5-iOv" id="wnq-Ct-tPC"/>
                         <outlet property="accUserInput" destination="7LP-C8-3bd" id="p6A-ck-7rN"/>
                         <outlet property="accountingReverseTableView" destination="8Qu-RZ-7SU" id="6oQ-k8-i6i"/>
+                        <outlet property="deleteAccOrderButton" destination="Nl9-b0-eSh" id="mnK-3w-QBf"/>
                         <outlet property="totalAmountLabel" destination="SmL-tx-idN" id="JgA-5o-591"/>
                     </connections>
                 </viewController>
@@ -1295,6 +1301,7 @@
                         <outlet property="allDeliveryButton" destination="HQH-gt-gFp" id="aza-Cl-xRa"/>
                         <outlet property="dataPickerView" destination="ypT-Rk-hs6" id="Oiw-IP-rRv"/>
                         <outlet property="datePickerView" destination="LNN-gE-Hle" id="aBK-9w-Qmm"/>
+                        <outlet property="deleteOrderButton" destination="kqk-W7-wYm" id="7PI-AM-usn"/>
                         <outlet property="emptyInput" destination="bSV-kf-eZj" id="PJu-RD-LSd"/>
                         <outlet property="emptyLabel" destination="h1h-0F-od0" id="XoE-5g-Pde"/>
                         <outlet property="expectedDayLabel" destination="Z55-h5-ye3" id="MWJ-5m-euw"/>
@@ -3042,7 +3049,7 @@ StoreApp
         <segue reference="rMe-MB-aFa"/>
         <segue reference="Nve-gu-a0o"/>
         <segue reference="YQU-cy-WNj"/>
+        <segue reference="sOl-5j-AiF"/>
         <segue reference="8W9-N1-xFn"/>
-        <segue reference="DuU-bd-kTb"/>
     </inferredMetricsTieBreakers>
 </document>

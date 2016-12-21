@@ -28,11 +28,13 @@
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
         self.title = @"已沖應付";
+        self.navigationBackButton.title = @"未沖應付";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
         self.title = @"已沖應收";
+        self.navigationBackButton.title = @"未沖應收";
     }
 }
 

@@ -38,6 +38,7 @@
 		27A4C99F1DEC3758002476CD /* FBLogoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A4C99E1DEC3758002476CD /* FBLogoutCell.m */; };
 		27A4C9D51DED6C6C002476CD /* InventoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A4C9D41DED6C6C002476CD /* InventoryCell.m */; };
 		27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A4CA131DEECE41002476CD /* DropBoxCell.m */; };
+		27A5B0461E0A69DA008BF08E /* DateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A5B0451E0A69DA008BF08E /* DateManager.m */; };
 		27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C071DD5C7B600FAA604 /* FirmListViewController.m */; };
 		27BE8C0B1DD5C81200FAA604 /* CustomerListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C0A1DD5C81200FAA604 /* CustomerListViewController.m */; };
 		27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27BE8C0D1DD5C82A00FAA604 /* PartnerViewController.m */; };
@@ -121,6 +122,8 @@
 		27A4C9D41DED6C6C002476CD /* InventoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InventoryCell.m; sourceTree = "<group>"; };
 		27A4CA121DEECE41002476CD /* DropBoxCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropBoxCell.h; sourceTree = "<group>"; };
 		27A4CA131DEECE41002476CD /* DropBoxCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropBoxCell.m; sourceTree = "<group>"; };
+		27A5B0441E0A69DA008BF08E /* DateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateManager.h; sourceTree = "<group>"; };
+		27A5B0451E0A69DA008BF08E /* DateManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateManager.m; sourceTree = "<group>"; };
 		27BE8C061DD5C7B600FAA604 /* FirmListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirmListViewController.h; sourceTree = "<group>"; };
 		27BE8C071DD5C7B600FAA604 /* FirmListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirmListViewController.m; sourceTree = "<group>"; };
 		27BE8C091DD5C81200FAA604 /* CustomerListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerListViewController.h; sourceTree = "<group>"; };
@@ -303,6 +306,8 @@
 				27E73CDD1DFFA35700FA09BC /* ImageManager.m */,
 				27DA2D301E076E1B002BEA63 /* OrderMasterManager.h */,
 				27DA2D311E076E1B002BEA63 /* OrderMasterManager.m */,
+				27A5B0441E0A69DA008BF08E /* DateManager.h */,
+				27A5B0451E0A69DA008BF08E /* DateManager.m */,
 			);
 			name = MANAGERs;
 			sourceTree = "<group>";
@@ -588,6 +593,7 @@
 				272BB5901DC7470E00A1AB11 /* OrderDetail.m in Sources */,
 				272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */,
 				272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */,
+				27A5B0461E0A69DA008BF08E /* DateManager.m in Sources */,
 				27BE8C371DDAA79F00FAA604 /* BasicData.m in Sources */,
 				272BB5841DC7457F00A1AB11 /* CoreDataHelper.m in Sources */,
 				275147E51DE7FFB100FF888D /* Inventory.m in Sources */,

@@ -19,6 +19,7 @@
 #import "AlertManager.h"
 #import "Inventory.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import "AppDelegate.h"
 
 @interface OrderViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *partnerLabel;
@@ -48,6 +49,7 @@
 //單頭UI排列比較好看
 @property (weak, nonatomic) IBOutlet UILabel *emptyLabel;
 @property (weak, nonatomic) IBOutlet UITextField *emptyInput;
+@property (weak, nonatomic) IBOutlet UIButton *deleteOrderButton;
 
 @property NSMutableArray *orderDetailList;
 @property NSMutableArray *firmList;
@@ -95,7 +97,8 @@
     }
     else
     {
-        self.orderUserInput.text = [FBSDKProfile currentProfile].name;
+        AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        self.orderUserInput.text = appDLG.currentUserName;
     }
     self.orderDateInput.text = dateString;
     self.orderPartnerInput.text = self.currentOM.orderPartner;
@@ -134,6 +137,7 @@
         [self.expectedDayLabel setHidden:YES];
         [self.orderExpectedDayInput setHidden:YES];
         [self.orderPartnerInput setEnabled:NO];
+#pragma mark Q.為何不能設
 //        CGRect frame = self.orderExpectedReverseDayInput.frame;
 //        frame.size.width = 130.0;
 //        self.orderExpectedReverseDayInput.frame = frame;
@@ -203,6 +207,11 @@
     if (self.orderDetailList.count == 0)
     {
         [self.navigationItem setHidesBackButton:YES animated:YES];
+        [self.deleteOrderButton setTitle:@"放棄新增" forState:UIControlStateNormal];
+    }
+    else
+    {
+        [self.deleteOrderButton setTitle:@"刪除此單" forState:UIControlStateNormal];
     }
     self.firmList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"F"];
     self.custList = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerType" fiterBy:@"C"];
@@ -251,12 +260,18 @@
             odB.orderSeq = @([orderAOrderDetailList indexOfObject:od]+1);
             [self.orderDetailList addObject:odB];
         }
-//        [DataBaseManager updateToCoreData];
         [self.orderDetailTableView reloadData];
     }
     else
     {
-        [AlertManager alert:@"此單號查無單身,請確認" controller:self];
+        if ([self.whereFrom isEqualToString:@"pSegue"])
+        {
+            [AlertManager alert:@"此單號查無未進貨單身,請確認" controller:self];
+        }
+        else if ([self.whereFrom isEqualToString:@"sSegue"])
+        {
+            [AlertManager alert:@"此單號查無未銷貨單身,請確認" controller:self];
+        }
     }
 
 }
@@ -565,17 +580,8 @@
     //產生cell
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    
-    //NSLog(@"%ld號呼叫",sender.tag);
-    //產生資料
-//    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
-    
-    //把料號寫回資料
-//    od.orderItemNo = odCell.odItemNo.text;
-    
     //讀DB
     NSMutableArray *itemList = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:odCell.odItemNo.text];
-    
     //如果有建料號基本資料
     //就帶出資料
     if (itemList.count != 0)
@@ -587,10 +593,8 @@
         if (![[item.itemPrice stringValue]isEqualToString:@"0"] && [odCell.odPrice.text isEqualToString:@""])
         {
             odCell.odPrice.text = [item.itemPrice stringValue];
-//            od.orderPrice = item.itemPrice;
         }
     }
-//    [DataBaseManager updateToCoreData];
 }
 
 //輸完量價
@@ -605,26 +609,13 @@
     }
     else
     {
-//        NSNumber *qtyN = @([odc.odQty.text floatValue]);
-//        NSNumber *priceN = @([odc.odPrice.text floatValue]);
         NSNumber *amountN = @([odc.odQty.text floatValue]*[odc.odPrice.text floatValue]);
-        //取得物件
-//        OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
-        //存回物件並相乘
-//        od.orderQty = qtyN;
-//        od.orderNotYetQty = qtyN;
-//        od.orderPrice = priceN;
-//        od.orderAmount = amountN;
-//        od.orderNotYetAmount = amountN;
-//        [DataBaseManager updateToCoreData];
-        //放到cell
         if (![[amountN stringValue] isEqualToString:@"0"])
         {
             odc.odResultLabel.text = [amountN stringValue];
         }
         //總計
         NSNumber *totalAmount = [self.orderDetailList valueForKeyPath:@"@sum.orderAmount"];
-//        self.currentOM.orderTotalAmount = totalAmount;
         self.totalAmountLabel.text = [totalAmount stringValue];
     }
 }
@@ -656,35 +647,18 @@
         {
             //差額
             odc.odResultLabel.text = [@(newNotYetQty) stringValue];
-            //抓物件賦值
-//            OrderDetail *currentOD = [self.orderDetailList objectAtIndex:sender.tag-1];
-//            currentOD.orderThisQty = @([odc.odThisQty.text floatValue]);
-//            currentOD.orderAmount = @([odc.odThisQty.text floatValue]*[currentOD.orderPrice floatValue]);
-//            currentOD.orderNotYetAmount = currentOD.orderAmount;
-            //找前單
-//            NSArray *queryArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeq" fiterByArray:@[currentOD.orderNoOld,currentOD.orderSeqOld]];
-//            OrderDetail *updateOD;
-//            if (queryArray.count !=0)
-//            {
-//                updateOD = queryArray[0];
-//                updateOD.orderNotYetQty = @(newNotYetQty);
-////                [DataBaseManager updateToCoreData];
-//            }
         }
     }
 }
 
 - (IBAction)allDelivery:(id)sender
 {
-    NSLog(@"%@",self);
     for (OrderDetail *od in self.orderDetailList)
     {
         NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderDetailList indexOfObject:od] inSection:0];
         OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-        odCell.odThisQty.text = [od.orderNotYetQty stringValue];
+        odCell.odThisQty.text = [od.orderQty stringValue];
         odCell.odResultLabel.text = [@(0) stringValue];
-        OrderDetail *od = [self.orderDetailList objectAtIndex:ip.row];
-        od.orderThisQty = @([odCell.odThisQty.text floatValue]);
     }
 }
 
@@ -775,7 +749,6 @@
     od.orderSeq = newCount;
     //加到陣列並存檔
     [self.orderDetailList insertObject:od atIndex:self.orderDetailList.count];
-//    [DataBaseManager updateToCoreData];
     //加到TV
     NSIndexPath *ip = [NSIndexPath indexPathForRow:self.orderDetailList.count-1 inSection:0];
     [self.orderDetailTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -796,13 +769,11 @@
                 if ([self.orderNoBegin isEqualToString:@"P"])
                 {
                     getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
-//                    [DataBaseManager updateToCoreData];
                 }
                 else if ([self.orderNoBegin isEqualToString:@"S"])
                 {
                     getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
                     //這邊還需要判斷庫存不足
-//                    [DataBaseManager updateToCoreData];
                 }
             }
             else
@@ -812,7 +783,6 @@
                 newInventory.itemNo = od.orderItemNo;
                 newInventory.warehouse = self.currentOM.orderWarehouse;
                 newInventory.qty = od.orderQty;
-//                [DataBaseManager updateToCoreData];
                 //這邊也要判斷庫存不足
             }
             //算過了
@@ -929,7 +899,6 @@
     self.currentOM.orderWarehouse = self.orderWarehouseInput.text;
     self.currentOM.oderPreOrder = self.orderPreOrderInput.text;
     self.currentOM.orderTotalAmount = @([self.totalAmountLabel.text floatValue]);
-    //    [DataBaseManager updateToCoreData];
 }
 
 -(void)saveToOrderDetailAObject
@@ -962,7 +931,6 @@
         {
             updateOD = queryArray[0];
             updateOD.orderNotYetQty = @([odCell.odQty.text floatValue] - [odCell.odThisQty.text floatValue]);
-            // [DataBaseManager updateToCoreData];
         }
     }
 }

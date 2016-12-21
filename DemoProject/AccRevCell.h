@@ -14,7 +14,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *odItemNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *odItemUnitLabel;
 
-@property (weak, nonatomic) IBOutlet UITextField *odNotYetAmount;
+@property (weak, nonatomic) IBOutlet UITextField *odAmount;
 @property (weak, nonatomic) IBOutlet UITextField *odThisAmount;
 @property (weak, nonatomic) IBOutlet UILabel *odResultLabel;
 @end

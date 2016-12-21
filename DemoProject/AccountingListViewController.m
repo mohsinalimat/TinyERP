@@ -31,15 +31,12 @@
 @property (nonatomic) NSArray *orderDaySortedList;
 @property (nonatomic) NSArray *orderMonthSortedList;
 @property (nonatomic) NSArray *orderPartnerSortedList;
-
-@property (nonatomic) NSString *partner;
 @end
 
 @implementation AccountingListViewController
 
 - (void)viewDidLoad
 {
-    
     [super viewDidLoad];
     self.accountingSummaryType = 0;
     //代理區
@@ -51,18 +48,16 @@
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountPB" fiterBy:@"0"];
         self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
-        self.partner = @"廠商";
+        [self.accountingSegment setTitle:@"廠商" forSegmentAtIndex:0];
         self.title = @"未沖應付";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
         self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
-        self.partner = @"客戶";
+        [self.accountingSegment setTitle:@"客戶" forSegmentAtIndex:0];
         self.title = @"未沖應收";
     }
-    //預設為零
-    [self.accountingSegment setTitle:self.partner forSegmentAtIndex:0];
     
     //取得單號並去重
     NSSet *orederNoGroup = [NSSet setWithArray:[self.totalOrderDetailList valueForKey:@"orderNo"]];
@@ -205,6 +200,7 @@
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
         self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
     }
+    [self.accountingTableView reloadData];
 }
 
 //改變維度
@@ -284,16 +280,20 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accountingCell"];
-    
     OrderDetail *od = [self getOD:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"    [%@][%ld]",
+                          od.orderNo,
+                          [od.orderSeq integerValue]];
     //已沖
     CGFloat orderAlreadyAmount = [od.orderAmount floatValue] - [od.orderNotYetAmount floatValue];
-    cell.textLabel.text = [NSString stringWithFormat:@"          [%ld]應收%.2f已收%.2f未收%.2f",
-                           [od.orderSeq integerValue],
-                           [od.orderAmount floatValue],
-                           orderAlreadyAmount,
-                           [od.orderNotYetAmount floatValue]];
-    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"    應收%.2f已收%.2f未收%.2f",
+                                [od.orderAmount floatValue],
+                                orderAlreadyAmount,
+                                [od.orderNotYetAmount floatValue]];
+#pragma mark Q.寬高真的很難設
+//    CGRect frame = cell.frame;
+//    frame.size.height = 160.0;
+//    cell.frame = frame;
     return cell;
 }
 
@@ -366,7 +366,7 @@
             break;
         }
         case 1:
-        {            sectionTitle = self.orderMonthSortedList[section];
+        {   sectionTitle = self.orderMonthSortedList[section];
             break;
         }
         case 2:
@@ -401,6 +401,7 @@
 {
     if ([segue.identifier isEqualToString:@"accCreateSegue"])
     {
+        //生成VC跟單頭
         AccountingReverseViewController *arvc = segue.destinationViewController;
         OrderMaster *rom;
         if ([self.whereFrom isEqualToString:@"apSegue"])
@@ -411,33 +412,42 @@
         {
             rom = [OrderMasterManager createOrderMaster:@"SC" orderList:self.orderListReverse];
         }
-        arvc.currentReverseOM = rom;
+        //給定VC屬性
         arvc.whereFrom = @"accCreateSegue";
         switch (self.accountingSummaryType)
         {
             case 0:
             {
                 arvc.orginalOrderDetailList = self.orderPartnerTwoDimensionalList[sender.tag];
+                rom.orderPartner = self.orderPartnerSortedList[sender.tag];
                 break;
             }
             case 1:
             {
                 arvc.orginalOrderDetailList = self.orderMonthTwoDimensionalList[sender.tag];
+                NSArray *subStringArray = [self.orderMonthSortedList[sender.tag] componentsSeparatedByString:@"_"];
+                rom.orderPartner = subStringArray[0];
                 break;
             }
             case 2:
             {
                 arvc.orginalOrderDetailList = self.orderDayTwoDimensionalList[sender.tag];
+                NSArray *subStringArray = [self.orderMonthSortedList[sender.tag] componentsSeparatedByString:@"_"];
+                rom.orderPartner = subStringArray[0];
                 break;
             }
             case 3:
             {
                 arvc.orginalOrderDetailList = self.orderNoTwoDimensionalList[sender.tag];
+                OrderMaster *om = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:self.orderNoSortedList[sender.tag]][0];
+                rom.orderPartner = om.orderPartner;
                 break;
             }
             default:
                 break;
         }
+        //把單頭設為VC屬性
+        arvc.currentReverseOM = rom;
     }
     else if ([segue.identifier isEqualToString:@"accRevSegue"])
     {
