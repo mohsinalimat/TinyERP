@@ -12,6 +12,7 @@
 #import "CoreDataHelper.h"
 #import "Member.h"
 #import "ImageManager.h"
+#import "DateManager.h"
 
 @interface SignupViewController () <UIImagePickerControllerDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *memberIDInput;
@@ -20,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *memberNameInput;
 @property (weak, nonatomic) IBOutlet UITextField *memberBirthdayInput;
 @property (weak, nonatomic) IBOutlet UIImageView *memberImgView;
+@property (weak, nonatomic) IBOutlet UIButton *commitButton;
+
 @property ImageManager *imgManager;
 @end
 
@@ -29,6 +32,13 @@
 {
     [super viewDidLoad];
     self.title = @"會員註冊";
+    [self.commitButton setTitle:@"註冊" forState:UIControlStateNormal];
+    if (self.currentMember != nil)
+    {
+        self.title = @"個人資料";
+        [self.commitButton setTitle:@"修改" forState:UIControlStateNormal];
+        [self.memberIDInput setEnabled:NO];
+    }
     self.memberImgView.layer.borderWidth = 1;
     self.memberImgView.layer.borderColor =  self.view.tintColor.CGColor;
     
@@ -39,7 +49,17 @@
     self.memberNameInput.delegate = self;
     self.memberBirthdayInput.delegate = self;
     
+    //初值
+    self.memberIDInput.text = self.currentMember.memberID;
+    self.memberNameInput.text = self.currentMember.memberName;
+    self.memberPWInput.text = self.currentMember.memberPW;
+    self.memberPWCheckInput.text = self.currentMember.memberPW;
+    self.memberBirthdayInput.text = [DateManager getFormatedDateString:self.currentMember.memberBirthday];
+    self.memberImgView.image = [UIImage imageWithData:self.currentMember.memberImg];
+    
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(signupMember) name:@"memberSignupYes" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(modifyMember) name:@"memberModifyYes" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
 }
 
 -(void)signupMember
@@ -49,7 +69,7 @@
     {
         //寫資料
         [self addMember:@"first"];
-        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self  command:@"popViewController"];
+        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題\n請至https://www.facebook.com/mark.storeapp反應\n謝謝" controller:self command:@"popViewController"];
     }
     else
     {
@@ -58,7 +78,7 @@
         if (memberArray.count == 0)
         {
             [self addMember:@"other"];
-            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self command:@"popViewController"];
+            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題\n請至https://www.facebook.com/mark.storeapp反應\n謝謝" controller:self command:@"popViewController"];
         }
         else
         {
@@ -70,7 +90,22 @@
     }
 }
 
-- (IBAction)signupButton:(id)sender
+-(void)modifyMember
+{
+    self.currentMember.memberName = self.memberNameInput.text;
+    self.currentMember.memberPW = self.memberPWInput.text;
+    self.currentMember.memberBirthday = [DateManager getDateByString:self.memberBirthdayInput.text];
+    self.currentMember.memberImg = UIImageJPEGRepresentation(self.memberImgView.image, 1);
+    [DataBaseManager updateToCoreData];
+    [AlertManager alertWithoutButton:@"修改完成" controller:self time:0.5 action:@"popVC"];
+}
+
+-(void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)commitButton:(id)sender
 {
     if (self.memberIDInput.text.length == 0 || self.memberPWInput.text.length == 0)
     {
@@ -82,7 +117,14 @@
     }
     else
     {
-        [AlertManager alertYesAndNo:@"請確認資料是否正確並註冊會員" yes:@"是" no:@"否" controller:self postNotificationName:@"memberSignup"];
+        if (self.currentMember == nil)
+        {
+            [AlertManager alertYesAndNo:@"請確認是否註冊會員" yes:@"是" no:@"否" controller:self postNotificationName:@"memberSignup"];
+        }
+        else
+        {
+            [AlertManager alertYesAndNo:@"請確認是否修改會員資料" yes:@"是" no:@"否" controller:self postNotificationName:@"memberModify"];
+        }
     }
 }
 
@@ -103,6 +145,7 @@
     if ([type isEqualToString:@"first"])
     {
         addMember.memberApproved = YES;
+        addMember.memberClass = @"admin";
     }
     [DataBaseManager updateToCoreData];
 }

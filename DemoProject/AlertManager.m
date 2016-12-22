@@ -17,14 +17,17 @@
 
 + (void)dismissAlertController:(UIAlertController *)alert
 {
+    //還是用廣播, 當Alert縮下來時才做
     [alert dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark Q.不知為何多參就不能Delay
 //+ (void)dismissAlertController:(UIAlertController *)alert controller:(UIViewController*)vc
 + (void)dismissAlertControllerWithPop:(UIAlertController *)alert
 {
     [alert dismissViewControllerAnimated:YES completion:
     ^{
+        //還是用廣播, 當Alert縮下來時才做
         [[NSNotificationCenter defaultCenter]postNotificationName:@"popVC" object:nil];
     }];
 }
@@ -33,6 +36,7 @@
 {
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:@"" message:message preferredStyle:UIAlertControllerStyleAlert];
     [vc presentViewController:ac animated:YES completion:nil];
+    //延後執行要做不同的事
     if ([action isEqualToString:@"popVC"])
     {
         [self performSelector:@selector(dismissAlertControllerWithPop:) withObject:ac afterDelay:time];

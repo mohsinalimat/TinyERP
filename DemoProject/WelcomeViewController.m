@@ -72,7 +72,7 @@
     if ([DataBaseManager queryFromCoreData:@"MemberEntity" sortBy:@"memberID"].count == 0)
     {
         [self addMember:@"first"];
-        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self command:@"dismissViewController"];
+        [AlertManager alert:@"歡迎初次使用店店三碗公\n已幫您註冊為管理員\n若使用上有任何問題\n請至https://www.facebook.com/mark.storeapp反應\n謝謝" controller:self command:@"dismissViewController"];
     }
     else
     {
@@ -81,7 +81,7 @@
         if (memberArray.count == 0)
         {
             [self addMember:@"other"];
-            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題請來信lawmark33699@gmail.com\n謝謝" controller:self];
+            [AlertManager alert:@"歡迎使用店店三碗公\n已幫您註冊為會員\n請待管理員審核後登入\n若使用上有任何問題\n請至https://www.facebook.com/mark.storeapp反應\n謝謝" controller:self];
         }
         else
         {
@@ -116,6 +116,7 @@
         if ([type isEqualToString:@"first"])
         {
             addMember.memberApproved = YES;
+            addMember.memberClass = @"admin";
         }
         [DataBaseManager updateToCoreData];
     }

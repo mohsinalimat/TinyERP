@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Member.h"
 
 @interface SignupViewController : UIViewController
-
+@property Member *currentMember;
 @end

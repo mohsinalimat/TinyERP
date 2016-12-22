@@ -16,6 +16,9 @@
 #import "WelcomeViewController.h"
 #import <ObjectiveDropboxOfficial.h>
 #import "AlertManager.h"
+#import "Member.h"
+#import "DataBaseManager.h"
+#import "SignupViewController.h"
 
 @interface SetupViewController () <UITableViewDelegate,UITableViewDataSource,FBSDKLoginButtonDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *steupTableView;
@@ -158,12 +161,26 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    switch (section)
+    {
+        case 0:
+            return 1;
+            break;
+        case 1:
+            return 1;
+            break;
+        case 2:
+            return 2;
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -174,7 +191,7 @@
         {
             if ([self.appDLG.loginType isEqualToString:@"inside"])
             {
-                UserCell *userCell = [tableView dequeueReusableCellWithIdentifier:@"userCell"];
+                UserCell *userCell = [tableView dequeueReusableCellWithIdentifier:@"userlogoutCell"];
                 [userCell.userLogoutButton addTarget:self action:@selector(askUserLogOut) forControlEvents:UIControlEventTouchUpInside];
                 return userCell;
                 break;
@@ -199,12 +216,66 @@
             return dropboxCell;
             break;
         }
+        case 2:
+        {
+            switch (indexPath.row)
+            {
+                case 0:
+                {
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"membersCell"];
+                    cell.textLabel.text = @"使用者管理";
+                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                    return cell;
+                    break;
+                }
+                case 1:
+                {
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell"];
+                    cell.textLabel.text = @"個人資料";
+                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                    return cell;
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
         default:
             break;
     }
     return nil;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    Member *member = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID][0];
+    if ([segue.identifier isEqualToString:@"membersSegue"])
+    {
+        if (![member.memberClass isEqualToString:@"admin"])
+        {
+            [AlertManager alert:@"需有管理員權限才可執行" controller:self];
+            return;
+        }
+    }
+    else if ([segue.identifier isEqualToString:@"profileSegue"])
+    {
+        if (![self.appDLG.loginType isEqualToString:@"inside"])
+        {
+            [AlertManager alert:@"一般會員登入才可執行" controller:self];
+            return;
+        }
+        else
+        {
+            SignupViewController *svc = segue.destinationViewController;
+            svc.currentMember = member;
+        }
+    }
+}
 
 -(BOOL)isDropboxDidLogin
 {
