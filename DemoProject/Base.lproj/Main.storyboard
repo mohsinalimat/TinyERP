@@ -2844,7 +2844,7 @@ StoreApp
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
-                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="z5b-uH-L8r" customClass="CollectionReusableViewWithTitle">
+                                <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="collectionHeader" id="z5b-uH-L8r" customClass="CollectionReusableViewWithTitle">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
@@ -2859,6 +2859,9 @@ StoreApp
                                         <constraint firstItem="lFp-Eh-c6l" firstAttribute="centerX" secondItem="z5b-uH-L8r" secondAttribute="centerX" id="ebx-sB-EmO"/>
                                         <constraint firstItem="lFp-Eh-c6l" firstAttribute="centerY" secondItem="z5b-uH-L8r" secondAttribute="centerY" id="oE4-ah-sJD"/>
                                     </constraints>
+                                    <connections>
+                                        <outlet property="title" destination="lFp-Eh-c6l" id="5m8-Gq-kIc"/>
+                                    </connections>
                                 </collectionReusableView>
                             </collectionView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bus-8E-TrD">
@@ -2877,18 +2880,42 @@ StoreApp
                                     <action selector="membersCellSizeChange:" destination="KAH-kR-vaS" eventType="valueChanged" id="Ois-bV-RuJ"/>
                                 </connections>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H63-5o-z6Y">
+                                <rect key="frame" x="75" y="81" width="55" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="Itq-K9-8fV"/>
+                                </constraints>
+                                <state key="normal" title="命令"/>
+                                <connections>
+                                    <action selector="changeAppoved:" destination="KAH-kR-vaS" eventType="touchUpInside" id="zJz-hu-gOu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OiA-3J-KHq">
+                                <rect key="frame" x="20" y="81" width="55" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="55" id="hEb-qF-xQp"/>
+                                </constraints>
+                                <state key="normal" title="反選"/>
+                                <connections>
+                                    <action selector="reverseSelect:" destination="KAH-kR-vaS" eventType="touchUpInside" id="QDN-RX-smb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="bus-8E-TrD" firstAttribute="top" secondItem="vuc-4O-L0O" secondAttribute="bottom" constant="18" id="0wc-Y6-m85"/>
                             <constraint firstItem="QZ9-uI-XjS" firstAttribute="top" secondItem="vuc-4O-L0O" secondAttribute="bottom" constant="66" id="1cZ-AK-UtQ"/>
                             <constraint firstItem="gEN-jd-bwN" firstAttribute="top" secondItem="bus-8E-TrD" secondAttribute="top" id="22e-4I-jpY"/>
+                            <constraint firstItem="H63-5o-z6Y" firstAttribute="centerY" secondItem="bus-8E-TrD" secondAttribute="centerY" id="7bp-up-gGh"/>
                             <constraint firstItem="bus-8E-TrD" firstAttribute="centerX" secondItem="kgJ-G6-XMI" secondAttribute="centerX" id="Lsx-ia-Ni9"/>
+                            <constraint firstItem="OiA-3J-KHq" firstAttribute="centerY" secondItem="bus-8E-TrD" secondAttribute="centerY" id="Obk-lA-w3k"/>
                             <constraint firstItem="RKt-Wi-aLs" firstAttribute="top" secondItem="QZ9-uI-XjS" secondAttribute="bottom" id="aL7-ea-mvN"/>
                             <constraint firstItem="gEN-jd-bwN" firstAttribute="leading" secondItem="bus-8E-TrD" secondAttribute="trailing" constant="20" id="bfd-2R-FMH"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gEN-jd-bwN" secondAttribute="trailing" id="fCB-cL-jOM"/>
                             <constraint firstAttribute="trailing" secondItem="QZ9-uI-XjS" secondAttribute="trailing" id="gUa-h7-Onh"/>
                             <constraint firstItem="QZ9-uI-XjS" firstAttribute="leading" secondItem="kgJ-G6-XMI" secondAttribute="leading" id="iXl-PI-3a7"/>
+                            <constraint firstItem="OiA-3J-KHq" firstAttribute="leading" secondItem="kgJ-G6-XMI" secondAttribute="leading" constant="20" id="mwn-fl-XaX"/>
+                            <constraint firstItem="H63-5o-z6Y" firstAttribute="leading" secondItem="OiA-3J-KHq" secondAttribute="trailing" id="zDd-jS-QCe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Kax-Vy-jiP">
@@ -2899,6 +2926,7 @@ StoreApp
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="changeAppovedButton" destination="H63-5o-z6Y" id="1Vz-NP-cV9"/>
                         <outlet property="membersCollectionView" destination="QZ9-uI-XjS" id="Gbg-lg-NUP"/>
                     </connections>
                 </viewController>
@@ -3082,7 +3110,7 @@ StoreApp
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="oTa-SN-dIt" kind="show" identifier="signupSegue" trigger="accessoryAction" id="ja6-fo-2sd"/>
+                                            <segue destination="oTa-SN-dIt" kind="show" id="2BX-Dt-cMR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -3221,7 +3249,7 @@ StoreApp
         <segue reference="QF1-5Q-6C1"/>
         <segue reference="rMe-MB-aFa"/>
         <segue reference="Nve-gu-a0o"/>
-        <segue reference="ja6-fo-2sd"/>
+        <segue reference="2BX-Dt-cMR"/>
         <segue reference="YQU-cy-WNj"/>
     </inferredMetricsTieBreakers>
 </document>
