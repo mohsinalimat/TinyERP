@@ -113,6 +113,8 @@
         addMember.memberID = self.appDLG.currentUserID;
         addMember.memberName = self.appDLG.currentUserName;
         addMember.memberType = self.appDLG.loginType;
+        addMember.memberApproved = NO;
+        addMember.memberClass = @"未分類";
         if ([type isEqualToString:@"first"])
         {
             addMember.memberApproved = YES;

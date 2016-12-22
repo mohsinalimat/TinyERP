@@ -175,7 +175,7 @@
             return 1;
             break;
         case 2:
-            return 2;
+            return 3;
             break;
         default:
             break;
@@ -232,6 +232,14 @@
                 {
                     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell"];
                     cell.textLabel.text = @"個人資料";
+                    cell.textLabel.textAlignment = UITextAlignmentCenter;
+                    return cell;
+                    break;
+                }
+                case 2:
+                {
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signupCell"];
+                    cell.textLabel.text = @"新增使用者";
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
                     break;

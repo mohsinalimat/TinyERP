@@ -141,7 +141,8 @@
     [df setDateFormat:@"yyyy/MM/dd"];
     addMember.memberBirthday = [df dateFromString:self.memberBirthdayInput.text];
     addMember.memberImg = UIImagePNGRepresentation(self.memberImgView.image);
-    [DataBaseManager updateToCoreData];
+    addMember.memberApproved = NO;
+    addMember.memberClass = @"未分類";
     if ([type isEqualToString:@"first"])
     {
         addMember.memberApproved = YES;

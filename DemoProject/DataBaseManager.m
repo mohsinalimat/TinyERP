@@ -103,10 +103,24 @@
         NSString *c = @"C";
         pred = [NSPredicate predicateWithFormat:@"(partnerID=%@) && (partnerType=%@)",fiterString,c];
     }
-    
+    //查user
     else if ([fiterColumn isEqualToString:@"memberID"])
     {
         pred = [NSPredicate predicateWithFormat:@"memberID=%@",fiterString];
+    }
+    //根據審核狀態查user
+    else if ([fiterColumn isEqualToString:@"memberApproed"])
+    {
+        BOOL flag;
+        if ([fiterString isEqualToString:@"Yes"])
+        {
+            flag = YES;
+        }
+        else if ([fiterString isEqualToString:@"No"])
+        {
+            flag = NO;
+        }
+        pred = [NSPredicate predicateWithFormat:@"memberApproved=%d",flag];
     }
     
     request.predicate = pred;

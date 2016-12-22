@@ -180,7 +180,6 @@
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //這邊看可否Push過去itemViewController 不然就只好用present
     NSLog(@"%@",indexPath);
 }
 

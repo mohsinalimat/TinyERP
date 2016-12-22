@@ -29,6 +29,8 @@
 		275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E11DE7F36400FF888D /* InventoryViewController.m */; };
 		275147E51DE7FFB100FF888D /* Inventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E41DE7FFB100FF888D /* Inventory.m */; };
 		275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A12CB1DC8398200A8C52D /* DataBaseManager.m */; };
+		278034CD1E0B839700E98F08 /* MembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278034CC1E0B839700E98F08 /* MembersViewController.m */; };
+		278034D31E0BA60E00E98F08 /* MemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278034D21E0BA60E00E98F08 /* MemberCell.m */; };
 		278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1F31DD04EA0000F23DE /* AllDataViewController.m */; };
 		278DA2001DD17855000F23DE /* EditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1FF1DD17855000F23DE /* EditCell.m */; };
 		27A4C9951DEC2749002476CD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */; };
@@ -108,6 +110,10 @@
 		275A12CA1DC8398200A8C52D /* DataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		275A12CB1DC8398200A8C52D /* DataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
 		277141111DD5983E00D899F8 /* SystemModel 2.0.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "SystemModel 2.0.0.xcdatamodel"; sourceTree = "<group>"; };
+		278034CB1E0B839700E98F08 /* MembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembersViewController.h; sourceTree = "<group>"; };
+		278034CC1E0B839700E98F08 /* MembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersViewController.m; sourceTree = "<group>"; };
+		278034D11E0BA60E00E98F08 /* MemberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemberCell.h; sourceTree = "<group>"; };
+		278034D21E0BA60E00E98F08 /* MemberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemberCell.m; sourceTree = "<group>"; };
 		278DA1F21DD04EA0000F23DE /* AllDataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllDataViewController.h; sourceTree = "<group>"; };
 		278DA1F31DD04EA0000F23DE /* AllDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllDataViewController.m; sourceTree = "<group>"; };
 		278DA1FE1DD17855000F23DE /* EditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCell.h; sourceTree = "<group>"; };
@@ -365,6 +371,8 @@
 				275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */,
 				27E73CD61DFF8FA300FA09BC /* SignupViewController.h */,
 				27E73CD71DFF8FA300FA09BC /* SignupViewController.m */,
+				278034CB1E0B839700E98F08 /* MembersViewController.h */,
+				278034CC1E0B839700E98F08 /* MembersViewController.m */,
 			);
 			name = MEMBERs;
 			sourceTree = "<group>";
@@ -390,14 +398,16 @@
 				278DA1FF1DD17855000F23DE /* EditCell.m */,
 				27A4C99D1DEC3758002476CD /* FBLogoutCell.h */,
 				27A4C99E1DEC3758002476CD /* FBLogoutCell.m */,
-				27A4C9D31DED6C6C002476CD /* InventoryCell.h */,
-				27A4C9D41DED6C6C002476CD /* InventoryCell.m */,
 				27A4CA121DEECE41002476CD /* DropBoxCell.h */,
 				27A4CA131DEECE41002476CD /* DropBoxCell.m */,
 				27E1A62E1DF009A8002ADDF1 /* UserCell.h */,
 				27E1A62F1DF009A8002ADDF1 /* UserCell.m */,
 				27DA2D271E03A624002BEA63 /* AccRevCell.h */,
 				27DA2D281E03A624002BEA63 /* AccRevCell.m */,
+				27A4C9D31DED6C6C002476CD /* InventoryCell.h */,
+				27A4C9D41DED6C6C002476CD /* InventoryCell.m */,
+				278034D11E0BA60E00E98F08 /* MemberCell.h */,
+				278034D21E0BA60E00E98F08 /* MemberCell.m */,
 				27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */,
 				27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */,
 			);
@@ -590,6 +600,7 @@
 				275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */,
 				27E73CD81DFF8FA300FA09BC /* SignupViewController.m in Sources */,
 				27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */,
+				278034CD1E0B839700E98F08 /* MembersViewController.m in Sources */,
 				272BB5901DC7470E00A1AB11 /* OrderDetail.m in Sources */,
 				272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */,
 				272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */,
@@ -599,6 +610,7 @@
 				275147E51DE7FFB100FF888D /* Inventory.m in Sources */,
 				27DA2D2F1E03D457002BEA63 /* AccountingReversedListViewController.m in Sources */,
 				272BB55E1DC732A800A1AB11 /* main.m in Sources */,
+				278034D31E0BA60E00E98F08 /* MemberCell.m in Sources */,
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
 				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,
 				275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */,
