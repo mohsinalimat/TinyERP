@@ -30,7 +30,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *accountingReverseTableView;
-//@property NSMutableArray *accOrderDetailList;
 @end
 
 @implementation AccountingReverseViewController
@@ -38,17 +37,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    //代理
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
+    //單頭初值
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
-    AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
-    self.accUserInput.text = appDLG.currentUserName;
     self.accOrderDetailList = [NSMutableArray new];
     self.title = @"沖帳明細";
     if ([self.whereFrom isEqualToString:@"accQuerySegue"])
     {
         self.accOrderDateInput.text = [DateManager getFormatedDateString:self.currentReverseOM.orderDate];
+        self.accUserInput.text = self.currentReverseOM.orderUser;
+        self.accBankAccountInput.text = self.currentReverseOM.orderBankAccount;
+        self.accFinanceType.selectedSegmentIndex = [self.currentReverseOM.orderFinanceType integerValue];
+        self.accDiscountInput.text = [self.currentReverseOM.orderDiscount stringValue];
+        self.totalAmountLabel.text = [self.currentReverseOM.orderTotalAmount stringValue];
         [self.accDidRevListBtn setEnabled:NO];
         [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
         self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
@@ -56,6 +60,9 @@
     else if ([self.whereFrom isEqualToString:@"accCreateSegue"])
     {
         self.accOrderDateInput.text = [DateManager getTodayDateString];
+        AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+        self.accUserInput.text = appDLG.currentUserName;
+        //轉單身
         for (OrderDetail *fatherOrderDetail in self.orginalOrderDetailList)
         {
             CoreDataHelper *helper = [CoreDataHelper sharedInstance];
@@ -143,8 +150,22 @@
         else
         {
             arCell.odResultLabel.text = [@(newNotYetQty) stringValue];
+            [self sumAmount];
         }
     }
+}
+
+-(CGFloat)sumAmount
+{
+    CGFloat totalAmount = 0.0;
+    for (NSUInteger index=0; index<self.accOrderDetailList.count; index++)
+    {
+        AccRevCell *arCell = [self.accountingReverseTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        totalAmount += [arCell.odThisAmount.text floatValue];
+    }
+    totalAmount -= [self.accDiscountInput.text floatValue];
+    self.totalAmountLabel.text = [NSString stringWithFormat:@"總金額  %.2f",totalAmount];
+    return totalAmount;
 }
 
 - (IBAction)allReverse:(id)sender
@@ -160,10 +181,6 @@
 
 - (IBAction)saveReverse:(id)sender
 {
-    //檢查單頭
-    //有無單身
-    //合法單身
-    //存
     if (self.accOrderPartnerInput.text.length==0)
     {
         [AlertManager alert:@"交易對象未填" controller:self];
@@ -195,6 +212,10 @@
             self.currentReverseOM.orderNo = self.accOrderNoInput.text;
             self.currentReverseOM.orderUser = self.accUserInput.text;
             self.currentReverseOM.orderPartner = self.accOrderPartnerInput.text;
+            self.currentReverseOM.orderBankAccount = self.accBankAccountInput.text;
+            self.currentReverseOM.orderFinanceType = @(self.accFinanceType.selectedSegmentIndex);
+            self.currentReverseOM.orderTotalAmount = @([self sumAmount]);
+            self.currentReverseOM.orderDiscount = @([self.accDiscountInput.text floatValue]);
             //存單身
             for (OrderDetail *od in self.accOrderDetailList)
             {
@@ -209,6 +230,34 @@
                 {
                     updateOD = queryArray[0];
                     updateOD.orderNotYetAmount = @([arCell.odAmount.text floatValue] - [arCell.odThisAmount.text floatValue]);
+                }
+            }
+            //第一次存
+            if (self.currentReverseOM.orderNoTwins == nil)
+            {
+                //有帳號
+                if (self.accFinanceType.selectedSegmentIndex != 2)
+                {
+                    //(決議因單據由系統產生 故直接MAPPING)
+                    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+                    OrderMaster *sonOM = [NSEntityDescription insertNewObjectForEntityForName:@"OrderMasterEntity" inManagedObjectContext:helper.managedObjectContext];
+                    sonOM.orderNoTwins = self.currentReverseOM.orderNo;
+                    if ([self.whereFrom isEqualToString:@"apSegue"])
+                    {
+                        sonOM.orderType = @"PD";
+                    }
+                    else if ([self.whereFrom isEqualToString:@"arSegue"])
+                    {
+                        sonOM.orderType = @"SD";
+                    }
+                }
+            }
+            else
+            {
+                if (self.accFinanceType.selectedSegmentIndex == 2)
+                {
+                    //但等於二
+                    //警告將刪除
                 }
             }
             [DataBaseManager updateToCoreData];
@@ -237,6 +286,21 @@
         }
     }
 }
+
+- (IBAction)ChangeFinanceType:(UISegmentedControl*)sender
+{
+    if (sender.selectedSegmentIndex>0)
+    {
+        [self.accBankAccountInput setEnabled:NO];
+        self.accBankAccountInput.text = @"";
+    }
+    else
+    {
+        [self.accBankAccountInput setEnabled:YES];
+    }
+}
+
+
 - (IBAction)backRootView:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];

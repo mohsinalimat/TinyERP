@@ -19,4 +19,8 @@
 @dynamic orderType;
 @dynamic orderCount;
 @dynamic orderExpectedDay;
+@dynamic orderBankAccount;
+@dynamic orderFinanceType;
+@dynamic orderDiscount;
+@dynamic orderNoTwins;
 @end

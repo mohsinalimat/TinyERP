@@ -33,6 +33,7 @@
 		278034D31E0BA60E00E98F08 /* MemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278034D21E0BA60E00E98F08 /* MemberCell.m */; };
 		278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1F31DD04EA0000F23DE /* AllDataViewController.m */; };
 		278DA2001DD17855000F23DE /* EditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1FF1DD17855000F23DE /* EditCell.m */; };
+		279AE0D01E0D3F81007D9B0B /* FinanceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279AE0CF1E0D3F81007D9B0B /* FinanceListViewController.m */; };
 		27A4C9951DEC2749002476CD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */; };
 		27A4C9961DEC2749002476CD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */; };
 		27A4C9981DEC2795002476CD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A4C9971DEC2795002476CD /* Bolts.framework */; };
@@ -118,6 +119,8 @@
 		278DA1F31DD04EA0000F23DE /* AllDataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllDataViewController.m; sourceTree = "<group>"; };
 		278DA1FE1DD17855000F23DE /* EditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditCell.h; sourceTree = "<group>"; };
 		278DA1FF1DD17855000F23DE /* EditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCell.m; sourceTree = "<group>"; };
+		279AE0CE1E0D3F81007D9B0B /* FinanceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceListViewController.h; sourceTree = "<group>"; };
+		279AE0CF1E0D3F81007D9B0B /* FinanceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceListViewController.m; sourceTree = "<group>"; };
 		27A4C9971DEC2795002476CD /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		27A4C9991DEC2909002476CD /* DemoProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DemoProject.entitlements; sourceTree = "<group>"; };
 		27A4C99A1DEC34D5002476CD /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
@@ -360,6 +363,8 @@
 		27E73CC61DF7AA5700FA09BC /* FINANCEs */ = {
 			isa = PBXGroup;
 			children = (
+				279AE0CE1E0D3F81007D9B0B /* FinanceListViewController.h */,
+				279AE0CF1E0D3F81007D9B0B /* FinanceListViewController.m */,
 			);
 			name = FINANCEs;
 			sourceTree = "<group>";
@@ -581,6 +586,7 @@
 				272BB5931DC74A7700A1AB11 /* ItemListViewController.m in Sources */,
 				271462641DDD48F300CC8CB6 /* OrderDetailCell.m in Sources */,
 				272BB58A1DC746C900A1AB11 /* Partner.m in Sources */,
+				279AE0D01E0D3F81007D9B0B /* FinanceListViewController.m in Sources */,
 				27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */,
 				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,

@@ -20,4 +20,8 @@
 @property NSString *orderType;
 @property NSNumber *orderCount;
 @property NSDate *orderExpectedDay;
+@property NSNumber *orderFinanceType;
+@property NSString *orderBankAccount;
+@property NSNumber *orderDiscount;
+@property NSString *orderNoTwins;
 @end

@@ -615,9 +615,28 @@
             odc.odResultLabel.text = [amountN stringValue];
         }
         //總計
-        NSNumber *totalAmount = [self.orderDetailList valueForKeyPath:@"@sum.orderAmount"];
-        self.totalAmountLabel.text = [totalAmount stringValue];
+        [self sumAmount];
     }
+}
+
+-(CGFloat)sumAmount
+{
+    CGFloat totalAmount = 0.0;
+    for (NSUInteger index=0; index<self.orderDetailList.count; index++)
+    {
+        OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            totalAmount += ([odCell.odQty.text floatValue]*[odCell.odPrice.text floatValue]);
+            self.totalAmountLabel.text = [NSString stringWithFormat:@"%.2f",totalAmount];
+        }
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            OrderDetail *od = self.orderDetailList[index];
+            totalAmount += [od.orderAmount floatValue];
+        }
+    }
+    return totalAmount;
 }
 
 //輸完本次異動
@@ -898,7 +917,7 @@
     self.currentOM.orderPartner = self.orderPartnerInput.text;
     self.currentOM.orderWarehouse = self.orderWarehouseInput.text;
     self.currentOM.oderPreOrder = self.orderPreOrderInput.text;
-    self.currentOM.orderTotalAmount = @([self.totalAmountLabel.text floatValue]);
+    self.currentOM.orderTotalAmount = @([self sumAmount]);
 }
 
 -(void)saveToOrderDetailAObject
