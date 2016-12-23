@@ -68,6 +68,7 @@
         self.isLogin = YES;
         self.currentUserID = [FBSDKProfile currentProfile].userID;
         self.currentUserName = [FBSDKProfile currentProfile].name;
+        self.currentMember = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.currentUserID].firstObject;
         self.loginType = @"FaceBook";
     }
     return YES;

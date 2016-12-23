@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *memberIDLabel;
 @property (weak, nonatomic) IBOutlet UILabel *memberNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *memberimgView;
+@property (weak, nonatomic) IBOutlet UIView *selectedView;
 
 @end

@@ -12,6 +12,7 @@
 #import "MemberCell.h"
 #import "CollectionReusableViewWithTitle.h"
 #import "AlertManager.h"
+#import "AppDelegate.h"
 
 @interface MembersViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
@@ -24,6 +25,9 @@
 @property NSMutableArray *memberApprovedNo2DList;
 @property NSMutableArray *selectedMemberList;
 @property BOOL isShowApporvedMember;
+@property CGFloat cellWidth;
+@property CGFloat cellHeight;
+@property CGFloat cellSizeRatio;
 @end
 
 @implementation MembersViewController
@@ -40,6 +44,11 @@
     self.isShowApporvedMember = NO;
     [self.changeAppovedButton setTitle:@"啟用" forState:UIControlStateNormal];
     [self classifyMember];
+    self.cellWidth = 80;
+    self.cellHeight = self.cellWidth+40;
+    self.cellSizeRatio = 1.0;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(setAdmin) name:@"setAdminYes" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
 }
 
 -(void)classifyMember
@@ -101,8 +110,17 @@
     Member *member = [self getMember:indexPath];
     MemberCell *mCell = [collectionView dequeueReusableCellWithReuseIdentifier:@"memberCell" forIndexPath:indexPath];
     mCell.memberIDLabel.text = member.memberID;
+    if ([member.memberType isEqualToString:@"FaceBook"])
+    {
+        mCell.memberIDLabel.text = @"FB使用者";
+    }
     mCell.memberNameLabel.text = member.memberName;
     mCell.memberimgView.image = [UIImage imageWithData:member.memberImg];
+    
+    CGRect rect = mCell.memberimgView.frame;
+    rect.size.width = self.cellWidth;
+    mCell.memberimgView.frame = rect;
+    
     mCell.layer.borderWidth = 1;
     return mCell;
 }
@@ -125,10 +143,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //1.圖片正方形
-    //2.上下文字標籤高度固定
-    //3.圖片跟cell等寬
-    return CGSizeMake(80, 120);
+    CGFloat myCellWidth = self.cellWidth*self.cellSizeRatio;
+    CGFloat myCellHeight = myCellWidth + 40;
+    return CGSizeMake(myCellWidth, myCellHeight);
 }
 
 //間距
@@ -140,11 +157,15 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.selectedMemberList addObject:[self getMember:indexPath]];
+    MemberCell *cell = (MemberCell*)[self.membersCollectionView cellForItemAtIndexPath:indexPath];
+    cell.selectedView.alpha = 0.5;
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.selectedMemberList removeObject:[self getMember:indexPath]];
+    MemberCell *cell = (MemberCell*)[self.membersCollectionView cellForItemAtIndexPath:indexPath];
+    cell.selectedView.alpha = 0.0;
 }
 
 -(Member*)getMember:(NSIndexPath*)indexPath
@@ -177,6 +198,14 @@
             member.memberApproved = YES;
         }
     }
+    if (self.isShowApporvedMember)
+    {
+        [self clearSelected:self.memberApprovedYes2DList];
+    }
+    else
+    {
+        [self clearSelected:self.memberApprovedNo2DList];
+    }
     [DataBaseManager updateToCoreData];
     [self classifyMember];
     [self.membersCollectionView reloadData];
@@ -189,28 +218,124 @@
     {
         self.isShowApporvedMember = NO;
         [self.changeAppovedButton setTitle:@"啟用" forState:UIControlStateNormal];
+        //清空已選cell
+        [self clearSelected:self.memberApprovedYes2DList];
     }
     else if (sender.selectedSegmentIndex == 1)
     {
         self.isShowApporvedMember = YES;
         [self.changeAppovedButton setTitle:@"停用" forState:UIControlStateNormal];
+        [self clearSelected:self.memberApprovedNo2DList];
     }
+    self.selectedMemberList = [NSMutableArray array];
     [self.membersCollectionView reloadData];
+}
+
+-(void)clearSelected:(NSMutableArray*)array
+{
+    for (NSArray *classArray in array)
+    {
+        for (NSUInteger rowIndex=0; rowIndex<classArray.count; rowIndex++)
+        {
+            MemberCell *cell = (MemberCell*)[self.membersCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:[array indexOfObject:classArray]]];
+            cell.selected = NO;
+            cell.selectedView.alpha = 0.0;
+        }
+    }
 }
 
 - (IBAction)reverseSelect:(id)sender
 {
-    
+    if (self.isShowApporvedMember)
+    {
+        for (NSArray *classArray in self.memberApprovedYes2DList)
+        {
+            for (NSUInteger rowIndex=0; rowIndex<classArray.count; rowIndex++)
+            {
+                MemberCell *cell = (MemberCell*)[self.membersCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:[self.memberApprovedYes2DList indexOfObject:classArray]]];
+                [self reverse:cell];
+            }
+        }
+    }
+    else
+    {
+        for (NSArray *classArray in self.memberApprovedNo2DList)
+        {
+            for (NSUInteger rowIndex=0; rowIndex<classArray.count; rowIndex++)
+            {
+                MemberCell *cell = (MemberCell*)
+                [self.membersCollectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:rowIndex inSection:[self.memberApprovedNo2DList indexOfObject:classArray]]];
+                [self reverse:cell];
+            }
+        }
+    }
 }
 
-- (IBAction)membersCellSizeChange:(id)sender
+-(MemberCell*)reverse:(MemberCell*)cell
 {
-    
+    if (cell.selected)
+    {
+        [self.selectedMemberList removeObject:[self getMember:[self.membersCollectionView indexPathForCell:cell]]];
+        cell.selected = NO;
+        cell.selectedView.alpha = 0.0;
+    }
+    else
+    {
+        [self.selectedMemberList addObject:[self getMember:[self.membersCollectionView indexPathForCell:cell]]];
+        cell.selected = YES;
+        cell.selectedView.alpha = 0.5;
+    }
+    return cell;
+}
+
+- (IBAction)membersCellSizeChange:(UISlider*)sender
+{
+    //起值為1,五段變速
+    if (((sender.value+1)-self.cellSizeRatio>0.2) || (self.cellSizeRatio-(sender.value+1)>0.2))
+    {
+        self.cellSizeRatio = sender.value+1;
+        [self.membersCollectionView reloadData];
+    }
 }
 
 - (IBAction)changeAdmin:(id)sender
 {
-    
+    if (self.selectedMemberList.count==0)
+    {
+        [AlertManager alert:@"請先選擇使用者" controller:self];
+    }
+    else if (self.selectedMemberList.count>1)
+    {
+        [AlertManager alert:@"選取超過一人" controller:self];
+    }
+    else if (self.selectedMemberList.count==1)
+    {
+        Member *theMember = self.selectedMemberList.firstObject;
+        if (theMember.memberApproved == NO)
+        {
+            [AlertManager alert:@"已審核使用者才可成為管理員" controller:self];
+        }
+        else
+        {
+            [AlertManager alertYesAndNo:@"請確認是否將管理員權限轉移" yes:@"是" no:@"否" controller:self postNotificationName:@"setAdmin"];
+        }
+    }
+}
+
+-(void)setAdmin
+{
+    AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    Member *currentMember = appDLG.currentMember;
+    currentMember.memberClass = @"未分類";
+    Member *adminMember = self.selectedMemberList.firstObject;
+    adminMember.memberClass = @"admin";
+    [DataBaseManager updateToCoreData];
+    [AlertManager alertWithoutButton:@"修改完成" controller:self time:0.5 action:@"popVC"];
+}
+
+-(void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning

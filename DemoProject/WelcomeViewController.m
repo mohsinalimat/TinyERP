@@ -45,6 +45,7 @@
     NSLog(@"FBSDKProfileDidChangeNotification,WelcomeVC,helloFB");
     self.appDLG.currentUserID = [FBSDKProfile currentProfile].userID;
     self.appDLG.currentUserName = [FBSDKProfile currentProfile].name;
+    self.appDLG.currentMember = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID][0];
     self.appDLG.loginType = @"FaceBook";
     if (self.appDLG.currentUserID != nil)
     {
@@ -150,6 +151,7 @@
                 self.appDLG.currentUserID = checkMember.memberID;
                 self.appDLG.currentUserName = checkMember.memberName;
                 self.appDLG.currentUserImg = [UIImage imageWithData:checkMember.memberImg];
+                self.appDLG.currentMember = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID][0];
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }

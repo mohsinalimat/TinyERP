@@ -428,6 +428,7 @@
     appDLG.currentUserID = @"";
     appDLG.currentUserName = @"";
     appDLG.currentUserImg = nil;
+    appDLG.currentMember = nil;
     WelcomeViewController *wvc = [self.storyboard instantiateViewControllerWithIdentifier:@"welcomeVC"];
     [self presentViewController:wvc animated:YES completion:nil];
     [self.navigationController popViewControllerAnimated:NO];

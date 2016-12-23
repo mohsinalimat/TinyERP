@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Member.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 @property (strong, nonatomic) UIWindow *window;
@@ -16,5 +17,6 @@
 @property NSString *currentUserID;
 @property NSString *currentUserName;
 @property UIImage *currentUserImg;
+@property Member *currentMember;
 @end
 
