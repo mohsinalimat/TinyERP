@@ -122,6 +122,11 @@
         }
         pred = [NSPredicate predicateWithFormat:@"memberApproved=%d",flag];
     }
+    //單號
+    else if ([fiterColumn isEqualToString:@"orderNoTwins"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"orderNoTwins=%@",fiterString];
+    }
     
     request.predicate = pred;
     

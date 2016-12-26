@@ -27,8 +27,8 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     AllDataViewController *advc = segue.destinationViewController;
-    NSArray *segueList = @[@"unitSegue",@"itemKindSegue",@"firmKindSegue",@"custKindSegue",@"warehouseSegue"];
-    NSInteger goToIndex = 9;
+    NSArray *segueList = @[@"unitSegue",@"itemKindSegue",@"firmKindSegue",@"custKindSegue",@"warehouseSegue",@"inventoryReasonSegue",@"bankAccountSegue",@"fianceReasonSegue"];
+    NSInteger goToIndex = 999;
     NSString *temp;
     for (temp in segueList)
     {
@@ -53,6 +53,15 @@
             break;
         case 4:
             advc.whereFrom = @"倉庫";
+            break;
+        case 5:
+            advc.whereFrom = @"異動理由";
+            break;
+        case 6:
+            advc.whereFrom = @"銀行帳號";
+            break;
+        case 7:
+            advc.whereFrom = @"財務理由";
             break;
         default:
             break;

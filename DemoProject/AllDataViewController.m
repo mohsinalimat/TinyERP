@@ -12,6 +12,8 @@
 #import "EditCell.h"
 #import "BasicData.h"
 #import "AlertManager.h"
+#import "BankAccount.h"
+#import "BankAccountCell.h"
 
 @interface AllDataViewController () <UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *allDataTableView;
@@ -40,7 +42,14 @@
     self.allDataTableView.delegate = self;
     self.allDataTableView.dataSource = self;
     //讀DB
-    self.basicDataList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:self.whereFrom];
+    if ([self.whereFrom isEqualToString:@"銀行帳號"])
+    {
+        self.basicDataList = [DataBaseManager queryFromCoreData:@"BankAccountEntity" sortBy:@"bankID"];
+    }
+    else
+    {
+        self.basicDataList = [DataBaseManager fiterFromCoreData:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:self.whereFrom];
+    }
 }
 
 //cell筆數
@@ -52,15 +61,28 @@
 //cell樣式
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    EditCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editCell"];
-    BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
-    cell.editCellTextView.text = bd.basicDataName;
-    if ([cell.editCellTextView.text isEqualToString:@"點我輸入"])
+    if ([self.whereFrom isEqualToString:@"銀行帳號"])
     {
-        cell.editCellTextView.textColor = [UIColor lightGrayColor];
+        BankAccountCell *baCell = [tableView dequeueReusableCellWithIdentifier:@"bankAcountCell"];
+        BankAccount *ba = [self.basicDataList objectAtIndex:indexPath.row];
+        baCell.bankIDInput.text = ba.bankID;
+        baCell.bankNameInput.text = ba.bankName;
+        baCell.bankAccountInput.text = ba.bankAccount;
+        return baCell;
     }
-    cell.editCellTextView.delegate = self;
-    return cell;
+    else
+    {
+        EditCell *editCell = [tableView dequeueReusableCellWithIdentifier:@"editCell"];
+        BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
+        editCell.editCellTextView.text = bd.basicDataName;
+        if ([editCell.editCellTextView.text isEqualToString:@"點我輸入"])
+        {
+            editCell.editCellTextView.textColor = [UIColor lightGrayColor];
+        }
+        editCell.editCellTextView.delegate = self;
+        return editCell;
+    }
+    return nil;
 }
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
@@ -85,13 +107,20 @@
 {
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
-    BasicData *bd = [NSEntityDescription insertNewObjectForEntityForName:@"BasicDataEntity" inManagedObjectContext:helper.managedObjectContext];
-    bd.basicDataName = @"點我輸入";
-    bd.basicDataType = self.whereFrom;
-    [self.basicDataList insertObject:bd atIndex:0];
-    [self.allDataTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
     
-    [DataBaseManager updateToCoreData];
+    if ([self.whereFrom isEqualToString:@"銀行帳號"])
+    {
+        BankAccount *ba = [NSEntityDescription insertNewObjectForEntityForName:@"BankAccountEntity" inManagedObjectContext:helper.managedObjectContext];
+        [self.basicDataList insertObject:ba atIndex:0];
+    }
+    else
+    {
+        BasicData *bd = [NSEntityDescription insertNewObjectForEntityForName:@"BasicDataEntity" inManagedObjectContext:helper.managedObjectContext];
+        bd.basicDataName = @"點我輸入";
+        bd.basicDataType = self.whereFrom;
+        [self.basicDataList insertObject:bd atIndex:0];
+    }
+    [self.allDataTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,10 +128,18 @@
     if (editingStyle==UITableViewCellEditingStyleDelete)
     {
         CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-        
-        BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
-        [helper.managedObjectContext deleteObject:bd];
-        [self.basicDataList removeObject:bd];
+        if ([self.whereFrom isEqualToString:@"銀行帳號"])
+        {
+            BankAccount *ba = [self.basicDataList objectAtIndex:indexPath.row];
+            [helper.managedObjectContext deleteObject:ba];
+            [self.basicDataList removeObject:ba];
+        }
+        else
+        {
+            BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
+            [helper.managedObjectContext deleteObject:bd];
+            [self.basicDataList removeObject:bd];
+        }
         //刪cell
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         //寫DB
@@ -114,69 +151,111 @@
 -(void)saveTextView:(EditCell*)editCell
 {
     //無法由cell得知位置, 頂多藉由cell的txet回推, 但也須全部比對
-    if ([self.whereFrom isEqualToString:@"unitSegue"])
-    {
-        
-    }
-    else if ([self.whereFrom isEqualToString:@"itemKindSegue"])
-    {
-        
-    }
 }
 
 - (IBAction)barBackButton:(id)sender
 {
-    //先存
-    for (int i=0; i<self.basicDataList.count; i++)
+    if ([self.whereFrom isEqualToString:@"銀行帳號"])
     {
-        BasicData *bd = [self.basicDataList objectAtIndex:i];
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
-        EditCell *editCell = [self.allDataTableView cellForRowAtIndexPath:ip];
-        bd.basicDataName = editCell.editCellTextView.text;
-    }
-    [DataBaseManager updateToCoreData];
-    //比較是否重複
-    BOOL isSameName = NO;
-    BOOL isNoName = NO;
-    BOOL isLongName = NO;
-    for (BasicData *bd in self.basicDataList)
-    {
-        for (NSInteger i=[self.basicDataList indexOfObject:bd]+1; i<=self.basicDataList.count-1; i++)
+        //先存
+        for (int i=0; i<self.basicDataList.count; i++)
         {
-            if ([bd.basicDataName isEqualToString:@""] || [bd.basicDataName isEqualToString:@"點我輸入"] || [bd.basicDataName isEqualToString:@" "] || [bd.basicDataName isEqualToString:@"　"])
+            BankAccount *ba = [self.basicDataList objectAtIndex:i];
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+            BankAccountCell *baCell = [self.allDataTableView cellForRowAtIndexPath:ip];
+            ba.bankID = baCell.bankIDInput.text;
+            ba.bankName = baCell.bankNameInput.text;
+            ba.bankAccount = baCell.bankAccountInput.text;
+        }
+        //比較是否重複
+        BOOL isSameAccount = NO;
+        BOOL isNoField = NO;
+        for (BankAccount *ba in self.basicDataList)
+        {
+            for (NSInteger i=[self.basicDataList indexOfObject:ba]+1; i<=self.basicDataList.count-1; i++)
             {
-                isNoName = YES;
-                goto invalid;
-            }
-            if ([self stringEncodingLenght:bd.basicDataName]>4 && [bd.basicDataType isEqualToString:@"單位"])
-            {
-                isLongName = YES;
-                goto invalid;
-            }
-            BasicData *getBD = [self.basicDataList objectAtIndex:i];
-            if ([bd.basicDataName isEqualToString:getBD.basicDataName])
-            {
-                isSameName = YES;
-                goto invalid;
+                if ([ba.bankID isEqualToString:@""] || [ba.bankName isEqualToString:@""] || [ba.bankAccount isEqualToString:@""])
+                {
+                    isNoField = YES;
+                    goto baInvalid;
+                }
+                BankAccount *getBA = [self.basicDataList objectAtIndex:i];
+                if ([ba.bankAccount isEqualToString:getBA.bankAccount])
+                {
+                    isSameAccount = YES;
+                    goto baInvalid;
+                }
             }
         }
-    }
-    invalid:
-    if (isSameName == YES)
-    {
-        [AlertManager alert:@"名稱重複" controller:self];
-    }
-    else if (isLongName == YES)
-    {
-        [AlertManager alert:@"單位字數過長\n(中文兩個字英文四個字)" controller:self];
-    }
-    else if (isNoName == YES)
-    {
-        [AlertManager alert:@"有資料尚未輸入" controller:self];
+        baInvalid:
+        if (isSameAccount == YES)
+        {
+            [AlertManager alert:@"帳號重複" controller:self];
+        }
+        else if (isNoField == YES)
+        {
+            [AlertManager alert:@"有資料尚未輸入" controller:self];
+        }
+        else
+        {
+            [DataBaseManager updateToCoreData];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
     else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        //先存
+        for (int i=0; i<self.basicDataList.count; i++)
+        {
+            BasicData *bd = [self.basicDataList objectAtIndex:i];
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+            EditCell *editCell = [self.allDataTableView cellForRowAtIndexPath:ip];
+            bd.basicDataName = editCell.editCellTextView.text;
+        }
+        //比較是否重複
+        BOOL isSameName = NO;
+        BOOL isNoName = NO;
+        BOOL isLongName = NO;
+        for (BasicData *bd in self.basicDataList)
+        {
+            for (NSInteger i=[self.basicDataList indexOfObject:bd]+1; i<=self.basicDataList.count-1; i++)
+            {
+                if ([bd.basicDataName isEqualToString:@""] || [bd.basicDataName isEqualToString:@"點我輸入"] || [bd.basicDataName isEqualToString:@" "] || [bd.basicDataName isEqualToString:@"　"])
+                {
+                    isNoName = YES;
+                    goto bdInvalid;
+                }
+                if ([bd.basicDataType isEqualToString:@"單位"] && [self stringEncodingLenght:bd.basicDataName]>4)
+                {
+                    isLongName = YES;
+                    goto bdInvalid;
+                }
+                BasicData *getBD = [self.basicDataList objectAtIndex:i];
+                if ([bd.basicDataName isEqualToString:getBD.basicDataName])
+                {
+                    isSameName = YES;
+                    goto bdInvalid;
+                }
+            }
+        }
+        bdInvalid:
+        if (isSameName == YES)
+        {
+            [AlertManager alert:@"名稱重複" controller:self];
+        }
+        else if (isLongName == YES)
+        {
+            [AlertManager alert:@"單位字數過長\n(中文兩個字英文四個字)" controller:self];
+        }
+        else if (isNoName == YES)
+        {
+            [AlertManager alert:@"有資料尚未輸入" controller:self];
+        }
+        else
+        {
+            [DataBaseManager updateToCoreData];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
 }
 

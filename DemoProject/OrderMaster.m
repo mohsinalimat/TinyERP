@@ -23,4 +23,5 @@
 @dynamic orderFinanceType;
 @dynamic orderDiscount;
 @dynamic orderNoTwins;
+@dynamic orderReason;
 @end

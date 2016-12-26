@@ -304,10 +304,10 @@
             </objects>
             <point key="canvasLocation" x="1976.8115942028987" y="1087.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Finance List View Controller-->
         <scene sceneID="feM-oh-Lco">
             <objects>
-                <viewController id="5FQ-0C-ZIM" sceneMemberID="viewController">
+                <viewController id="5FQ-0C-ZIM" customClass="FinanceListViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WER-A2-0df"/>
                         <viewControllerLayoutGuide type="bottom" id="0NC-uC-8hQ"/>
@@ -320,7 +320,7 @@
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="utS-iX-ded">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="finCell" id="utS-iX-ded">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="utS-iX-ded" id="vDV-ff-l8x">
@@ -339,6 +339,9 @@
                             <constraint firstItem="shc-Sa-ip9" firstAttribute="leading" secondItem="Ghl-dr-TTy" secondAttribute="leading" id="QQe-bB-bNC"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="financeTableView" destination="shc-Sa-ip9" id="RRs-F7-iIt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sX-9T-KF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1916,6 +1919,82 @@
                                             <segue destination="9Td-hE-K2i" kind="show" identifier="warehouseSegue" id="rMe-MB-aFa"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sEG-oZ-N11">
+                                        <rect key="frame" x="0.0" y="464" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sEG-oZ-N11" id="DnK-Xd-Zhq">
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="     異動理由" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ma8-Rt-ia8">
+                                                    <rect key="frame" x="155" y="11" width="92" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Ma8-Rt-ia8" firstAttribute="centerY" secondItem="DnK-Xd-Zhq" secondAttribute="centerY" id="6wN-li-HXS"/>
+                                                <constraint firstItem="Ma8-Rt-ia8" firstAttribute="height" secondItem="DnK-Xd-Zhq" secondAttribute="height" constant="-22.5" id="CCj-4y-YIk"/>
+                                                <constraint firstItem="Ma8-Rt-ia8" firstAttribute="centerX" secondItem="DnK-Xd-Zhq" secondAttribute="centerX" constant="10.5" id="XWY-pd-17x"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9Td-hE-K2i" kind="show" identifier="inventoryReasonSegue" id="5d5-V2-Eu6"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="財務相關" id="1SZ-HQ-Na8">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="i2E-yk-DYB">
+                                        <rect key="frame" x="0.0" y="536" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="i2E-yk-DYB" id="1t9-rt-B57">
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="     銀行帳號" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eO2-Dr-Zep">
+                                                    <rect key="frame" x="155" y="11" width="92" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="eO2-Dr-Zep" firstAttribute="centerY" secondItem="1t9-rt-B57" secondAttribute="centerY" id="Up2-1c-bpJ"/>
+                                                <constraint firstItem="eO2-Dr-Zep" firstAttribute="centerX" secondItem="1t9-rt-B57" secondAttribute="centerX" constant="10.5" id="iwz-k3-XOJ"/>
+                                                <constraint firstItem="eO2-Dr-Zep" firstAttribute="height" secondItem="1t9-rt-B57" secondAttribute="height" constant="-22.5" id="vNo-4G-B9f"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9Td-hE-K2i" kind="show" identifier="bankAccountSegue" id="6kR-NQ-LIR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="Q3I-Ay-wTM">
+                                        <rect key="frame" x="0.0" y="580" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q3I-Ay-wTM" id="Rxf-ka-tRY">
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="     財務理由" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zwu-1D-zVA">
+                                                    <rect key="frame" x="155" y="11" width="92" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zwu-1D-zVA" firstAttribute="centerX" secondItem="Rxf-ka-tRY" secondAttribute="centerX" constant="10.5" id="BoE-FF-23Y"/>
+                                                <constraint firstItem="zwu-1D-zVA" firstAttribute="height" secondItem="Rxf-ka-tRY" secondAttribute="height" constant="-22.5" id="ZMr-M4-SLB"/>
+                                                <constraint firstItem="zwu-1D-zVA" firstAttribute="centerY" secondItem="Rxf-ka-tRY" secondAttribute="centerY" id="akT-2Q-kuE"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="9Td-hE-K2i" kind="show" identifier="fianceReasonSegue" id="muN-RN-dNV"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -1968,6 +2047,52 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="editCellTextView" destination="eWf-3S-HvY" id="Ij3-jP-gRv"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="bankAcountCell" id="vbZ-w0-zv6" customClass="BankAccountCell">
+                                        <rect key="frame" x="0.0" y="72" width="374" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vbZ-w0-zv6" id="wJY-m5-Flp">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="行號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4M1-sJ-xO9">
+                                                    <rect key="frame" x="0.0" y="7" width="45" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="銀行簡稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aqH-EU-c0s">
+                                                    <rect key="frame" x="50.000000000000007" y="7" width="74.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="銀行帳號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LAe-QR-QvZ">
+                                                    <rect key="frame" x="129.66666666666663" y="7" width="244.33333333333337" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="LAe-QR-QvZ" firstAttribute="centerY" secondItem="wJY-m5-Flp" secondAttribute="centerY" id="FZS-DN-X6I"/>
+                                                <constraint firstItem="aqH-EU-c0s" firstAttribute="leading" secondItem="4M1-sJ-xO9" secondAttribute="trailing" constant="5" id="Mhh-EA-6jQ"/>
+                                                <constraint firstItem="4M1-sJ-xO9" firstAttribute="centerY" secondItem="wJY-m5-Flp" secondAttribute="centerY" id="TdI-9o-JEW"/>
+                                                <constraint firstItem="4M1-sJ-xO9" firstAttribute="leading" secondItem="wJY-m5-Flp" secondAttribute="leading" id="VGt-SE-euO"/>
+                                                <constraint firstItem="aqH-EU-c0s" firstAttribute="width" secondItem="wJY-m5-Flp" secondAttribute="width" multiplier="0.2" id="hYn-ib-DD5"/>
+                                                <constraint firstAttribute="trailing" secondItem="LAe-QR-QvZ" secondAttribute="trailing" id="p8m-Cp-krD"/>
+                                                <constraint firstItem="aqH-EU-c0s" firstAttribute="centerY" secondItem="wJY-m5-Flp" secondAttribute="centerY" id="qA3-DZ-kpm"/>
+                                                <constraint firstItem="LAe-QR-QvZ" firstAttribute="leading" secondItem="aqH-EU-c0s" secondAttribute="trailing" constant="5" id="qKa-88-Yow"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <constraints>
+                                            <constraint firstItem="4M1-sJ-xO9" firstAttribute="width" secondItem="vbZ-w0-zv6" secondAttribute="width" multiplier="0.12" id="mIE-Mi-x8q"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="bankAccountInput" destination="LAe-QR-QvZ" id="LmB-ny-ja6"/>
+                                            <outlet property="bankIDInput" destination="4M1-sJ-xO9" id="fn6-j7-hMo"/>
+                                            <outlet property="bankNameInput" destination="aqH-EU-c0s" id="hXX-AA-osB"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -3262,7 +3387,7 @@ StoreApp
     <inferredMetricsTieBreakers>
         <segue reference="LNu-av-hvY"/>
         <segue reference="quf-qe-AWJ"/>
-        <segue reference="rMe-MB-aFa"/>
+        <segue reference="6kR-NQ-LIR"/>
         <segue reference="Nve-gu-a0o"/>
         <segue reference="2BX-Dt-cMR"/>
         <segue reference="YQU-cy-WNj"/>

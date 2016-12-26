@@ -52,7 +52,7 @@
         self.accBankAccountInput.text = self.currentReverseOM.orderBankAccount;
         self.accFinanceType.selectedSegmentIndex = [self.currentReverseOM.orderFinanceType integerValue];
         self.accDiscountInput.text = [self.currentReverseOM.orderDiscount stringValue];
-        self.totalAmountLabel.text = [self.currentReverseOM.orderTotalAmount stringValue];
+        self.totalAmountLabel.text = [@"總金額  " stringByAppendingString:[self.currentReverseOM.orderTotalAmount stringValue]];
         [self.accDidRevListBtn setEnabled:NO];
         [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
         self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
@@ -79,6 +79,7 @@
         }
     }
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteFinanceOrder) name:@"deleteFinanceOrderYes" object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -234,29 +235,43 @@
             //第一次存
             if (self.currentReverseOM.orderNoTwins == nil)
             {
-                //有帳號
+                //有帳號或現金
                 if (self.accFinanceType.selectedSegmentIndex != 2)
                 {
                     //(決議因單據由系統產生 故直接MAPPING)
                     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
                     OrderMaster *sonOM = [NSEntityDescription insertNewObjectForEntityForName:@"OrderMasterEntity" inManagedObjectContext:helper.managedObjectContext];
-                    sonOM.orderNoTwins = self.currentReverseOM.orderNo;
-                    if ([self.whereFrom isEqualToString:@"apSegue"])
+                    if ([[self.currentReverseOM.orderNo substringToIndex:1] isEqualToString:@"P"])
                     {
                         sonOM.orderType = @"PD";
                     }
-                    else if ([self.whereFrom isEqualToString:@"arSegue"])
+                    else if ([[self.currentReverseOM.orderNo substringToIndex:1] isEqualToString:@"S"])
                     {
                         sonOM.orderType = @"SD";
                     }
+                    sonOM.orderNo = [sonOM.orderType stringByAppendingString:[self.currentReverseOM.orderNo substringFromIndex:2]];
+                    sonOM.orderDate = self.currentReverseOM.orderDate;
+                    sonOM.orderPartner = self.currentReverseOM.orderPartner;
+                    sonOM.orderTotalAmount = self.currentReverseOM.orderTotalAmount;
+                    sonOM.orderUser = @"系統產生";
+                    sonOM.orderBankAccount = self.currentReverseOM.orderBankAccount;
+                    sonOM.orderFinanceType = self.currentReverseOM.orderFinanceType;
+                    sonOM.orderDiscount = self.currentReverseOM.orderDiscount;
+                    sonOM.orderNoTwins = self.currentReverseOM.orderNo;
+                    self.currentReverseOM.orderNoTwins = sonOM.orderNo;
                 }
             }
             else
             {
                 if (self.accFinanceType.selectedSegmentIndex == 2)
                 {
-                    //但等於二
-                    //警告將刪除
+                    [AlertManager alertYesAndNo:@"系統已產生財務單據\n財務類型改為無,將會把財務單據刪除\n是否確定執行" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteFinanceOrder"];
+                }
+                else
+                {
+                    OrderMaster *updateFinanceOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNoTwins" fiterBy:self.currentReverseOM.orderNo].firstObject;
+                    updateFinanceOM.orderBankAccount = self.currentReverseOM.orderBankAccount;
+                    updateFinanceOM.orderFinanceType = self.currentReverseOM.orderFinanceType;
                 }
             }
             [DataBaseManager updateToCoreData];
@@ -265,9 +280,22 @@
     }
 }
 
+-(void)deleteFinanceOrder
+{
+    OrderMaster *deleteFinanceOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNoTwins" fiterBy:self.currentReverseOM.orderNo].firstObject;
+    CoreDataHelper *help = [CoreDataHelper sharedInstance];
+    [help.managedObjectContext deleteObject:deleteFinanceOM];
+    self.currentReverseOM.orderNoTwins = nil;
+    [DataBaseManager updateToCoreData];
+    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+}
+
 - (IBAction)deleteReverse:(id)sender
 {
-    
+    [DataBaseManager deleteDataAndObject:self.currentReverseOM array:self.accOrderDetailList];
+    //刪單身
+    [self deleteFinanceOrder];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

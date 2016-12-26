@@ -24,4 +24,5 @@
 @property NSString *orderBankAccount;
 @property NSNumber *orderDiscount;
 @property NSString *orderNoTwins;
+@property NSString *orderReason;
 @end
