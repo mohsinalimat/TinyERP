@@ -34,8 +34,8 @@
 		278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1F31DD04EA0000F23DE /* AllDataViewController.m */; };
 		278DA2001DD17855000F23DE /* EditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1FF1DD17855000F23DE /* EditCell.m */; };
 		279AE0D01E0D3F81007D9B0B /* FinanceListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 279AE0CF1E0D3F81007D9B0B /* FinanceListViewController.m */; };
-		279AE0D31E10F5B8007D9B0B /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 279AE0D21E10F5B8007D9B0B /* BankAccount.m */; };
 		279AE0D61E10F827007D9B0B /* BankAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 279AE0D51E10F827007D9B0B /* BankAccountCell.m */; };
+		279AE0E21E1112F7007D9B0B /* BankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 279AE0E11E1112F7007D9B0B /* BankAccount.m */; };
 		27A4C9951DEC2749002476CD /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FE0FFB1DEBD56F00457049 /* FBSDKCoreKit.framework */; };
 		27A4C9961DEC2749002476CD /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FE0FFC1DEBD56F00457049 /* FBSDKLoginKit.framework */; };
 		27A4C9981DEC2795002476CD /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A4C9971DEC2795002476CD /* Bolts.framework */; };
@@ -123,10 +123,10 @@
 		278DA1FF1DD17855000F23DE /* EditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditCell.m; sourceTree = "<group>"; };
 		279AE0CE1E0D3F81007D9B0B /* FinanceListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceListViewController.h; sourceTree = "<group>"; };
 		279AE0CF1E0D3F81007D9B0B /* FinanceListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceListViewController.m; sourceTree = "<group>"; };
-		279AE0D11E10F5B8007D9B0B /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; };
-		279AE0D21E10F5B8007D9B0B /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; };
 		279AE0D41E10F827007D9B0B /* BankAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountCell.h; sourceTree = "<group>"; };
 		279AE0D51E10F827007D9B0B /* BankAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountCell.m; sourceTree = "<group>"; };
+		279AE0E01E1112F7007D9B0B /* BankAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccount.h; sourceTree = "<group>"; };
+		279AE0E11E1112F7007D9B0B /* BankAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccount.m; sourceTree = "<group>"; };
 		27A4C9971DEC2795002476CD /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		27A4C9991DEC2909002476CD /* DemoProject.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DemoProject.entitlements; sourceTree = "<group>"; };
 		27A4C99A1DEC34D5002476CD /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
@@ -280,8 +280,8 @@
 				275147E41DE7FFB100FF888D /* Inventory.m */,
 				27D14F211DFFACCE008DA138 /* Member.h */,
 				27D14F221DFFACCE008DA138 /* Member.m */,
-				279AE0D11E10F5B8007D9B0B /* BankAccount.h */,
-				279AE0D21E10F5B8007D9B0B /* BankAccount.m */,
+				279AE0E01E1112F7007D9B0B /* BankAccount.h */,
+				279AE0E11E1112F7007D9B0B /* BankAccount.m */,
 			);
 			name = OBJECTs;
 			sourceTree = "<group>";
@@ -592,6 +592,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				272DD7641DDC230100B12672 /* OrderCell.m in Sources */,
+				279AE0E21E1112F7007D9B0B /* BankAccount.m in Sources */,
 				272BB58D1DC746FF00A1AB11 /* OrderMaster.m in Sources */,
 				272BB5931DC74A7700A1AB11 /* ItemListViewController.m in Sources */,
 				271462641DDD48F300CC8CB6 /* OrderDetailCell.m in Sources */,
@@ -638,7 +639,6 @@
 				272BB5751DC7399300A1AB11 /* BasicDataViewController.m in Sources */,
 				27E1A6301DF009A8002ADDF1 /* UserCell.m in Sources */,
 				272BB5811DC7454100A1AB11 /* SystemModel.xcdatamodeld in Sources */,
-				279AE0D31E10F5B8007D9B0B /* BankAccount.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
