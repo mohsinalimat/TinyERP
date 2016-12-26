@@ -56,6 +56,14 @@
         [self.accDidRevListBtn setEnabled:NO];
         [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
         self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
+        if (self.currentReverseOM.orderFinanceType>0)
+        {
+            [self.accBankAccountInput setEnabled:NO];
+        }
+        else
+        {
+            [self.accBankAccountInput setEnabled:YES];
+        }
     }
     else if ([self.whereFrom isEqualToString:@"accCreateSegue"])
     {

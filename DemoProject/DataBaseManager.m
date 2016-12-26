@@ -122,10 +122,16 @@
         }
         pred = [NSPredicate predicateWithFormat:@"memberApproved=%d",flag];
     }
-    //單號
+    //孿生單號
     else if ([fiterColumn isEqualToString:@"orderNoTwins"])
     {
         pred = [NSPredicate predicateWithFormat:@"orderNoTwins=%@",fiterString];
+    }
+    else if([fiterColumn isEqualToString:@"orderDE"])
+    {
+        NSString *d = @"*D*";
+        NSString *e = @"*E*";
+        pred = [NSPredicate predicateWithFormat:@"(orderNo like %@) || (orderNo like %@)",d,e];
     }
     
     request.predicate = pred;
