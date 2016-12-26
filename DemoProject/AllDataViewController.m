@@ -13,7 +13,7 @@
 #import "BasicData.h"
 #import "AlertManager.h"
 
-@interface AllDataViewController () <UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate>
+@interface AllDataViewController () <UITableViewDelegate,UITableViewDataSource,UINavigationControllerDelegate,UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *allDataTableView;
 @property (nonatomic) NSMutableArray *basicDataList;
 @end
@@ -55,7 +55,30 @@
     EditCell *cell = [tableView dequeueReusableCellWithIdentifier:@"editCell"];
     BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
     cell.editCellTextView.text = bd.basicDataName;
+    if ([cell.editCellTextView.text isEqualToString:@"點我輸入"])
+    {
+        cell.editCellTextView.textColor = [UIColor lightGrayColor];
+    }
+    cell.editCellTextView.delegate = self;
     return cell;
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@"點我輸入"])
+    {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+}
+
+-(void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""])
+    {
+        textView.text = @"點我輸入";
+        textView.textColor = [UIColor lightGrayColor];
+    }
 }
 
 - (IBAction)dataAdd:(id)sender
@@ -63,7 +86,7 @@
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     BasicData *bd = [NSEntityDescription insertNewObjectForEntityForName:@"BasicDataEntity" inManagedObjectContext:helper.managedObjectContext];
-    bd.basicDataName = [@"新 " stringByAppendingString:self.whereFrom];
+    bd.basicDataName = @"點我輸入";
     bd.basicDataType = self.whereFrom;
     [self.basicDataList insertObject:bd atIndex:0];
     [self.allDataTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -114,26 +137,55 @@
     [DataBaseManager updateToCoreData];
     //比較是否重複
     BOOL isSameName = NO;
+    BOOL isNoName = NO;
+    BOOL isLongName = NO;
     for (BasicData *bd in self.basicDataList)
     {
         for (NSInteger i=[self.basicDataList indexOfObject:bd]+1; i<=self.basicDataList.count-1; i++)
         {
+            if ([bd.basicDataName isEqualToString:@""] || [bd.basicDataName isEqualToString:@"點我輸入"] || [bd.basicDataName isEqualToString:@" "] || [bd.basicDataName isEqualToString:@"　"])
+            {
+                isNoName = YES;
+                goto invalid;
+            }
+            if ([self stringEncodingLenght:bd.basicDataName]>4 && [bd.basicDataType isEqualToString:@"單位"])
+            {
+                isLongName = YES;
+                goto invalid;
+            }
             BasicData *getBD = [self.basicDataList objectAtIndex:i];
             if ([bd.basicDataName isEqualToString:getBD.basicDataName])
             {
                 isSameName = YES;
-                break;
+                goto invalid;
             }
         }
     }
+    invalid:
     if (isSameName == YES)
     {
         [AlertManager alert:@"名稱重複" controller:self];
+    }
+    else if (isLongName == YES)
+    {
+        [AlertManager alert:@"單位字數過長\n(中文兩個字英文四個字)" controller:self];
+    }
+    else if (isNoName == YES)
+    {
+        [AlertManager alert:@"有資料尚未輸入" controller:self];
     }
     else
     {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (NSUInteger)stringEncodingLenght:(NSString*)string
+
+{
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSData* stringData = [string dataUsingEncoding:enc];
+    return [stringData length];
 }
 
 - (IBAction)gesturePop:(id)sender

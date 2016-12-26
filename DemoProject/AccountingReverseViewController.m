@@ -121,7 +121,6 @@
     {
         Item *item = [itemList objectAtIndex:0];
         accRevCell.odItemNameLabel.text = item.itemName;
-        accRevCell.odItemUnitLabel.text = item.itemUnit;
     }
     
     accRevCell.odAmount.text = [od.orderAmount stringValue];
