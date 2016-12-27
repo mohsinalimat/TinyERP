@@ -30,6 +30,9 @@
 		275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E11DE7F36400FF888D /* InventoryViewController.m */; };
 		275147E51DE7FFB100FF888D /* Inventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E41DE7FFB100FF888D /* Inventory.m */; };
 		275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 275A12CB1DC8398200A8C52D /* DataBaseManager.m */; };
+		275F52321E1261D400E43C07 /* InventoryOrderListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F52311E1261D400E43C07 /* InventoryOrderListViewController.m */; };
+		275F52351E12620B00E43C07 /* InventoryOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275F52341E12620B00E43C07 /* InventoryOrderViewController.m */; };
+		276637651E128FE00006672A /* InvOredrDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 276637641E128FE00006672A /* InvOredrDetailCell.m */; };
 		278034CD1E0B839700E98F08 /* MembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278034CC1E0B839700E98F08 /* MembersViewController.m */; };
 		278034D31E0BA60E00E98F08 /* MemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 278034D21E0BA60E00E98F08 /* MemberCell.m */; };
 		278DA1F41DD04EA0000F23DE /* AllDataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 278DA1F31DD04EA0000F23DE /* AllDataViewController.m */; };
@@ -115,6 +118,12 @@
 		275147E41DE7FFB100FF888D /* Inventory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Inventory.m; sourceTree = "<group>"; };
 		275A12CA1DC8398200A8C52D /* DataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBaseManager.h; sourceTree = "<group>"; };
 		275A12CB1DC8398200A8C52D /* DataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataBaseManager.m; sourceTree = "<group>"; };
+		275F52301E1261D400E43C07 /* InventoryOrderListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryOrderListViewController.h; sourceTree = "<group>"; };
+		275F52311E1261D400E43C07 /* InventoryOrderListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InventoryOrderListViewController.m; sourceTree = "<group>"; };
+		275F52331E12620B00E43C07 /* InventoryOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryOrderViewController.h; sourceTree = "<group>"; };
+		275F52341E12620B00E43C07 /* InventoryOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InventoryOrderViewController.m; sourceTree = "<group>"; };
+		276637631E128FE00006672A /* InvOredrDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvOredrDetailCell.h; sourceTree = "<group>"; };
+		276637641E128FE00006672A /* InvOredrDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvOredrDetailCell.m; sourceTree = "<group>"; };
 		277141111DD5983E00D899F8 /* SystemModel 2.0.0.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "SystemModel 2.0.0.xcdatamodel"; sourceTree = "<group>"; };
 		278034CB1E0B839700E98F08 /* MembersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MembersViewController.h; sourceTree = "<group>"; };
 		278034CC1E0B839700E98F08 /* MembersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MembersViewController.m; sourceTree = "<group>"; };
@@ -245,6 +254,7 @@
 				27FE10311DEBE30E00457049 /* CELLs */,
 				27853CB31DD325FD00C01E10 /* DATAs */,
 				27853CB41DD3262300C01E10 /* ITEMs */,
+				275F522F1E12617C00E43C07 /* INVENTORYs */,
 				27853CB71DD326D400C01E10 /* PARTNERs */,
 				27853CB61DD3269A00C01E10 /* ORDERs */,
 				27853CB51DD3265A00C01E10 /* MANAGERs */,
@@ -264,6 +274,19 @@
 				272BB55D1DC732A800A1AB11 /* main.m */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		275F522F1E12617C00E43C07 /* INVENTORYs */ = {
+			isa = PBXGroup;
+			children = (
+				275147E01DE7F36400FF888D /* InventoryViewController.h */,
+				275147E11DE7F36400FF888D /* InventoryViewController.m */,
+				275F52301E1261D400E43C07 /* InventoryOrderListViewController.h */,
+				275F52311E1261D400E43C07 /* InventoryOrderListViewController.m */,
+				275F52331E12620B00E43C07 /* InventoryOrderViewController.h */,
+				275F52341E12620B00E43C07 /* InventoryOrderViewController.m */,
+			);
+			name = INVENTORYs;
 			sourceTree = "<group>";
 		};
 		27853CB21DD325B500C01E10 /* OBJECTs */ = {
@@ -307,8 +330,6 @@
 				272BB5921DC74A7700A1AB11 /* ItemListViewController.m */,
 				272BB5941DC74AE300A1AB11 /* ItemViewController.h */,
 				272BB5951DC74AE300A1AB11 /* ItemViewController.m */,
-				275147E01DE7F36400FF888D /* InventoryViewController.h */,
-				275147E11DE7F36400FF888D /* InventoryViewController.m */,
 			);
 			name = ITEMs;
 			sourceTree = "<group>";
@@ -428,6 +449,8 @@
 				279AE0D51E10F827007D9B0B /* BankAccountCell.m */,
 				2716638F1E12086F00B5BE71 /* FinanceCell.h */,
 				271663901E12086F00B5BE71 /* FinanceCell.m */,
+				276637631E128FE00006672A /* InvOredrDetailCell.h */,
+				276637641E128FE00006672A /* InvOredrDetailCell.m */,
 				27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */,
 				27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */,
 			);
@@ -607,6 +630,7 @@
 				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,
 				27A4C9D51DED6C6C002476CD /* InventoryCell.m in Sources */,
+				276637651E128FE00006672A /* InvOredrDetailCell.m in Sources */,
 				27BE8C3A1DDB45E700FAA604 /* OrderListViewController.m in Sources */,
 				278DA2001DD17855000F23DE /* EditCell.m in Sources */,
 				272BB5871DC746A800A1AB11 /* Item.m in Sources */,
@@ -624,6 +648,7 @@
 				27BE8C0E1DD5C82A00FAA604 /* PartnerViewController.m in Sources */,
 				278034CD1E0B839700E98F08 /* MembersViewController.m in Sources */,
 				272BB5901DC7470E00A1AB11 /* OrderDetail.m in Sources */,
+				275F52321E1261D400E43C07 /* InventoryOrderListViewController.m in Sources */,
 				272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */,
 				272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */,
 				27A5B0461E0A69DA008BF08E /* DateManager.m in Sources */,
@@ -634,6 +659,7 @@
 				27DA2D2F1E03D457002BEA63 /* AccountingReversedListViewController.m in Sources */,
 				272BB55E1DC732A800A1AB11 /* main.m in Sources */,
 				278034D31E0BA60E00E98F08 /* MemberCell.m in Sources */,
+				275F52351E12620B00E43C07 /* InventoryOrderViewController.m in Sources */,
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
 				279AE0D61E10F827007D9B0B /* BankAccountCell.m in Sources */,
 				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,

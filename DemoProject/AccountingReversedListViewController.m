@@ -47,7 +47,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"accDidRevCell"];
     OrderMaster *om = [self.orderListDidReversed objectAtIndex:indexPath.row];
-    cell.textLabel.text = om.orderNo;
+    cell.textLabel.text = [NSString stringWithFormat:@"[%@]%@",om.orderPartner,om.orderNo];
     return cell;
 }
 
@@ -65,6 +65,7 @@
     arvc.whereFrom = @"accQuerySegue";
     arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
 }
+
 - (IBAction)navigationBack:(id)sender
 {
     [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES];

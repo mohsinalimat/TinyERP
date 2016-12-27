@@ -133,6 +133,10 @@
         NSString *e = @"*E*";
         pred = [NSPredicate predicateWithFormat:@"(orderNo like %@) || (orderNo like %@)",d,e];
     }
+    else if([fiterColumn isEqualToString:@"orderTypeF"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"orderNo like %@",@"*F*"];
+    }
     
     request.predicate = pred;
     
