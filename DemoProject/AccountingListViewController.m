@@ -276,6 +276,11 @@
     return 0;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50.0;
+}
+
 //Row資料呈現
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -290,10 +295,9 @@
                                 [od.orderAmount floatValue],
                                 orderAlreadyAmount,
                                 [od.orderNotYetAmount floatValue]];
-#pragma mark Q.寬高真的很難設
-//    CGRect frame = cell.frame;
-//    frame.size.height = 160.0;
-//    cell.frame = frame;
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:16.0];
+#pragma mark Q.無法置右
+    cell.detailTextLabel.textAlignment = NSTextAlignmentRight;
     return cell;
 }
 
@@ -344,14 +348,14 @@
     //上面都是0
     //然後這個是-1 self.accountingTableView.sectionHeaderHeight
     UIView *tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 0, 0)];
-    tableHeaderView.backgroundColor = [UIColor yellowColor];
-    CGFloat buttonXlocal = self.accountingTableView.frame.size.width - 100;
+    tableHeaderView.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
+    CGFloat buttonXlocal = self.accountingTableView.frame.size.width - 50;
     //大小一樣沒用
     UIButton *reverseButton = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocal, 0, 0, 0)];
     reverseButton.tag = section;
     //按了UI看不出變化
-    [reverseButton setTitle:@"沖帳請按我" forState:UIControlStateNormal];
-    [reverseButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [reverseButton setTitle:@"沖帳" forState:UIControlStateNormal];
+    [reverseButton setTitleColor:self.view.tintColor forState:UIControlStateNormal];
     [reverseButton sizeToFit];
     [tableHeaderView addSubview:reverseButton];
     [reverseButton addTarget:self action:@selector(transferARVC:) forControlEvents:UIControlEventTouchUpInside];
@@ -389,7 +393,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.accountingTableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 -(void)transferARVC:(UIButton*)btn

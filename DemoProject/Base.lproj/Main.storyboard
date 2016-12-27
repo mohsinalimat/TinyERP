@@ -316,17 +316,111 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="shc-Sa-ip9">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="171" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="shc-Sa-ip9">
                                 <rect key="frame" x="0.0" y="64" width="414" height="672"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="finCell" id="utS-iX-ded">
-                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="finCell" rowHeight="171" id="utS-iX-ded" customClass="FinanceCell">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="171"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="utS-iX-ded" id="vDV-ff-l8x">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="170.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="單號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="X6G-lL-AbA">
+                                                    <rect key="frame" x="8" y="8" width="116" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="日期" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b9d-xY-OZQ">
+                                                    <rect key="frame" x="129" y="8" width="103.66666666666666" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="使用者" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKu-s1-SP9">
+                                                    <rect key="frame" x="237.66666666666669" y="8" width="82.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="理由" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NXZ-mZ-Nux">
+                                                    <rect key="frame" x="325.33333333333326" y="43" width="80.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="折讓" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ogq-cx-a97">
+                                                    <rect key="frame" x="237.66666666666669" y="43" width="82.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="金額" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-qP-0EW">
+                                                    <rect key="frame" x="129" y="43" width="103.66666666666666" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="對象單號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QUD-Ru-TQQ">
+                                                    <rect key="frame" x="8" y="43" width="116" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="交易對象" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WSj-DN-Xfb">
+                                                    <rect key="frame" x="325.33333333333326" y="8" width="80.666666666666686" height="30"/>
+                                                    <nil key="textColor"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="width" secondItem="WSj-DN-Xfb" secondAttribute="width" id="11t-NO-eBA"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="NXZ-mZ-Nux" secondAttribute="trailing" id="4Z1-Mz-WcW"/>
+                                                <constraint firstItem="b9d-xY-OZQ" firstAttribute="leading" secondItem="X6G-lL-AbA" secondAttribute="trailing" constant="5" id="7va-di-H5h"/>
+                                                <constraint firstItem="ogq-cx-a97" firstAttribute="width" secondItem="dKu-s1-SP9" secondAttribute="width" id="9yg-X5-Ejx"/>
+                                                <constraint firstItem="b9d-xY-OZQ" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.25" id="Ef5-Xz-YFq"/>
+                                                <constraint firstItem="WSj-DN-Xfb" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="Gdp-U4-6fV"/>
+                                                <constraint firstItem="X6G-lL-AbA" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="K0V-68-Bra"/>
+                                                <constraint firstItem="ogq-cx-a97" firstAttribute="top" secondItem="WSj-DN-Xfb" secondAttribute="bottom" constant="5" id="LTW-n1-je6"/>
+                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="leading" secondItem="QUD-Ru-TQQ" secondAttribute="trailing" constant="5" id="LbQ-rV-a6q"/>
+                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="width" secondItem="X6G-lL-AbA" secondAttribute="width" id="NeR-Bj-GDM"/>
+                                                <constraint firstItem="WSj-DN-Xfb" firstAttribute="leading" secondItem="dKu-s1-SP9" secondAttribute="trailing" constant="5" id="PGe-Le-EHh"/>
+                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="width" secondItem="b9d-xY-OZQ" secondAttribute="width" id="ToX-SS-97r"/>
+                                                <constraint firstItem="b9d-xY-OZQ" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="UQ3-9K-1z2"/>
+                                                <constraint firstItem="dKu-s1-SP9" firstAttribute="leading" secondItem="b9d-xY-OZQ" secondAttribute="trailing" constant="5" id="aei-al-kRa"/>
+                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="top" secondItem="WSj-DN-Xfb" secondAttribute="bottom" constant="5" id="c9r-zD-Y53"/>
+                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="top" secondItem="dKu-s1-SP9" secondAttribute="bottom" constant="5" id="iQP-4y-taa"/>
+                                                <constraint firstItem="ogq-cx-a97" firstAttribute="leading" secondItem="fbg-qP-0EW" secondAttribute="trailing" constant="5" id="liY-eB-cst"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="WSj-DN-Xfb" secondAttribute="trailing" id="mRp-vc-SXb"/>
+                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="top" secondItem="b9d-xY-OZQ" secondAttribute="bottom" constant="5" id="piA-Nu-XhS"/>
+                                                <constraint firstItem="X6G-lL-AbA" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.28" id="qOG-d8-STH"/>
+                                                <constraint firstItem="dKu-s1-SP9" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.2" id="rMG-Qs-E2r"/>
+                                                <constraint firstItem="dKu-s1-SP9" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="rw1-0t-43o"/>
+                                                <constraint firstItem="X6G-lL-AbA" firstAttribute="leading" secondItem="vDV-ff-l8x" secondAttribute="leadingMargin" id="sI9-Eo-CPq"/>
+                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="leading" secondItem="ogq-cx-a97" secondAttribute="trailing" constant="5" id="tep-nh-51G"/>
+                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="leading" secondItem="vDV-ff-l8x" secondAttribute="leadingMargin" id="yxD-CQ-Pho"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="finOrderAmountInput" destination="fbg-qP-0EW" id="OqU-oZ-hOZ"/>
+                                            <outlet property="finOrderDateInput" destination="b9d-xY-OZQ" id="7xP-1x-a6b"/>
+                                            <outlet property="finOrderDiscountInput" destination="ogq-cx-a97" id="Bni-5O-vDl"/>
+                                            <outlet property="finOrderNoInput" destination="X6G-lL-AbA" id="LPP-aX-MaA"/>
+                                            <outlet property="finOrderNoTwinsInput" destination="QUD-Ru-TQQ" id="tBy-WP-mp4"/>
+                                            <outlet property="finOrderPartnerInput" destination="WSj-DN-Xfb" id="89o-fF-UO2"/>
+                                            <outlet property="finOrderReasonInput" destination="NXZ-mZ-Nux" id="upa-Bb-ibd"/>
+                                            <outlet property="finOrderUserInput" destination="dKu-s1-SP9" id="iXc-uL-r8h"/>
+                                            <outletCollection property="finOrderSevenInput" destination="ogq-cx-a97" id="Kbr-E0-kA8"/>
+                                            <outletCollection property="finOrderSevenInput" destination="QUD-Ru-TQQ" id="Vr9-Ga-vzr"/>
+                                            <outletCollection property="finOrderSevenInput" destination="fbg-qP-0EW" id="NfZ-Rx-DgN"/>
+                                            <outletCollection property="finOrderSevenInput" destination="NXZ-mZ-Nux" id="4P5-rB-Er3"/>
+                                            <outletCollection property="finOrderSevenInput" destination="WSj-DN-Xfb" id="IGA-14-3fZ"/>
+                                            <outletCollection property="finOrderSevenInput" destination="dKu-s1-SP9" id="0Cf-sD-xEx"/>
+                                            <outletCollection property="finOrderSevenInput" destination="b9d-xY-OZQ" id="1Yv-X0-0dv"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -339,13 +433,20 @@
                             <constraint firstItem="shc-Sa-ip9" firstAttribute="leading" secondItem="Ghl-dr-TTy" secondAttribute="leading" id="QQe-bB-bNC"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="7O2-Ts-gea">
+                        <barButtonItem key="rightBarButtonItem" title="儲存" id="kSy-ry-an0">
+                            <connections>
+                                <action selector="saveFinanceOrder:" destination="5FQ-0C-ZIM" id="3nM-Yq-TEj"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="financeTableView" destination="shc-Sa-ip9" id="RRs-F7-iIt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4sX-9T-KF1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1057" y="1864"/>
+            <point key="canvasLocation" x="1055.072463768116" y="1863.5869565217392"/>
         </scene>
         <!--Accounting List View Controller-->
         <scene sceneID="ibg-mn-rtv">
@@ -457,7 +558,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hjx-lk-HHy">
-                                <rect key="frame" x="0.0" y="20" width="414" height="672"/>
+                                <rect key="frame" x="0.0" y="64" width="414" height="628"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="accDidRevCell" textLabel="unH-mC-9i2" style="IBUITableViewCellStyleDefault" id="qLd-bb-DrN">
@@ -3387,11 +3488,11 @@ StoreApp
     <inferredMetricsTieBreakers>
         <segue reference="LNu-av-hvY"/>
         <segue reference="quf-qe-AWJ"/>
-        <segue reference="6kR-NQ-LIR"/>
-        <segue reference="Nve-gu-a0o"/>
         <segue reference="2BX-Dt-cMR"/>
         <segue reference="YQU-cy-WNj"/>
-        <segue reference="DuU-bd-kTb"/>
-        <segue reference="QF1-5Q-6C1"/>
+        <segue reference="8W9-N1-xFn"/>
+        <segue reference="sOl-5j-AiF"/>
+        <segue reference="6kR-NQ-LIR"/>
+        <segue reference="Nve-gu-a0o"/>
     </inferredMetricsTieBreakers>
 </document>

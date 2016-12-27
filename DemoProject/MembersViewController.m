@@ -128,7 +128,7 @@
 -(UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     CollectionReusableViewWithTitle *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"collectionHeader" forIndexPath:indexPath];
-    headerView.backgroundColor = [UIColor yellowColor];
+    headerView.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
     headerView.title.text = self.memberClassList[indexPath.section];
     return headerView;
 }

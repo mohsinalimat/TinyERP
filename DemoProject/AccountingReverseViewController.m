@@ -252,10 +252,12 @@
                     if ([[self.currentReverseOM.orderNo substringToIndex:1] isEqualToString:@"P"])
                     {
                         sonOM.orderType = @"PD";
+                        sonOM.orderReason = @"應付沖帳";
                     }
                     else if ([[self.currentReverseOM.orderNo substringToIndex:1] isEqualToString:@"S"])
                     {
                         sonOM.orderType = @"SD";
+                        sonOM.orderReason = @"應收沖帳";
                     }
                     sonOM.orderNo = [sonOM.orderType stringByAppendingString:[self.currentReverseOM.orderNo substringFromIndex:2]];
                     sonOM.orderDate = self.currentReverseOM.orderDate;

@@ -223,7 +223,8 @@
                 case 0:
                 {
                     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"membersCell"];
-                    cell.textLabel.text = @"使用者管理";
+                    cell.textLabel.text = @"   使用者管理";
+                    cell.textLabel.textColor = self.view.tintColor;
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
                     break;
@@ -231,7 +232,8 @@
                 case 1:
                 {
                     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell"];
-                    cell.textLabel.text = @"個人資料";
+                    cell.textLabel.text = @"   個人資料";
+                    cell.textLabel.textColor = self.view.tintColor;
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
                     break;
@@ -239,7 +241,8 @@
                 case 2:
                 {
                     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signupCell"];
-                    cell.textLabel.text = @"新增使用者";
+                    cell.textLabel.text = @"   新增使用者";
+                    cell.textLabel.textColor = self.view.tintColor;
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
                     break;

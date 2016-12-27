@@ -39,7 +39,7 @@
         for (OrderMaster *om in orderList)
         {
             NSString *orderNoDate = [om.orderNo substringWithRange:NSMakeRange(2,6)];
-            if ([orderNoDate isEqualToString:dateString])
+            if ([om.orderType isEqualToString:orderBegin] && [orderNoDate isEqualToString:dateString])
             {
                 isTodayOrderNo = YES;
                 [todayOrderNoArray addObject:@([[om.orderNo substringFromIndex:8] integerValue])];

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		271462641DDD48F300CC8CB6 /* OrderDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271462631DDD48F300CC8CB6 /* OrderDetailCell.m */; };
+		271663911E12086F00B5BE71 /* FinanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 271663901E12086F00B5BE71 /* FinanceCell.m */; };
 		271A7F931DE4304700EEAFB3 /* AlertManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 271A7F921DE4304700EEAFB3 /* AlertManager.m */; };
 		272BB55E1DC732A800A1AB11 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB55D1DC732A800A1AB11 /* main.m */; };
 		272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB5601DC732A800A1AB11 /* AppDelegate.m */; };
@@ -73,6 +74,8 @@
 		0B3697E1FD03265D2B6ACFB0 /* Pods-DemoProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-DemoProject/Pods-DemoProject.release.xcconfig"; sourceTree = "<group>"; };
 		271462621DDD48F300CC8CB6 /* OrderDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailCell.h; sourceTree = "<group>"; };
 		271462631DDD48F300CC8CB6 /* OrderDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailCell.m; sourceTree = "<group>"; };
+		2716638F1E12086F00B5BE71 /* FinanceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinanceCell.h; sourceTree = "<group>"; };
+		271663901E12086F00B5BE71 /* FinanceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FinanceCell.m; sourceTree = "<group>"; };
 		271A7F911DE4304700EEAFB3 /* AlertManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertManager.h; sourceTree = "<group>"; };
 		271A7F921DE4304700EEAFB3 /* AlertManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertManager.m; sourceTree = "<group>"; };
 		272BB5591DC732A800A1AB11 /* DemoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -423,6 +426,8 @@
 				278034D21E0BA60E00E98F08 /* MemberCell.m */,
 				279AE0D41E10F827007D9B0B /* BankAccountCell.h */,
 				279AE0D51E10F827007D9B0B /* BankAccountCell.m */,
+				2716638F1E12086F00B5BE71 /* FinanceCell.h */,
+				271663901E12086F00B5BE71 /* FinanceCell.m */,
 				27E73CCD1DF93B2000FA09BC /* CollectionReusableViewWithTitle.h */,
 				27E73CCE1DF93B2000FA09BC /* CollectionReusableViewWithTitle.m */,
 			);
@@ -622,6 +627,7 @@
 				272BB5611DC732A800A1AB11 /* AppDelegate.m in Sources */,
 				272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */,
 				27A5B0461E0A69DA008BF08E /* DateManager.m in Sources */,
+				271663911E12086F00B5BE71 /* FinanceCell.m in Sources */,
 				27BE8C371DDAA79F00FAA604 /* BasicData.m in Sources */,
 				272BB5841DC7457F00A1AB11 /* CoreDataHelper.m in Sources */,
 				275147E51DE7FFB100FF888D /* Inventory.m in Sources */,
