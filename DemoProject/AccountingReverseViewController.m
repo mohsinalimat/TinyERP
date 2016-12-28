@@ -55,6 +55,7 @@
         self.totalAmountLabel.text = [@"總金額  " stringByAppendingString:[self.currentReverseOM.orderTotalAmount stringValue]];
         [self.accDidRevListBtn setEnabled:NO];
         [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
+        [self.deleteAccOrderButton setTitle:@"刪除單據" forState:UIControlStateNormal];
         self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
         if (self.currentReverseOM.orderFinanceType>0)
         {
@@ -70,6 +71,7 @@
         self.accOrderDateInput.text = [DateManager getTodayDateString];
         AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
         self.accUserInput.text = appDLG.currentUserName;
+        [self.deleteAccOrderButton setTitle:@"放棄新增" forState:UIControlStateNormal];
         //轉單身
         for (OrderDetail *fatherOrderDetail in self.orginalOrderDetailList)
         {
@@ -87,7 +89,9 @@
         }
     }
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteReverseAction) name:@"deleteReverseYes" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteFinanceOrder) name:@"deleteFinanceOrderYes" object:nil];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -197,6 +201,10 @@
     {
         [AlertManager alert:@"資金類型為銀行時\n帳號為必填" controller:self];
     }
+    else if (self.accOrderDetailList.count == 0)
+    {
+        [AlertManager alert:@"沒有單身不可儲存" controller:self];
+    }
     else
     {
         BOOL invalidOrderDteail = NO;
@@ -293,18 +301,39 @@
 -(void)deleteFinanceOrder
 {
     OrderMaster *deleteFinanceOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNoTwins" fiterBy:self.currentReverseOM.orderNo].firstObject;
-    CoreDataHelper *help = [CoreDataHelper sharedInstance];
-    [help.managedObjectContext deleteObject:deleteFinanceOM];
+    if (deleteFinanceOM != nil)
+    {
+        CoreDataHelper *help = [CoreDataHelper sharedInstance];
+        [help.managedObjectContext deleteObject:deleteFinanceOM];
+    }
     self.currentReverseOM.orderNoTwins = nil;
     [DataBaseManager updateToCoreData];
-    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+//    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
 }
 
 - (IBAction)deleteReverse:(id)sender
 {
-    [DataBaseManager deleteDataAndObject:self.currentReverseOM array:self.accOrderDetailList];
-    //刪單身
+    if ([self.whereFrom isEqualToString:@"accQuerySegue"])
+    {
+        [AlertManager alertYesAndNo:@"請確認是否刪除" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteReverse"];
+    }
+    else if ([self.whereFrom isEqualToString:@"accCreateSegue"])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+-(void)deleteReverseAction
+{
+    NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    for (OrderDetail *deadOD in deadList)
+    {
+        [helper.managedObjectContext deleteObject:deadOD];
+    }
     [self deleteFinanceOrder];
+    [DataBaseManager deleteDataAndObject:self.currentReverseOM array:self.accOrderListInDetail];
+    [DataBaseManager updateToCoreData];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -337,6 +366,28 @@
     }
 }
 
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [OrderDetail deleteOrderDetail:[self.accOrderDetailList objectAtIndex:indexPath.row] array:self.accOrderDetailList tableView:self.accountingReverseTableView indexPath:indexPath];
+        if (self.accOrderDetailList.count != 0)
+        {
+            for (NSInteger i=indexPath.row; i <= self.accOrderDetailList.count-1; i++)
+            {
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+                AccRevCell *arCell = [self.accountingReverseTableView cellForRowAtIndexPath:ip];
+                arCell.odThisAmount.tag -= 1 ;
+                OrderDetail *od = [self.accOrderDetailList objectAtIndex:i];
+                int newSeq = [od.orderSeq intValue];
+                newSeq -= 1;
+                od.orderSeq = @(newSeq);
+            }
+        }
+        self.currentReverseOM.orderCount = @(self.accOrderDetailList.count);
+        [self.accountingReverseTableView reloadData];
+    }
+}
 
 - (IBAction)backRootView:(id)sender
 {

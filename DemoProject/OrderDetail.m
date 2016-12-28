@@ -22,5 +22,15 @@
 @dynamic orderSeq;
 @dynamic orderSeqOld;
 @dynamic isInventory;
++(void)deleteOrderDetail:(OrderDetail*)od array:(NSMutableArray*)array tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
+{
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    //刪DB
+    [helper.managedObjectContext deleteObject:od];
+    //刪陣列
+    [array removeObjectAtIndex:indexPath.row];
+    //刪cell
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
 @end
 

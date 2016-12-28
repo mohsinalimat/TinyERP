@@ -38,6 +38,12 @@
     }
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:nil];
+    [self.accountingReversedTableView reloadData];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.orderListDidReversed.count;
@@ -63,6 +69,7 @@
 {
     AccountingReverseViewController *arvc = segue.destinationViewController;
     arvc.whereFrom = @"accQuerySegue";
+    arvc.accOrderListInDetail = self.orderListDidReversed;
     arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
 }
 

@@ -346,25 +346,19 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="理由" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NXZ-mZ-Nux">
-                                                    <rect key="frame" x="325.33333333333326" y="43" width="80.666666666666686" height="30"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="折讓" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ogq-cx-a97">
                                                     <rect key="frame" x="237.66666666666669" y="43" width="82.666666666666686" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="金額" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-qP-0EW">
-                                                    <rect key="frame" x="129" y="43" width="103.66666666666666" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="折讓" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ogq-cx-a97">
+                                                    <rect key="frame" x="163.66666666666666" y="43" width="69" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="對象單號" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QUD-Ru-TQQ">
-                                                    <rect key="frame" x="8" y="43" width="116" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="金額" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fbg-qP-0EW">
+                                                    <rect key="frame" x="42.666666666666671" y="43" width="81.333333333333343" height="30"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -375,46 +369,70 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gND-v4-usi">
+                                                    <rect key="frame" x="8" y="38" width="34.666666666666664" height="40.666666666666671"/>
+                                                    <string key="text">折後
+總額</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGn-uM-hQ9">
+                                                    <rect key="frame" x="129" y="38" width="34.666666666666657" height="40.666666666666671"/>
+                                                    <string key="text">折讓
+金額</string>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="highlightedColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RNa-8Z-zcn">
+                                                    <rect key="frame" x="334" y="43" width="62" height="30"/>
+                                                    <state key="normal" title="查看明細"/>
+                                                    <connections>
+                                                        <segue destination="Bua-Gx-lz3" kind="show" id="dmI-TG-hIC"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="width" secondItem="WSj-DN-Xfb" secondAttribute="width" id="11t-NO-eBA"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="NXZ-mZ-Nux" secondAttribute="trailing" id="4Z1-Mz-WcW"/>
+                                                <constraint firstItem="gND-v4-usi" firstAttribute="top" secondItem="X6G-lL-AbA" secondAttribute="bottom" id="13s-WM-xsR"/>
+                                                <constraint firstItem="aGn-uM-hQ9" firstAttribute="leading" secondItem="b9d-xY-OZQ" secondAttribute="leading" id="36s-2b-OVa"/>
+                                                <constraint firstItem="RNa-8Z-zcn" firstAttribute="centerX" secondItem="WSj-DN-Xfb" secondAttribute="centerX" id="3bX-X2-xRo"/>
+                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="leading" secondItem="gND-v4-usi" secondAttribute="trailing" id="4Rj-AN-HkV"/>
                                                 <constraint firstItem="b9d-xY-OZQ" firstAttribute="leading" secondItem="X6G-lL-AbA" secondAttribute="trailing" constant="5" id="7va-di-H5h"/>
-                                                <constraint firstItem="ogq-cx-a97" firstAttribute="width" secondItem="dKu-s1-SP9" secondAttribute="width" id="9yg-X5-Ejx"/>
+                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="trailing" secondItem="dKu-s1-SP9" secondAttribute="trailing" id="Bcv-2p-EZx"/>
                                                 <constraint firstItem="b9d-xY-OZQ" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.25" id="Ef5-Xz-YFq"/>
                                                 <constraint firstItem="WSj-DN-Xfb" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="Gdp-U4-6fV"/>
+                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="leading" secondItem="ogq-cx-a97" secondAttribute="trailing" constant="5" id="HDp-SJ-Jfi"/>
                                                 <constraint firstItem="X6G-lL-AbA" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="K0V-68-Bra"/>
                                                 <constraint firstItem="ogq-cx-a97" firstAttribute="top" secondItem="WSj-DN-Xfb" secondAttribute="bottom" constant="5" id="LTW-n1-je6"/>
-                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="leading" secondItem="QUD-Ru-TQQ" secondAttribute="trailing" constant="5" id="LbQ-rV-a6q"/>
-                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="width" secondItem="X6G-lL-AbA" secondAttribute="width" id="NeR-Bj-GDM"/>
+                                                <constraint firstItem="RNa-8Z-zcn" firstAttribute="centerY" secondItem="NXZ-mZ-Nux" secondAttribute="centerY" id="OVh-I0-xZF"/>
                                                 <constraint firstItem="WSj-DN-Xfb" firstAttribute="leading" secondItem="dKu-s1-SP9" secondAttribute="trailing" constant="5" id="PGe-Le-EHh"/>
-                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="width" secondItem="b9d-xY-OZQ" secondAttribute="width" id="ToX-SS-97r"/>
+                                                <constraint firstItem="ogq-cx-a97" firstAttribute="leading" secondItem="aGn-uM-hQ9" secondAttribute="trailing" id="Q7P-2c-N6N"/>
+                                                <constraint firstItem="gND-v4-usi" firstAttribute="leading" secondItem="X6G-lL-AbA" secondAttribute="leading" id="QDF-c6-p5D"/>
                                                 <constraint firstItem="b9d-xY-OZQ" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="UQ3-9K-1z2"/>
+                                                <constraint firstItem="aGn-uM-hQ9" firstAttribute="top" secondItem="b9d-xY-OZQ" secondAttribute="bottom" id="Z3f-Iq-jrM"/>
                                                 <constraint firstItem="dKu-s1-SP9" firstAttribute="leading" secondItem="b9d-xY-OZQ" secondAttribute="trailing" constant="5" id="aei-al-kRa"/>
                                                 <constraint firstItem="NXZ-mZ-Nux" firstAttribute="top" secondItem="WSj-DN-Xfb" secondAttribute="bottom" constant="5" id="c9r-zD-Y53"/>
+                                                <constraint firstItem="fbg-qP-0EW" firstAttribute="trailing" secondItem="X6G-lL-AbA" secondAttribute="trailing" id="haJ-UI-G5f"/>
                                                 <constraint firstItem="fbg-qP-0EW" firstAttribute="top" secondItem="dKu-s1-SP9" secondAttribute="bottom" constant="5" id="iQP-4y-taa"/>
-                                                <constraint firstItem="ogq-cx-a97" firstAttribute="leading" secondItem="fbg-qP-0EW" secondAttribute="trailing" constant="5" id="liY-eB-cst"/>
+                                                <constraint firstItem="ogq-cx-a97" firstAttribute="trailing" secondItem="b9d-xY-OZQ" secondAttribute="trailing" id="m1i-f3-oj8"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="WSj-DN-Xfb" secondAttribute="trailing" id="mRp-vc-SXb"/>
-                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="top" secondItem="b9d-xY-OZQ" secondAttribute="bottom" constant="5" id="piA-Nu-XhS"/>
                                                 <constraint firstItem="X6G-lL-AbA" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.28" id="qOG-d8-STH"/>
                                                 <constraint firstItem="dKu-s1-SP9" firstAttribute="width" secondItem="vDV-ff-l8x" secondAttribute="width" multiplier="0.2" id="rMG-Qs-E2r"/>
                                                 <constraint firstItem="dKu-s1-SP9" firstAttribute="top" secondItem="vDV-ff-l8x" secondAttribute="topMargin" id="rw1-0t-43o"/>
                                                 <constraint firstItem="X6G-lL-AbA" firstAttribute="leading" secondItem="vDV-ff-l8x" secondAttribute="leadingMargin" id="sI9-Eo-CPq"/>
-                                                <constraint firstItem="NXZ-mZ-Nux" firstAttribute="leading" secondItem="ogq-cx-a97" secondAttribute="trailing" constant="5" id="tep-nh-51G"/>
-                                                <constraint firstItem="QUD-Ru-TQQ" firstAttribute="leading" secondItem="vDV-ff-l8x" secondAttribute="leadingMargin" id="yxD-CQ-Pho"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="detailButton" destination="RNa-8Z-zcn" id="auK-RR-V1h"/>
                                             <outlet property="finOrderAmountInput" destination="fbg-qP-0EW" id="OqU-oZ-hOZ"/>
                                             <outlet property="finOrderDateInput" destination="b9d-xY-OZQ" id="7xP-1x-a6b"/>
                                             <outlet property="finOrderDiscountInput" destination="ogq-cx-a97" id="Bni-5O-vDl"/>
                                             <outlet property="finOrderNoInput" destination="X6G-lL-AbA" id="LPP-aX-MaA"/>
-                                            <outlet property="finOrderNoTwinsInput" destination="QUD-Ru-TQQ" id="tBy-WP-mp4"/>
                                             <outlet property="finOrderPartnerInput" destination="WSj-DN-Xfb" id="89o-fF-UO2"/>
                                             <outlet property="finOrderReasonInput" destination="NXZ-mZ-Nux" id="upa-Bb-ibd"/>
                                             <outlet property="finOrderUserInput" destination="dKu-s1-SP9" id="iXc-uL-r8h"/>
                                             <outletCollection property="finOrderSevenInput" destination="ogq-cx-a97" id="Kbr-E0-kA8"/>
-                                            <outletCollection property="finOrderSevenInput" destination="QUD-Ru-TQQ" id="Vr9-Ga-vzr"/>
                                             <outletCollection property="finOrderSevenInput" destination="fbg-qP-0EW" id="NfZ-Rx-DgN"/>
                                             <outletCollection property="finOrderSevenInput" destination="NXZ-mZ-Nux" id="4P5-rB-Er3"/>
                                             <outletCollection property="finOrderSevenInput" destination="WSj-DN-Xfb" id="IGA-14-3fZ"/>
@@ -1706,8 +1724,6 @@
                                             <outlet property="invOrderItemUnitLabel" destination="lAA-WL-fGG" id="uW3-Ye-kil"/>
                                             <outlet property="invOrderQtyInput" destination="kP9-RU-2O2" id="lom-zm-H9u"/>
                                             <outlet property="invOrderSeqLabel" destination="hZ3-9z-sG4" id="Hf1-W9-8eW"/>
-                                            <outlet property="odItemUnitLabel" destination="lAA-WL-fGG" id="1OH-5v-PeH"/>
-                                            <outlet property="odQty" destination="kP9-RU-2O2" id="1cD-3L-bh1"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1800,6 +1816,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="deleteOrderButton" destination="hkf-T2-Xjp" id="iUy-0k-lgG"/>
                         <outlet property="invOrderDateInput" destination="Xfh-yp-oBT" id="Zwl-eG-Krx"/>
                         <outlet property="invOrderDetailTableView" destination="Nn9-Jl-vrK" id="gpy-Eo-ktJ"/>
                         <outlet property="invOrderNoInput" destination="H4N-NH-0js" id="KKp-bM-8IY"/>
@@ -3856,13 +3873,13 @@ StoreApp
         <image name="dropboxIcon" width="72" height="68"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6kR-NQ-LIR"/>
         <segue reference="quf-qe-AWJ"/>
         <segue reference="LNu-av-hvY"/>
-        <segue reference="8W9-N1-xFn"/>
-        <segue reference="DuU-bd-kTb"/>
-        <segue reference="YQU-cy-WNj"/>
         <segue reference="2BX-Dt-cMR"/>
+        <segue reference="8W9-N1-xFn"/>
+        <segue reference="dmI-TG-hIC"/>
+        <segue reference="6kR-NQ-LIR"/>
         <segue reference="Nve-gu-a0o"/>
+        <segue reference="YQU-cy-WNj"/>
     </inferredMetricsTieBreakers>
 </document>

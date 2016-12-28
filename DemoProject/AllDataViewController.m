@@ -174,7 +174,7 @@
         {
             for (NSInteger i=[self.basicDataList indexOfObject:ba]+1; i<=self.basicDataList.count-1; i++)
             {
-                if ([ba.bankID isEqualToString:@""] || [ba.bankName isEqualToString:@""] || [ba.bankAccount isEqualToString:@""])
+                if (([ba.bankID isEqualToString:@""] || [ba.bankName isEqualToString:@""] || [ba.bankAccount isEqualToString:@""])&& ![ba.bankID isEqualToString:@"000"])
                 {
                     isNoField = YES;
                     goto baInvalid;

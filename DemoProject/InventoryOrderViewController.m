@@ -17,13 +17,14 @@
 #import "Item.h"
 #import "AlertManager.h"
 
-@interface InventoryOrderViewController () <UITableViewDataSource,UITableViewDelegate>
+@interface InventoryOrderViewController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *invOrderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderDateInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderUserInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderWarehouseInput;
 @property (weak, nonatomic) IBOutlet UITableView *invOrderDetailTableView;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderTypeInput;
+@property (weak, nonatomic) IBOutlet UIButton *deleteOrderButton;
 @property NSMutableArray *invOrderDetailList;
 @property NSUInteger odCount;
 @end
@@ -42,6 +43,7 @@
         AppDelegate *appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
         self.invOrderUserInput.text = appDLG.currentUserName;
         self.invOrderNoInput.text = @"存檔後自動產生";
+        [self.deleteOrderButton setTitle:@"放棄新增" forState:UIControlStateNormal];
         self.odCount = 0;
     }
     else
@@ -51,10 +53,26 @@
         self.invOrderNoInput.text = self.currentInventoryOM.orderNo;
         [self.invOrderTypeInput setEnabled:NO];
         self.odCount = [self.currentInventoryOM.orderCount integerValue];
+        [self.deleteOrderButton setTitle:@"刪除單據" forState:UIControlStateNormal];
+        self.invOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentInventoryOM.orderNo];
     }
     self.invOrderWarehouseInput.text = self.currentInventoryOM.orderWarehouse;
     self.invOrderTypeInput.text = self.currentInventoryOM.orderType;
     [self.invOrderNoInput setEnabled:NO];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteInvAction) name:@"deleteInvOrderYes" object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:nil];
+    [DataBaseManager rollbackFromCoreData];
+}
+
+-(void)popVC
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -64,19 +82,39 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    InvOredrDetailCell *iodCell = [tableView dequeueReusableCellWithIdentifier:@"invOredrDetailCell"];
+    InvOredrDetailCell *iodCell = [tableView dequeueReusableCellWithIdentifier:@"invOrderDetailCell"];
+    iodCell.invOrderItemNameLabel.text = @"";
+    iodCell.invOrderItemUnitLabel.text = @"";
+    iodCell.invOrderQtyInput.text = @"";
+    
+    iodCell.invOrderItemNoInput.placeholder = @"料號";
+    iodCell.invOrderQtyInput.placeholder = @"異動量";
+    
     OrderDetail *od = [self.invOrderDetailList objectAtIndex:indexPath.row];
     iodCell.invOrderSeqLabel.text = [od.orderSeq stringValue];
     iodCell.invOrderItemNoInput.text = od.orderItemNo;
     iodCell.invOrderQtyInput.text = [od.orderQty stringValue];
-    NSMutableArray *itemList = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:od.orderItemNo];
+    [self showItemNameAndUnit:od.orderItemNo iodCell:iodCell];
+    [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
+    iodCell.invOrderItemNoInput.tag = indexPath.row;
+    return iodCell;
+}
+
+-(void)invOrderItemNoEditingEnd:(UITextField*)sender
+{
+    InvOredrDetailCell *iodCell = [self.invOrderDetailTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
+    [self showItemNameAndUnit:iodCell.invOrderItemNoInput.text iodCell:iodCell];
+}
+
+-(void)showItemNameAndUnit:(NSString*)itemNo iodCell:(InvOredrDetailCell*)iodCell
+{
+    NSMutableArray *itemList = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:itemNo];
     if (itemList.count != 0)
     {
         Item *item = [itemList objectAtIndex:0];
         iodCell.invOrderItemNameLabel.text = item.itemName;
         iodCell.invOrderItemUnitLabel.text = item.itemUnit;
     }
-    return iodCell;
 }
 
 - (IBAction)addInvOrderDetail:(id)sender
@@ -101,6 +139,10 @@
     {
         [AlertManager alert:@"類型未填" controller:self];
     }
+    else if (self.invOrderDetailList.count == 0)
+    {
+        [AlertManager alert:@"沒有單身不可儲存" controller:self];
+    }
     else
     {
         //檢查單身
@@ -108,7 +150,7 @@
         for (NSUInteger i=0; i<self.invOrderDetailList.count; i++)
         {
             InvOredrDetailCell *iodCell = [self.invOrderDetailTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            if (iodCell.invOrderItemNoInput.text.length==0 || iodCell.invOrderQtyInput.text.length==0)
+            if (iodCell.invOrderItemNoInput.text.length==0 || iodCell.invOrderQtyInput.text.length==0 || [iodCell.invOrderQtyInput.text floatValue]==0)
             {
                 invalid = YES;
             }
@@ -149,7 +191,7 @@
                 od.orderQty = @([iodCell.invOrderQtyInput.text floatValue]);
             }
             [DataBaseManager updateToCoreData];
-            [self.navigationController popViewControllerAnimated:YES];
+            [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
         }
         
     }
@@ -157,7 +199,51 @@
 
 - (IBAction)deleteInvOrder:(id)sender
 {
-    
+    if (self.currentInventoryOM==nil)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        [AlertManager alertYesAndNo:@"是否確定刪除單據" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteInvOrder"];
+    }
+}
+
+-(void)deleteInvAction
+{
+    NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentInventoryOM.orderNo];
+    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+    for (OrderDetail *deadOD in deadList)
+    {
+//        [self rollbackInventory:deadOD];
+        [helper.managedObjectContext deleteObject:deadOD];
+    }
+    [DataBaseManager updateToCoreData];
+    [DataBaseManager deleteDataAndObject:self.currentInventoryOM array:self.invOrderListInDetail];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [OrderDetail deleteOrderDetail:[self.invOrderDetailList objectAtIndex:indexPath.row] array:self.invOrderDetailList tableView:self.invOrderDetailTableView indexPath:indexPath];
+        if (self.invOrderDetailList.count != 0)
+        {
+            for (NSInteger i=indexPath.row; i <= self.invOrderDetailList.count-1; i++)
+            {
+                NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+                InvOredrDetailCell *iodCell = [self.invOrderDetailTableView cellForRowAtIndexPath:ip];
+                iodCell.invOrderItemNoInput.tag -= 1 ;
+                OrderDetail *od = [self.invOrderDetailList objectAtIndex:i];
+                int newSeq = [od.orderSeq intValue];
+                newSeq -= 1;
+                od.orderSeq = @(newSeq);
+            }
+        }
+        [self.invOrderDetailTableView reloadData];
+        self.odCount -= 1;
+    }
 }
 
 - (IBAction)backRootView:(id)sender

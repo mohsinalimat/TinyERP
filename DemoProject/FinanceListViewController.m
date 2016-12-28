@@ -15,6 +15,7 @@
 #import "OrderMasterManager.h"
 #import "AlertManager.h"
 #import "AppDelegate.h"
+#import "AccountingReverseViewController.h"
 
 @interface FinanceListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property NSMutableArray *financeAcountList;
@@ -52,10 +53,6 @@
     }
     //單據資料
     self.financeOrderList = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderDE" fiterBy:@"DE"];
-    for (OrderMaster *om in self.financeOrderList)
-    {
-        NSLog(@"%@",om.orderNo);
-    }
     [self splitArray];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
 }
@@ -183,6 +180,13 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FinanceCell *finCell = [tableView dequeueReusableCellWithIdentifier:@"finCell"];
+    //該死的回收機制
+    for (UITextField *field in finCell.finOrderSevenInput)
+    {
+        [field setEnabled:YES];
+    }
+    [finCell.detailButton setEnabled:YES];
+    finCell.finOrderUserInput.textColor = [UIColor purpleColor];
     NSArray *array = self.finance2DList[indexPath.section];
     OrderMaster *om = array[indexPath.row];
     finCell.finOrderNoInput.text = om.orderNo;
@@ -206,6 +210,7 @@
     else
     {
         finCell.finOrderUserInput.textColor = [UIColor colorWithRed:0.95 green:0.7 blue:0 alpha:1];
+        [finCell.detailButton setEnabled:NO];
     }
     if ([[om.orderNo substringToIndex:1]isEqualToString:@"P"])
     {
@@ -319,6 +324,24 @@
         [DataBaseManager updateToCoreData];
         [AlertManager alertWithoutButton:@"儲存成功" controller:self time:0.5 action:@"popVC"];
         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    AccountingReverseViewController *arvc = segue.destinationViewController;
+    arvc.whereFrom = @"accQuerySegue";
+    FinanceCell *finCell = (FinanceCell*)[[sender superview]superview];
+    NSIndexPath *ip = [self.financeTableView indexPathForCell:finCell];
+    NSArray *array = self.finance2DList[ip.section];
+    OrderMaster *om = array[ip.row];
+    if ([DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:om.orderNoTwins].firstObject == nil)
+    {
+        [AlertManager alert:@"查無此單" controller:self];
+    }
+    else
+    {
+        arvc.currentReverseOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:om.orderNoTwins].firstObject;
     }
 }
 

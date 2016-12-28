@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *finOrderDiscountInput;
 @property (weak, nonatomic) IBOutlet UITextField *finOrderAmountInput;
 @property (weak, nonatomic) IBOutlet UITextField *finOrderNoTwinsInput;
+@property (weak, nonatomic) IBOutlet UIButton *detailButton;
 @property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *finOrderSevenInput;
 
 @end

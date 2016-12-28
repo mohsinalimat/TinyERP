@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CoreDataHelper.h"
+#import <UIKit/UIKit.h>
 
 @interface OrderDetail : NSManagedObject
 @property NSString *orderItemNo;
@@ -23,4 +24,5 @@
 @property NSNumber *orderSeq;
 @property NSNumber *orderSeqOld;
 @property NSNumber *isInventory;
++(void)deleteOrderDetail:(OrderDetail*)od array:(NSMutableArray*)array tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
 @end

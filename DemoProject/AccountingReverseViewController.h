@@ -12,6 +12,7 @@
 @interface AccountingReverseViewController : UIViewController
 @property NSMutableArray *orginalOrderDetailList;
 @property NSMutableArray *accOrderDetailList;
+@property NSMutableArray *accOrderListInDetail;
 @property OrderMaster *currentReverseOM;
 @property NSString *whereFrom;
 @end

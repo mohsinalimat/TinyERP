@@ -123,6 +123,11 @@
         [self.allDeliveryButton setHidden:YES];
         [self.orderExpectedReverseDayLabel setHidden:YES];
         [self.orderExpectedReverseDayInput setHidden:YES];
+        //如果沒指定寬度的話, 就沒辦法變顏色
+        self.emptyInput.layer.borderWidth = 1;
+        self.emptyInput.layer.borderColor = [[UIColor whiteColor]CGColor];
+        [self.preOrderLabel setHidden:YES];
+        [self.orderPreOrderInput setHidden:YES];
     }
     else if ([self.whereFrom isEqualToString:@"bSegue"])
     {
@@ -146,15 +151,14 @@
     {
         self.partnerLabel.text = @"廠商";
         self.orderDateLabel.text = @"採購日期";
-        [self.emptyLabel setHidden:YES];
-        [self.emptyInput setHidden:YES];
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
-            self.orderPreOrderInput.placeholder = @"可輸入訂單號碼";
             self.title = @"採購單";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
+            [self.emptyLabel setHidden:YES];
+            [self.emptyInput setHidden:YES];
             self.orderPreOrderInput.placeholder = @"請輸入採購單號";
             self.title = @"進貨單";
             self.orderExpectedReverseDayLabel.text = @"預付日期";
@@ -167,11 +171,6 @@
         self.orderDateLabel.text = @"訂單日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
-            //如果沒指定寬度的話, 就沒辦法變顏色
-            self.emptyInput.layer.borderWidth = 1;
-            self.emptyInput.layer.borderColor = [[UIColor whiteColor]CGColor];
-            [self.preOrderLabel setHidden:YES];
-            [self.orderPreOrderInput setHidden:YES];
             self.title = @"訂單";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
@@ -511,14 +510,11 @@
         [odCell.odQty setEnabled:NO];
         [odCell.odPrice setHidden:YES];
     }
-    
     //監聽欄位
-    
     [odCell.odItemNo addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odPrice addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odThisQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
-    
     [odCell.odItemNo addTarget:self action:@selector(odItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odQty addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     [odCell.odPrice addTarget:self action:@selector(odQtyOrPriceEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
@@ -975,13 +971,13 @@
         if ([self.orderNoBegin isEqualToString:@"P"])
         {
             getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
-            [DataBaseManager updateToCoreData];
+//            [DataBaseManager updateToCoreData];
         }
         else if ([self.orderNoBegin isEqualToString:@"S"])
         {
             getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
             //這邊還需要判斷庫存不足
-            [DataBaseManager updateToCoreData];
+//            [DataBaseManager updateToCoreData];
         }
     }
 
@@ -1004,7 +1000,7 @@
         //刪cell
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         //寫DB
-        [DataBaseManager updateToCoreData];
+//        [DataBaseManager updateToCoreData];
         //如果還有單身的話,刪了之後後面開始的tag都要重排
         if (self.orderDetailList.count != 0)
         {
@@ -1019,11 +1015,11 @@
                 int newSeq = [od.orderSeq intValue];
                 newSeq -= 1;
                 od.orderSeq = @(newSeq);
-                [DataBaseManager updateToCoreData];
+//                [DataBaseManager updateToCoreData];
             }
         }
         self.currentOM.orderCount = @(self.orderDetailList.count);
-        [DataBaseManager updateToCoreData];
+//        [DataBaseManager updateToCoreData];
         [self.orderDetailTableView reloadData];
     }
 }
