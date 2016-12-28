@@ -808,6 +808,7 @@
 
 - (IBAction)saveOrder:(id)sender
 {
+    NSString *findPostOrderString = [OrderDetail isPostOrder:self.orderDetailList];
     //不管如何先確認廠商必填
     if (self.orderPartnerInput.text.length == 0)
     {
@@ -823,6 +824,11 @@
     else if (self.orderDetailList.count == 0)
     {
         [AlertManager alert:@"沒有單身不可儲存" controller:self];
+    }
+    else if (findPostOrderString.length != 0)
+    {
+        NSString *finalString = [NSString stringWithFormat:@"%@，不可修改",findPostOrderString];
+        [AlertManager alert:finalString controller:self];
     }
     else
     {
@@ -988,69 +994,84 @@
 {
     if (editingStyle==UITableViewCellEditingStyleDelete)
     {
-        //生成物件
-        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-        OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
-        //逆庫存
-        [self rollbackInventory:od];
-        //刪DB
-        [helper.managedObjectContext deleteObject:od];
-        //刪陣列
-        [self.orderDetailList removeObjectAtIndex:indexPath.row];
-        //刪cell
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //寫DB
-//        [DataBaseManager updateToCoreData];
-        //如果還有單身的話,刪了之後後面開始的tag都要重排
-        if (self.orderDetailList.count != 0)
+        NSString *findPostOrderString = [OrderDetail isPostOrder:@[[self.orderDetailList objectAtIndex:indexPath.row]]];
+        if (findPostOrderString.length != 0)
         {
-            for (NSInteger i=indexPath.row; i <= self.orderDetailList.count-1; i++)
-            {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
-                OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-                odCell.odItemNo.tag -= 1 ;
-                odCell.odQty.tag -= 1;
-                odCell.odPrice.tag -= 1 ;
-                OrderDetail *od = [self.orderDetailList objectAtIndex:i];
-                int newSeq = [od.orderSeq intValue];
-                newSeq -= 1;
-                od.orderSeq = @(newSeq);
-//                [DataBaseManager updateToCoreData];
-            }
+            NSString *finalString = [NSString stringWithFormat:@"%@，不可刪除",findPostOrderString];
+            [AlertManager alert:finalString controller:self];
         }
-        self.currentOM.orderCount = @(self.orderDetailList.count);
-//        [DataBaseManager updateToCoreData];
-        [self.orderDetailTableView reloadData];
+        else
+        {
+            //生成物件
+            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+            OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
+            //逆庫存
+            [self rollbackInventory:od];
+            //刪DB
+            [helper.managedObjectContext deleteObject:od];
+            //刪陣列
+            [self.orderDetailList removeObjectAtIndex:indexPath.row];
+            //刪cell
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            //寫DB
+            //如果還有單身的話,刪了之後後面開始的tag都要重排
+            if (self.orderDetailList.count != 0)
+            {
+                for (NSInteger i=indexPath.row; i <= self.orderDetailList.count-1; i++)
+                {
+                    NSIndexPath *ip = [NSIndexPath indexPathForRow:i inSection:0];
+                    OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+                    odCell.odItemNo.tag -= 1 ;
+                    odCell.odQty.tag -= 1;
+                    odCell.odPrice.tag -= 1 ;
+                    OrderDetail *od = [self.orderDetailList objectAtIndex:i];
+                    int newSeq = [od.orderSeq intValue];
+                    newSeq -= 1;
+                    od.orderSeq = @(newSeq);
+                }
+            }
+            self.currentOM.orderCount = @(self.orderDetailList.count);
+            [self.orderDetailTableView reloadData];
+        }
     }
 }
 
 - (IBAction)deleteOrder:(id)sender
 {
-    //先存單號
-    NSString *orderNo = self.currentOM.orderNo;
-    
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderListInDteail indexOfObject:self.currentOM] inSection:0];
-    //單身也要刪
-    NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
-    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-    for (OrderDetail *deadOD in deadList)
+    NSString *findPostOrderString = [OrderDetail isPostOrder:self.orderDetailList];
+    if(findPostOrderString.length != 0)
     {
-        [self rollbackInventory:deadOD];
-        [helper.managedObjectContext deleteObject:deadOD];
+        NSString *finalString = [NSString stringWithFormat:@"%@，不可刪除",findPostOrderString];
+        [AlertManager alert:finalString controller:self];
     }
-    //寫DB
-    [DataBaseManager deleteDataAndObject:self.currentOM array:self.orderListInDteail];
-    [DataBaseManager updateToCoreData];
-    //刪前一頁TV
-    if ([self.whereFrom isEqualToString:@"aSegue"])
+    else
     {
-        [self.olvc.orderListTableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        //先存單號
+        NSString *orderNo = self.currentOM.orderNo;
+        
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.orderListInDteail indexOfObject:self.currentOM] inSection:0];
+        //單身也要刪
+        NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
+        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+        for (OrderDetail *deadOD in deadList)
+        {
+            [self rollbackInventory:deadOD];
+            [helper.managedObjectContext deleteObject:deadOD];
+        }
+        //寫DB
+        [DataBaseManager deleteDataAndObject:self.currentOM array:self.orderListInDteail];
+        [DataBaseManager updateToCoreData];
+        //刪前一頁TV
+        if ([self.whereFrom isEqualToString:@"aSegue"])
+        {
+            [self.olvc.orderListTableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else if ([self.whereFrom isEqualToString:@"bSegue"])
+        {
+            [self.olBvc.orderListBTableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    else if ([self.whereFrom isEqualToString:@"bSegue"])
-    {
-        [self.olBvc.orderListBTableView deleteRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)backRootView:(id)sender

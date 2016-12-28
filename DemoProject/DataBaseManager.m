@@ -174,6 +174,10 @@
     {
         pred = [NSPredicate predicateWithFormat:@"(orderNo=%@) && (orderNotYetQty!=%@)",fiterArray[0],fiterArray[1]];
     }
+    else if ([fiterColumn isEqualToString:@"orderNoAndSeqOld"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"(orderNoOld=%@) && (orderSeqOld=%@)",fiterArray[0],fiterArray[1]];
+    }
     
     request.predicate = pred;
     

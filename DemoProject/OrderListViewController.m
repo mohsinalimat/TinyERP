@@ -13,6 +13,7 @@
 #import "CoreDataHelper.h"
 #import "OrderViewController.h"
 #import "OrderMasterManager.h"
+#import "AlertManager.h"
 
 @interface OrderListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *upBarLabel;
@@ -120,24 +121,34 @@
 {
     if (editingStyle==UITableViewCellEditingStyleDelete)
     {
-        //生成物件
-        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
         OrderMaster *om = [self.orderList objectAtIndex:indexPath.row];
-        NSString *orderNo = om.orderNo;
-        //刪DB
-        [helper.managedObjectContext deleteObject:om];
-        //刪陣列
-        [self.orderList removeObjectAtIndex:indexPath.row];
-        //刪cell
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //單身也要刪
-        NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
-        for (OrderDetail *deadOD in deadList)
+        NSString *findPostOrderString = [OrderDetail isPostOrder:[DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNo" fiterBy:om.orderNo]];
+        if (findPostOrderString.length != 0)
         {
-            [helper.managedObjectContext deleteObject:deadOD];
+            NSString *finalString = [NSString stringWithFormat:@"%@，不可刪除",findPostOrderString];
+            [AlertManager alert:finalString controller:self];
         }
-        //寫DB
-        [DataBaseManager updateToCoreData];
+        else
+        {
+            //生成物件
+            CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+            OrderMaster *om = [self.orderList objectAtIndex:indexPath.row];
+            NSString *orderNo = om.orderNo;
+            //刪DB
+            [helper.managedObjectContext deleteObject:om];
+            //刪陣列
+            [self.orderList removeObjectAtIndex:indexPath.row];
+            //刪cell
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            //單身也要刪
+            NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
+            for (OrderDetail *deadOD in deadList)
+            {
+                [helper.managedObjectContext deleteObject:deadOD];
+            }
+            //寫DB
+            [DataBaseManager updateToCoreData];
+        }
     }
 }
 

@@ -25,4 +25,5 @@
 @property NSNumber *orderSeqOld;
 @property NSNumber *isInventory;
 +(void)deleteOrderDetail:(OrderDetail*)od array:(NSMutableArray*)array tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
++(NSString*)isPostOrder:(NSArray*)orderDetailList;
 @end
