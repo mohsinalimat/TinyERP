@@ -64,6 +64,8 @@
 @property (weak, nonatomic) IBOutlet UIButton * orderDetailButtonForCopy;
 
 @property NSString *originalPreOrderNo;
+@property BOOL isOverQty;
+@property BOOL isLeaveVC;
 
 @end
 
@@ -221,6 +223,12 @@
 {
     [super viewWillDisappear:nil];
     [DataBaseManager rollbackFromCoreData];
+    self.isLeaveVC = YES;
+}
+
+-(void)dealloc
+{
+    NSLog(@"殺了我吧");
 }
 
 -(void)popVC
@@ -599,7 +607,7 @@
     //取得cell的量價數值並相乘
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    if ([odc.odQty.text floatValue] == 0)
+    if ([odc.odQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"數量不可為零" controller:self];
     }
@@ -640,29 +648,36 @@
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    if ([odc.odThisQty.text floatValue] == 0)
+    if ([odc.odThisQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"異動量不可為零" controller:self];
     }
     else
     {
         CGFloat newNotYetQty = [odc.odQty.text floatValue] - [odc.odThisQty.text floatValue];
-        if (newNotYetQty < 0)
+        if (newNotYetQty < 0 && self.isLeaveVC !=YES)
         {
-            if ([self.orderNoBegin isEqualToString:@"P"])
-            {
-                [AlertManager alert:@"本次收貨量不可大於累積未收量" controller:self];
-            }
-            else if ([self.orderNoBegin isEqualToString:@"S"])
-            {
-                [AlertManager alert:@"本次出貨量不可大於累積未收量" controller:self];
-            }
+            self.isOverQty = YES;
+            [self overQtyAlert];
         }
         else
         {
+            self.isOverQty = NO;
             //差額
             odc.odResultLabel.text = [@(newNotYetQty) stringValue];
         }
+    }
+}
+
+-(void)overQtyAlert
+{
+    if ([self.orderNoBegin isEqualToString:@"P"])
+    {
+        [AlertManager alert:@"本次收貨量不可大於累積未收量" controller:self];
+    }
+    else if ([self.orderNoBegin isEqualToString:@"S"])
+    {
+        [AlertManager alert:@"本次出貨量不可大於累積未收量" controller:self];
     }
 }
 
@@ -874,6 +889,10 @@
         {
             [AlertManager alert:@"有單身資料不齊全\n請檢查" controller:self];
         }
+        else if (self.isOverQty == YES)
+        {
+            [self overQtyAlert];
+        }
         else
         {
             if ([self.whereFrom isEqualToString:@"aSegue"])
@@ -1007,6 +1026,8 @@
             OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
             //逆庫存
             [self rollbackInventory:od];
+            //逆餘量
+            [OrderDetail rollbackNotYet:@[od]];
             //刪DB
             [helper.managedObjectContext deleteObject:od];
             //刪陣列
@@ -1055,6 +1076,7 @@
         CoreDataHelper *helper = [CoreDataHelper sharedInstance];
         for (OrderDetail *deadOD in deadList)
         {
+            [OrderDetail rollbackNotYet:@[deadOD]];
             [self rollbackInventory:deadOD];
             [helper.managedObjectContext deleteObject:deadOD];
         }
@@ -1076,6 +1098,7 @@
 
 - (IBAction)backRootView:(id)sender
 {
+    self.isLeaveVC = YES;
     if (self.orderDetailList.count == 0)
     {
         [DataBaseManager deleteDataAndObject:self.currentOM array:self.orderListInDteail];

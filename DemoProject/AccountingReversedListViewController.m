@@ -10,6 +10,7 @@
 #import "AccountingReverseViewController.h"
 #import "DataBaseManager.h"
 #import "OrderMaster.h"
+#import "OrderDetail.h"
 
 @interface AccountingReversedListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *accountingReversedTableView;
@@ -68,6 +69,8 @@
             CoreDataHelper *help = [CoreDataHelper sharedInstance];
             [help.managedObjectContext deleteObject:deleteFinanceOM];
         }
+        NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:om.orderNo];
+        [OrderDetail rollbackNotYet:deadList];
         [DataBaseManager deleteOM:self.orderListDidReversed omtableView:tableView indexPath:indexPath];
         [DataBaseManager updateToCoreData];
     }

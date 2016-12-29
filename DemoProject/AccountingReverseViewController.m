@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *accountingReverseTableView;
 @property BOOL isDeleteAction;
+@property BOOL isOverAmount;
+@property BOOL isLeaveVC;
 @end
 
 @implementation AccountingReverseViewController
@@ -100,6 +102,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    self.isLeaveVC = YES;
     [super viewWillDisappear:nil];
     [DataBaseManager rollbackFromCoreData];
 }
@@ -152,19 +155,21 @@
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     AccRevCell *arCell = [self.accountingReverseTableView cellForRowAtIndexPath:ip];
-    if ([arCell.odThisAmount.text floatValue] == 0)
+    if ([arCell.odThisAmount.text floatValue] == 0 && self.isLeaveVC != YES)
     {
         [AlertManager alert:@"異動額不可為零" controller:self];
     }
     else
     {
         CGFloat newNotYetQty = [arCell.odAmount.text floatValue] - [arCell.odThisAmount.text floatValue];
-        if (newNotYetQty < 0)
+        if (newNotYetQty < 0 && self.isLeaveVC != YES)
         {
+            self.isOverAmount = YES;
             [AlertManager alert:@"本次沖帳額不可大於累積未沖額" controller:self];
         }
         else
         {
+            self.isOverAmount = NO;
             arCell.odResultLabel.text = [@(newNotYetQty) stringValue];
             [self sumAmount];
         }
@@ -224,6 +229,10 @@
         if (invalidOrderDteail == YES)
         {
             [AlertManager alert:@"有單身資料不齊全\n請檢查" controller:self];
+        }
+        else if (self.isOverAmount==YES)
+        {
+            [AlertManager alert:@"本次沖帳額不可大於累積未沖額" controller:self];
         }
         else
         {
@@ -340,6 +349,7 @@
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     for (OrderDetail *deadOD in deadList)
     {
+        [OrderDetail rollbackNotYet:@[deadOD]];
         [helper.managedObjectContext deleteObject:deadOD];
     }
     [self deleteFinanceOrder];
@@ -381,6 +391,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        [OrderDetail rollbackNotYet:@[[self.accOrderDetailList objectAtIndex:indexPath.row]]];
         [OrderDetail deleteOrderDetail:[self.accOrderDetailList objectAtIndex:indexPath.row] array:self.accOrderDetailList tableView:self.accountingReverseTableView indexPath:indexPath];
         if (self.accOrderDetailList.count != 0)
         {

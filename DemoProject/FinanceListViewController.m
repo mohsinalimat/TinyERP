@@ -63,6 +63,7 @@
     [super viewWillAppear:nil];
     self.financeOrderList = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderDE" fiterBy:@"DE"];
     [self splitArray];
+    [self.financeTableView reloadData];
 }
 
 -(void)popVC
