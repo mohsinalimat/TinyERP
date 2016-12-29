@@ -123,29 +123,6 @@
     }
 }
 
--(void)rollbackInventory:(OrderDetail*)od wh:(NSString*)warehouse
-{
-    if ([od.isInventory boolValue] == YES)
-    {
-        NSLog(@"NO------%@",od.orderItemNo);
-        NSLog(@"WH------%@",warehouse);
-        Inventory *getInventory = [DataBaseManager fiterInventoryFromCoreDataWithItemNo:od.orderItemNo WithWarehouse:warehouse];
-        
-        if ([self.whereFromB isEqualToString:@"pSegue"])
-        {
-            getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
-            [DataBaseManager updateToCoreData];
-        }
-        else if ([self.whereFromB isEqualToString:@"sSegue"])
-        {
-            getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
-            //這邊還需要判斷庫存不足
-            [DataBaseManager updateToCoreData];
-        }
-    }
-    
-}
-
 //啟用滑動編輯
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -175,9 +152,9 @@
             NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
             for (OrderDetail *deadOD in deadList)
             {
+                [Inventory rollbackInventory:deadOD warehouse:warehouse orderNoBegin:[om.orderNo substringToIndex:1]];
                 [OrderDetail rollbackNotYet:@[deadOD]];
                 [helper.managedObjectContext deleteObject:deadOD];
-                [self rollbackInventory:deadOD wh:warehouse];
             }
             //寫DB
             [DataBaseManager updateToCoreData];

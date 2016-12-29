@@ -155,6 +155,8 @@
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     AccRevCell *arCell = [self.accountingReverseTableView cellForRowAtIndexPath:ip];
+    OrderDetail *od = [self.accOrderDetailList objectAtIndex:sender.tag-1];
+    od.orderThisAmount = @([arCell.odThisAmount.text floatValue]);
     if ([arCell.odThisAmount.text floatValue] == 0 && self.isLeaveVC != YES)
     {
         [AlertManager alert:@"異動額不可為零" controller:self];

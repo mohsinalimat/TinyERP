@@ -64,6 +64,12 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        OrderMaster *om = [self.inventoryOrderList objectAtIndex:indexPath.row];
+        NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:om.orderNo];
+        for (OrderDetail *deadOD in deadList)
+        {
+            [Inventory rollbackInventory:deadOD warehouse:om.orderWarehouse orderNoBegin:[om.orderNo substringToIndex:1]];
+        }
         [DataBaseManager deleteOM:self.inventoryOrderList omtableView:tableView indexPath:indexPath];
     }
 }

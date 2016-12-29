@@ -584,6 +584,8 @@
     //產生cell
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+    od.orderItemNo = odCell.odItemNo.text;
     //讀DB
     NSMutableArray *itemList = [DataBaseManager fiterFromCoreData:@"ItemEntity" sortBy:@"itemNo" fiterFrom:@"itemNo" fiterBy:odCell.odItemNo.text];
     //如果有建料號基本資料
@@ -604,19 +606,21 @@
 //輸完量價
 -(IBAction)odQtyOrPriceEditingEnd:(UITextField*)sender
 {
-    //取得cell的量價數值並相乘
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
-    OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    if ([odc.odQty.text floatValue] == 0 && self.isLeaveVC !=YES)
+    OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+    od.orderQty = @([odCell.odQty.text floatValue]);
+    od.orderPrice = @([odCell.odPrice.text floatValue]);
+    if ([odCell.odQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"數量不可為零" controller:self];
     }
     else
     {
-        NSNumber *amountN = @([odc.odQty.text floatValue]*[odc.odPrice.text floatValue]);
+        NSNumber *amountN = @([odCell.odQty.text floatValue]*[odCell.odPrice.text floatValue]);
         if (![[amountN stringValue] isEqualToString:@"0"])
         {
-            odc.odResultLabel.text = [amountN stringValue];
+            odCell.odResultLabel.text = [amountN stringValue];
         }
         //總計
         [self sumAmount];
@@ -647,14 +651,16 @@
 -(IBAction)odThisQtyEditingEnd:(UITextField*)sender
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
-    OrderDetailCell *odc = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    if ([odc.odThisQty.text floatValue] == 0 && self.isLeaveVC !=YES)
+    OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
+    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+    od.orderThisQty = @([odCell.odThisQty.text floatValue]);
+    if ([odCell.odThisQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"異動量不可為零" controller:self];
     }
     else
     {
-        CGFloat newNotYetQty = [odc.odQty.text floatValue] - [odc.odThisQty.text floatValue];
+        CGFloat newNotYetQty = [odCell.odQty.text floatValue] - [odCell.odThisQty.text floatValue];
         if (newNotYetQty < 0 && self.isLeaveVC !=YES)
         {
             self.isOverQty = YES;
@@ -664,7 +670,7 @@
         {
             self.isOverQty = NO;
             //差額
-            odc.odResultLabel.text = [@(newNotYetQty) stringValue];
+            odCell.odResultLabel.text = [@(newNotYetQty) stringValue];
         }
     }
 }
@@ -785,42 +791,6 @@
     [self.orderDetailTableView scrollToRowAtIndexPath:ip atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
-//計算庫存
--(void)calculateInventory
-{
-    for (OrderDetail *od in self.orderDetailList)
-    {
-        if ([od.isInventory boolValue] != YES && [od.orderQty integerValue] != 0)
-        {
-            Inventory *getInventory = [DataBaseManager fiterInventoryFromCoreDataWithItemNo:od.orderItemNo WithWarehouse:self.currentOM.orderWarehouse];
-            
-            if (getInventory != nil)
-            {
-                if ([self.orderNoBegin isEqualToString:@"P"])
-                {
-                    getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
-                }
-                else if ([self.orderNoBegin isEqualToString:@"S"])
-                {
-                    getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
-                    //這邊還需要判斷庫存不足
-                }
-            }
-            else
-            {
-                CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-                Inventory *newInventory = [NSEntityDescription insertNewObjectForEntityForName:@"InventoryEntity" inManagedObjectContext:helper.managedObjectContext];
-                newInventory.itemNo = od.orderItemNo;
-                newInventory.warehouse = self.currentOM.orderWarehouse;
-                newInventory.qty = od.orderQty;
-                //這邊也要判斷庫存不足
-            }
-            //算過了
-            od.isInventory = @YES;
-        }
-    }
-}
-
 - (IBAction)saveOrder:(id)sender
 {
     NSString *findPostOrderString = [OrderDetail isPostOrder:self.orderDetailList];
@@ -915,7 +885,7 @@
                     //才可存單頭跟計算庫存
                     [self saveToOrderMasterObject];
                     [self saveToOrderDetailBObject];
-                    [self calculateInventory];
+                    [Inventory calculateInventory:self.orderDetailList warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];;
                     [DataBaseManager updateToCoreData];
                     [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
                 }
@@ -985,29 +955,6 @@
     
 }
 
--(void)rollbackInventory:(OrderDetail*)od
-{
-    if ([od.isInventory boolValue] == YES)
-    {
-        NSLog(@"NO------%@",od.orderItemNo);
-        NSLog(@"WH------%@",self.currentOM.orderWarehouse);
-        Inventory *getInventory = [DataBaseManager fiterInventoryFromCoreDataWithItemNo:od.orderItemNo WithWarehouse:self.currentOM.orderWarehouse];
-        
-        if ([self.orderNoBegin isEqualToString:@"P"])
-        {
-            getInventory.qty = @([getInventory.qty integerValue]-[od.orderQty integerValue]);
-//            [DataBaseManager updateToCoreData];
-        }
-        else if ([self.orderNoBegin isEqualToString:@"S"])
-        {
-            getInventory.qty = @([getInventory.qty integerValue]+[od.orderQty integerValue]);
-            //這邊還需要判斷庫存不足
-//            [DataBaseManager updateToCoreData];
-        }
-    }
-
-}
-
 //啟用滑動編輯
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1025,7 +972,7 @@
             CoreDataHelper *helper = [CoreDataHelper sharedInstance];
             OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
             //逆庫存
-            [self rollbackInventory:od];
+            [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];
             //逆餘量
             [OrderDetail rollbackNotYet:@[od]];
             //刪DB
@@ -1077,7 +1024,7 @@
         for (OrderDetail *deadOD in deadList)
         {
             [OrderDetail rollbackNotYet:@[deadOD]];
-            [self rollbackInventory:deadOD];
+            [Inventory rollbackInventory:deadOD warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];
             [helper.managedObjectContext deleteObject:deadOD];
         }
         //寫DB

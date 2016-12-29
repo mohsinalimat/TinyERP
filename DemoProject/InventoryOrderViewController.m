@@ -192,6 +192,7 @@
                 od.orderItemNo = iodCell.invOrderItemNoInput.text;
                 od.orderQty = @([iodCell.invOrderQtyInput.text floatValue]);
             }
+            [Inventory calculateInventory:self.invOrderDetailList warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
             [DataBaseManager updateToCoreData];
             [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
         }
@@ -217,7 +218,7 @@
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     for (OrderDetail *deadOD in deadList)
     {
-//        [self rollbackInventory:deadOD];
+        [Inventory rollbackInventory:deadOD warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
         [helper.managedObjectContext deleteObject:deadOD];
     }
     [DataBaseManager updateToCoreData];
@@ -229,6 +230,10 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        if (self.currentInventoryOM != nil)
+        {
+            [Inventory rollbackInventory:[self.invOrderDetailList objectAtIndex:indexPath.row] warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
+        }
         [OrderDetail deleteOrderDetail:[self.invOrderDetailList objectAtIndex:indexPath.row] array:self.invOrderDetailList tableView:self.invOrderDetailTableView indexPath:indexPath];
         if (self.invOrderDetailList.count != 0)
         {

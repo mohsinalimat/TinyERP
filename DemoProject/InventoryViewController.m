@@ -34,6 +34,18 @@
     self.inventoryCollectionView.delegate = self;
     self.inventoryCollectionView.dataSource = self;
     self.isShowByItem = NO;
+    [self prepareForShowData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:nil];
+    [self prepareForShowData];
+    [self.inventoryCollectionView reloadData];
+}
+
+-(void)prepareForShowData
+{
     //先把所有非零庫存撈出
     self.totalInventoryList = [DataBaseManager fiterFromCoreData:@"InventoryEntity" sortBy:@"itemNo" fiterFrom:@"qty" fiterBy:@"0"];
     //去重
@@ -58,7 +70,6 @@
         }
         [self.itemListSorted addObject:aItemList];
     }
-    
     self.warehouseListSorted = [[NSMutableArray alloc]init];
     for (NSString *setString in self.warehouseGroupSortedArray)
     {
