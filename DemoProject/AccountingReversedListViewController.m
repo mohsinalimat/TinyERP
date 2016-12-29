@@ -61,7 +61,15 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        OrderMaster *om = [self.orderListDidReversed objectAtIndex:indexPath.row];
+        OrderMaster *deleteFinanceOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNoTwins" fiterBy:om.orderNo].firstObject;
+        if (deleteFinanceOM != nil)
+        {
+            CoreDataHelper *help = [CoreDataHelper sharedInstance];
+            [help.managedObjectContext deleteObject:deleteFinanceOM];
+        }
         [DataBaseManager deleteOM:self.orderListDidReversed omtableView:tableView indexPath:indexPath];
+        [DataBaseManager updateToCoreData];
     }
 }
 

@@ -21,6 +21,7 @@
 @property NSMutableArray *financeAcountList;
 @property NSMutableArray *financeOrderList;
 @property NSMutableArray *finance2DList;
+@property BOOL isGoToARVC;
 @end
 
 @implementation FinanceListViewController
@@ -57,9 +58,19 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:nil];
+    self.financeOrderList = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderDE" fiterBy:@"DE"];
+    [self splitArray];
+}
+
 -(void)popVC
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.isGoToARVC != YES)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 -(void)splitArray
@@ -329,6 +340,7 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    self.isGoToARVC = YES;
     AccountingReverseViewController *arvc = segue.destinationViewController;
     arvc.whereFrom = @"accQuerySegue";
     FinanceCell *finCell = (FinanceCell*)[[sender superview]superview];

@@ -56,7 +56,7 @@
     
     [self.isSameID setHidden:YES];
     self.pAddrInput.layer.borderWidth = 1;
-    self.pAddrInput.layer.borderColor = [[UIColor grayColor]CGColor];
+    self.pAddrInput.layer.borderColor = self.view.tintColor.CGColor;
 
     if ([self.whereFrom isEqualToString:@"firmList"])
     {

@@ -23,8 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *invOrderUserInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderWarehouseInput;
 @property (weak, nonatomic) IBOutlet UITableView *invOrderDetailTableView;
-@property (weak, nonatomic) IBOutlet UITextField *invOrderTypeInput;
 @property (weak, nonatomic) IBOutlet UIButton *deleteOrderButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *invTransType;
 @property NSMutableArray *invOrderDetailList;
 @property NSUInteger odCount;
 @end
@@ -51,13 +51,20 @@
         self.invOrderDateInput.text = [DateManager getFormatedDateString:self.currentInventoryOM.orderDate];
         self.invOrderUserInput.text = self.currentInventoryOM.orderUser;
         self.invOrderNoInput.text = self.currentInventoryOM.orderNo;
-        [self.invOrderTypeInput setEnabled:NO];
+        [self.invTransType setEnabled:NO];
+        if ([self.currentInventoryOM.orderType isEqualToString:@"PF"])
+        {
+            self.invTransType.selectedSegmentIndex = 0;
+        }
+        else
+        {
+            self.invTransType.selectedSegmentIndex = 1;
+        }
         self.odCount = [self.currentInventoryOM.orderCount integerValue];
         [self.deleteOrderButton setTitle:@"刪除單據" forState:UIControlStateNormal];
         self.invOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentInventoryOM.orderNo];
     }
     self.invOrderWarehouseInput.text = self.currentInventoryOM.orderWarehouse;
-    self.invOrderTypeInput.text = self.currentInventoryOM.orderType;
     [self.invOrderNoInput setEnabled:NO];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
@@ -135,10 +142,6 @@
     {
         [AlertManager alert:@"倉庫未填" controller:self];
     }
-    else if (self.invOrderTypeInput.text.length==0)
-    {
-        [AlertManager alert:@"類型未填" controller:self];
-    }
     else if (self.invOrderDetailList.count == 0)
     {
         [AlertManager alert:@"沒有單身不可儲存" controller:self];
@@ -164,12 +167,12 @@
             //沒單頭建單頭
             if (self.currentInventoryOM==nil)
             {
-                if ([self.invOrderTypeInput.text isEqualToString:@"PF"])
+                if (self.invTransType.selectedSegmentIndex == 0)
                 {
                     OrderMaster *om = [OrderMasterManager createOrderMaster:@"PF" orderList:self.invOrderListInDetail];
                     self.currentInventoryOM = om;
                 }
-                else if([self.invOrderTypeInput.text isEqualToString:@"SF"])
+                else
                 {
                     OrderMaster *om = [OrderMasterManager createOrderMaster:@"SF" orderList:self.invOrderListInDetail];
                     self.currentInventoryOM = om;
@@ -179,7 +182,6 @@
             self.currentInventoryOM.orderDate = [DateManager getDateByString:self.invOrderDateInput.text];
             self.currentInventoryOM.orderUser = self.invOrderUserInput.text;
             self.currentInventoryOM.orderWarehouse = self.invOrderWarehouseInput.text;
-            self.currentInventoryOM.orderType = self.invOrderTypeInput.text;
             self.currentInventoryOM.orderCount = @(self.odCount);
             //存單身
             for (OrderDetail *od in self.invOrderDetailList)

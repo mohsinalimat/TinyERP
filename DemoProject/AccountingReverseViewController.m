@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *accDidRevListBtn;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UITableView *accountingReverseTableView;
+@property BOOL isDeleteAction;
 @end
 
 @implementation AccountingReverseViewController
@@ -45,6 +46,9 @@
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
     self.accOrderDetailList = [NSMutableArray new];
     self.title = @"沖帳明細";
+    [self.accOrderPartnerInput setEnabled:NO];
+    self.accRemarkInput.layer.borderWidth = 1;
+    self.accRemarkInput.layer.borderColor = self.view.tintColor.CGColor;
     if ([self.whereFrom isEqualToString:@"accQuerySegue"])
     {
         self.accOrderDateInput.text = [DateManager getFormatedDateString:self.currentReverseOM.orderDate];
@@ -290,6 +294,9 @@
                     OrderMaster *updateFinanceOM = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderNoTwins" fiterBy:self.currentReverseOM.orderNo].firstObject;
                     updateFinanceOM.orderBankAccount = self.currentReverseOM.orderBankAccount;
                     updateFinanceOM.orderFinanceType = self.currentReverseOM.orderFinanceType;
+                    updateFinanceOM.orderTotalAmount = self.currentReverseOM.orderTotalAmount;
+                    updateFinanceOM.orderDiscount = self.currentReverseOM.orderDiscount;
+                    updateFinanceOM.orderDate = self.currentReverseOM.orderDate;
                 }
             }
             [DataBaseManager updateToCoreData];
@@ -308,7 +315,10 @@
     }
     self.currentReverseOM.orderNoTwins = nil;
     [DataBaseManager updateToCoreData];
-//    [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+    if (self.isDeleteAction!=YES)
+    {
+        [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
+    }
 }
 
 - (IBAction)deleteReverse:(id)sender
@@ -325,6 +335,7 @@
 
 -(void)deleteReverseAction
 {
+    self.isDeleteAction = YES;
     NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     for (OrderDetail *deadOD in deadList)
