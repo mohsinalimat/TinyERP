@@ -9,6 +9,7 @@ target 'DemoProject' do
   pod "Firebase"
   pod "Firebase/Core"
   pod "Firebase/AdMob"
+  pod "SVProgressHUD"
 
   # Pods for DemoProject
   pod "ObjectiveDropboxOfficial"

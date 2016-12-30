@@ -19,6 +19,7 @@
 #import "Member.h"
 #import "DataBaseManager.h"
 #import "SignupViewController.h"
+#import <SVProgressHUD.h>
 
 @interface SetupViewController () <UITableViewDelegate,UITableViewDataSource,FBSDKLoginButtonDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *steupTableView;
@@ -29,6 +30,8 @@
 @property NSArray *fileNameArray;
 @property NSString *dbAction;
 @property AppDelegate *appDLG;
+@property NSMutableArray *dbBackupFeedbackArray;
+@property NSMutableArray *dbRestoreFeedbackArray;
 @end
 
 @implementation SetupViewController
@@ -44,6 +47,10 @@
     self.dbRestorePicker.delegate = self;
     self.dbRestorePicker.dataSource = self;
     [self.dbRestorePicker setHidden:YES];
+    NSArray *tepmArray = @[@"X",@"X",@"X"];
+    self.dbBackupFeedbackArray = [tepmArray mutableCopy];
+    NSArray *tepmArray2 = @[@"X",@"X",@"X",@"X",@"X",@"X"];
+    self.dbRestoreFeedbackArray = [tepmArray2 mutableCopy];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(userShouldLogout) name:@"userShouldLogoutYes" object:nil];
     
@@ -57,6 +64,7 @@
     //2.1
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbBackupYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
      {
+         [SVProgressHUD show];
          //9.1
          NSDateFormatter *df = [[NSDateFormatter alloc]init];
          [df setDateFormat:@"yyMMdd_HHmmss"];
@@ -77,9 +85,12 @@
                    if (md)
                    {
                        NSLog(@"%ld.OK",index);
+                       [self checkBackup:index];
                    }
                    else
                    {
+                       NSString *erroeMessage = [NSString stringWithFormat:@"[%ld]\n%@\n%@",index,error,dberror];
+                       [AlertManager alert:erroeMessage controller:self];
                        NSLog(@"%ld.%@%@",index,error,dberror);
                    }
                }];
@@ -88,7 +99,8 @@
     
     //2.2
     [[NSNotificationCenter defaultCenter]addObserverForName:@"dbRestoreSelectedYes" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note)
-    {
+     {
+        [SVProgressHUD show];
         //7.2
         [weakSelf deleteLocalDB];
         for (NSString *fileName in weakSelf.fileNameArray)
@@ -106,10 +118,13 @@
                      if (isSuccess)
                      {
                          NSLog(@"%ld.create success",[weakSelf.fileNameArray indexOfObject:fileName]);
+                         [self checkRestore:[weakSelf.fileNameArray indexOfObject:fileName]+3];
                      }
                      else
                      {
                          NSLog(@"%ld.create fail",[weakSelf.fileNameArray indexOfObject:fileName]);
+                         NSString *errorMseeage = [NSString stringWithFormat:@"%ld號資料庫下載失敗",[weakSelf.fileNameArray indexOfObject:fileName]];
+                         [AlertManager alert:errorMseeage controller:self];
                      }
                  }
             }];
@@ -117,16 +132,6 @@
     }];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(showDBRestorePicker) name:@"dbDownloadOver" object:nil];
-}
-
--(NSArray*)getLocalDBArray
-{
-    NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
-    NSString *dbPath1 = [homePath stringByAppendingPathComponent:self.fileNameArray[0]];
-    NSString *dbPath2 = [homePath stringByAppendingPathComponent:self.fileNameArray[1]];
-    NSString *dbPath3 = [homePath stringByAppendingPathComponent:self.fileNameArray[2]];
-    NSArray *localDBArray = @[dbPath1,dbPath2,dbPath3];
-    return localDBArray;
 }
 
 -(void)deleteLocalDB
@@ -139,12 +144,71 @@
         if (isSuccess)
         {
             NSLog(@"%ld.delete success",[localDBArray indexOfObject:dbPath]);
+            [self checkRestore:[localDBArray indexOfObject:dbPath]];
         }
         else
         {
             NSLog(@"%ld.delete fail",[localDBArray indexOfObject:dbPath]);
+            NSString *errorMseeage = [NSString stringWithFormat:@"%ld號資料庫刪除失敗",[localDBArray indexOfObject:dbPath]];
+            [AlertManager alert:errorMseeage controller:self];
         }
     }
+}
+
+-(void)checkBackup:(NSInteger)index
+{
+    NSString *indexString = [NSString stringWithFormat:@"%ld",index];
+    [self.dbBackupFeedbackArray replaceObjectAtIndex:index withObject:indexString];
+    BOOL dbComplete = YES;
+    for (NSString *index in self.dbBackupFeedbackArray)
+    {
+        if ([index isEqualToString:@"X"])
+        {
+            dbComplete = NO;
+            break;
+        }
+    }
+    if (dbComplete == YES)
+    {
+        NSLog(@"byebye");
+        NSArray *tepmArray = @[@"X",@"X",@"X"];
+        self.dbBackupFeedbackArray = [tepmArray mutableCopy];
+        [SVProgressHUD dismiss];
+    }
+}
+
+-(void)checkRestore:(NSInteger)index
+{
+    NSString *indexString = [NSString stringWithFormat:@"%ld",index];
+    NSLog(@"%ld",index);
+    [self.dbRestoreFeedbackArray replaceObjectAtIndex:index withObject:indexString];
+    BOOL dbComplete = YES;
+    for (NSString *index in self.dbRestoreFeedbackArray)
+    {
+        if ([index isEqualToString:@"X"])
+        {
+            dbComplete = NO;
+            break;
+        }
+    }
+    if (dbComplete == YES)
+    {
+        NSLog(@"byebye");
+        NSArray *tepmArray = @[@"X",@"X",@"X",@"X",@"X",@"X"];
+        self.dbRestoreFeedbackArray = [tepmArray mutableCopy];
+        [self.dbRestorePicker setHidden:YES];
+        [SVProgressHUD dismiss];
+    }
+}
+
+-(NSArray*)getLocalDBArray
+{
+    NSString *homePath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *dbPath1 = [homePath stringByAppendingPathComponent:self.fileNameArray[0]];
+    NSString *dbPath2 = [homePath stringByAppendingPathComponent:self.fileNameArray[1]];
+    NSString *dbPath3 = [homePath stringByAppendingPathComponent:self.fileNameArray[2]];
+    NSArray *localDBArray = @[dbPath1,dbPath2,dbPath3];
+    return localDBArray;
 }
 
 -(void)transferWVC

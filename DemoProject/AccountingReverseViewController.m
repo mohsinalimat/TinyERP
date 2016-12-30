@@ -120,16 +120,16 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    DateManager *dm = [DateManager new];
-    [dm showDatePicker:self];
+//    DateManager *dm = [DateManager new];
+//    [dm showDatePicker:self];
 //    DataPickerManager *dpm = [DataPickerManager new];
 //    [dpm showDataPicker:self];
-//    CGFloat vcWidth = self.view.frame.size.width;
-//    CGFloat vcHeight = self.view.frame.size.height;
-//    UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
-//    pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
-//    pv.delegate = self;
-//    [self.view addSubview:pv];
+    CGFloat vcWidth = self.view.frame.size.width;
+    CGFloat vcHeight = self.view.frame.size.height;
+    UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
+    pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
+    pv.delegate = self;
+    [self.view addSubview:pv];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

@@ -25,12 +25,14 @@ PODS:
   - GoogleToolboxForMac/NSData+zlib (2.1.0):
     - GoogleToolboxForMac/Defines (= 2.1.0)
   - ObjectiveDropboxOfficial (2.0.2)
+  - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
   - Firebase
   - Firebase/AdMob
   - Firebase/Core
   - ObjectiveDropboxOfficial
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   Firebase: 387f37c7dca894a02708da9ff35ba147040eae9e
@@ -42,7 +44,8 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   ObjectiveDropboxOfficial: 95dbb4e5d2aadf3fed2f15f23af302d9d384dfed
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: b4bb376ca9971fcee1d615e17e42d18fd71106ff
+PODFILE CHECKSUM: 69fd4261980358b49e232cd70de79cda1f360051
 
 COCOAPODS: 1.0.0
