@@ -107,6 +107,7 @@
     self.orderWarehouseInput.text = self.currentOM.orderWarehouse;
     
     //設定UI
+    Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:self.currentOM.orderPartner].firstObject;
     [self.datePickerView setHidden:YES];
     [self.dataPickerView setHidden:YES];
     self.orderPartnerInput.placeholder = @"必填";
@@ -144,6 +145,10 @@
         [self.expectedDayLabel setHidden:YES];
         [self.orderExpectedDayInput setHidden:YES];
         [self.orderPartnerInput setEnabled:NO];
+        if (self.currentOM.orderWarehouse != nil)
+        {
+            [self.orderWarehouseInput setEnabled:NO];
+        }
 #pragma mark Q.為何不能設
 //        CGRect frame = self.orderExpectedReverseDayInput.frame;
 //        frame.size.width = 130.0;
@@ -151,7 +156,14 @@
     }
     if ([self.orderNoBegin isEqualToString:@"P"])
     {
-        self.partnerLabel.text = @"廠商";
+        if (self.currentOM.orderPartner != nil)
+        {
+            self.partnerLabel.text = partnerForLabel.partnerName;
+        }
+        else
+        {
+            self.partnerLabel.text = @"廠商";
+        }
         self.orderDateLabel.text = @"採購日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
@@ -169,7 +181,14 @@
     }
     else if ([self.orderNoBegin isEqualToString:@"S"])
     {
-        self.partnerLabel.text = @"客戶";
+        if (self.currentOM.orderPartner != nil)
+        {
+            self.partnerLabel.text = partnerForLabel.partnerName;
+        }
+        else
+        {
+            self.partnerLabel.text = @"客戶";
+        }
         self.orderDateLabel.text = @"訂單日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
@@ -306,6 +325,7 @@
 
 //開始編輯
 //只要有這個Method, setEnable:NO跟shouldChangeCharactersInRange return NO; 都無效
+//shouldChangeCharactersInRange還是有用啊 當初怎會這麼說
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.orderDateInput)
@@ -362,7 +382,6 @@
             }
         }
     }
-    
     if (textField == self.orderPartnerInput)
     {
         [self.dataPickerView setHidden:YES];
@@ -396,7 +415,7 @@
 //不可變更
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (textField == self.orderNoInput)
+    if (textField == self.orderNoInput || textField==self.orderPartnerInput || textField==self.orderWarehouseInput)
     {
         return NO;
     }
@@ -473,6 +492,8 @@
             {
                 p = [self.firmList objectAtIndex:row];
                 self.orderPartnerInput.text = p.partnerID;
+                Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:p.partnerID].firstObject;
+                self.partnerLabel.text = partnerForLabel.partnerName;
             }
         }
         else if ([self.orderNoBegin isEqualToString:@"S"])
@@ -481,6 +502,8 @@
             {
                 p = [self.custList objectAtIndex:row];
                 self.orderPartnerInput.text = p.partnerID;
+                Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:p.partnerID].firstObject;
+                self.partnerLabel.text = partnerForLabel.partnerName;
             }
         }
     }
@@ -506,8 +529,10 @@
     odCell.odItemNameLabel.text = @"";
     odCell.odItemUnitLabel.text = @"";
     odCell.odQty.text = @"";
+    odCell.odThisQty.text = @"";
     odCell.odPrice.text = @"";
     odCell.odResultLabel.text = @"";
+    [odCell.odItemNo setEnabled:YES];
     if ([self.whereFrom isEqualToString:@"aSegue"])
     {
         [odCell.odThisQty setHidden:YES];
@@ -529,6 +554,10 @@
     [odCell.odThisQty addTarget:self action:@selector(odThisQtyEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     //產生物件
     OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
+    if (od.isInventory != nil)
+    {
+        [odCell.odItemNo setEnabled:NO];
+    }
     //根據序號區分tag
     odCell.odItemNo.tag = [od.orderSeq integerValue];
     odCell.odQty.tag = [od.orderSeq integerValue];
@@ -608,9 +637,9 @@
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
-    od.orderQty = @([odCell.odQty.text floatValue]);
-    od.orderPrice = @([odCell.odPrice.text floatValue]);
+//    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+//    od.orderQty = @([odCell.odQty.text floatValue]);
+//    od.orderPrice = @([odCell.odPrice.text floatValue]);
     if ([odCell.odQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"數量不可為零" controller:self];
@@ -653,7 +682,7 @@
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
     OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
-    od.orderThisQty = @([odCell.odThisQty.text floatValue]);
+//    od.orderThisQty = @([odCell.odThisQty.text floatValue]);
     if ([odCell.odThisQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {
         [AlertManager alert:@"異動量不可為零" controller:self];
@@ -885,7 +914,7 @@
                     //才可存單頭跟計算庫存
                     [self saveToOrderMasterObject];
                     [self saveToOrderDetailBObject];
-                    [Inventory calculateInventory:self.orderDetailList warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];;
+                    [Inventory calculateInventory:self.orderDetailList warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];;
                     [DataBaseManager updateToCoreData];
                     [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
                 }
@@ -972,7 +1001,7 @@
             CoreDataHelper *helper = [CoreDataHelper sharedInstance];
             OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
             //逆庫存
-            [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];
+            [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];
             //逆餘量
             [OrderDetail rollbackNotYet:@[od]];
             //刪DB
@@ -1024,7 +1053,7 @@
         for (OrderDetail *deadOD in deadList)
         {
             [OrderDetail rollbackNotYet:@[deadOD]];
-            [Inventory rollbackInventory:deadOD warehouse:self.currentOM.orderWarehouse orderNoBegin:self.orderNoBegin];
+            [Inventory rollbackInventory:deadOD warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];
             [helper.managedObjectContext deleteObject:deadOD];
         }
         //寫DB

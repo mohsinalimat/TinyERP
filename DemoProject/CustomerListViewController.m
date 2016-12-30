@@ -38,6 +38,11 @@
     self.custListTableView.dataSource = self;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.custListTableView reloadData];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.custList.count;

@@ -576,7 +576,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hjx-lk-HHy">
-                                <rect key="frame" x="0.0" y="64" width="414" height="628"/>
+                                <rect key="frame" x="0.0" y="20" width="414" height="672"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="accDidRevCell" textLabel="unH-mC-9i2" style="IBUITableViewCellStyleDefault" id="qLd-bb-DrN">
@@ -669,7 +669,7 @@
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="8Qu-RZ-7SU">
-                                <rect key="frame" x="0.0" y="256" width="414" height="386"/>
+                                <rect key="frame" x="0.0" y="215" width="414" height="427"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="accRevCell" id="ETM-Yy-V10" customClass="AccRevCell">
@@ -775,7 +775,7 @@
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wFM-QY-qJ0">
-                                <rect key="frame" x="0.0" y="212" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="171" width="414" height="44"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sz-4v-WEd">
                                         <rect key="frame" x="342" y="7" width="62" height="30"/>
@@ -809,13 +809,13 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Lnh-Of-FpG">
-                                <rect key="frame" x="20" y="74" width="374" height="100"/>
+                                <rect key="frame" x="20" y="30" width="374" height="100"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="qfw-tr-bK4">
                                         <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="沖帳單號" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djo-Fg-6Jy">
-                                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="33.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="69.333333333333329" height="33.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -827,7 +827,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="交易對象" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B9h-lD-3ce">
-                                                <rect key="frame" x="0.0" y="66.666666666666657" width="69.333333333333329" height="33.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="66.666666666666686" width="69.333333333333329" height="33.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -861,7 +861,7 @@
                                         <rect key="frame" x="198.33333333333331" y="0.0" width="51.999999999999972" height="100"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="使用者" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LuO-tD-OU0">
-                                                <rect key="frame" x="0.0" y="0.0" width="51.999999999999972" height="33.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="51.999999999999972" height="33.333333333333336"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -873,7 +873,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-3B-Ack">
-                                                <rect key="frame" x="0.0" y="66.666666666666657" width="51.999999999999972" height="33.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="66.666666666666686" width="51.999999999999972" height="33.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -900,12 +900,12 @@
                                 </constraints>
                             </stackView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="tKU-c5-iOv">
-                                <rect key="frame" x="275.33333333333326" y="107.33333333333334" width="118.66666666666669" height="63.000000000000028"/>
+                                <rect key="frame" x="275.33333333333326" y="63.333333333333329" width="118.66666666666669" height="59.999999999999986"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="3nn-gT-52m">
-                                <rect key="frame" x="20" y="174" width="193.33333333333334" height="29"/>
+                                <rect key="frame" x="20" y="133" width="193.33333333333334" height="29"/>
                                 <segments>
                                     <segment title="銀行"/>
                                     <segment title="現金"/>
@@ -916,13 +916,13 @@
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="帳號" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohv-SW-v7F">
-                                <rect key="frame" x="218.33333333333337" y="174" width="34.666666666666657" height="20.333333333333343"/>
+                                <rect key="frame" x="218.33333333333337" y="133" width="34.666666666666657" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fzE-HL-fxh">
-                                <rect key="frame" x="275" y="174" width="118.66666666666669" height="30"/>
+                                <rect key="frame" x="275" y="133" width="118.66666666666669" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -945,7 +945,7 @@
                             <constraint firstItem="8Qu-RZ-7SU" firstAttribute="top" secondItem="wFM-QY-qJ0" secondAttribute="bottom" id="Phe-D3-Ace"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="top" secondItem="QkO-cK-PyV" secondAttribute="top" id="Rlt-r2-q40"/>
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="centerX" secondItem="gHB-HM-aOG" secondAttribute="centerX" id="Wqu-Gy-EtH"/>
-                            <constraint firstItem="tKU-c5-iOv" firstAttribute="height" secondItem="Lnh-Of-FpG" secondAttribute="height" multiplier="0.6" constant="3" id="X2U-wq-T2v"/>
+                            <constraint firstItem="tKU-c5-iOv" firstAttribute="height" secondItem="Lnh-Of-FpG" secondAttribute="height" multiplier="0.6" id="X2U-wq-T2v"/>
                             <constraint firstItem="Lnh-Of-FpG" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leadingMargin" id="X7s-wa-51u"/>
                             <constraint firstItem="ABk-Sl-Uah" firstAttribute="top" secondItem="Nl9-b0-eSh" secondAttribute="bottom" constant="10" id="dGB-Xr-Bv3"/>
                             <constraint firstItem="ohv-SW-v7F" firstAttribute="top" secondItem="3nn-gT-52m" secondAttribute="top" id="fb5-Dv-ka7"/>
@@ -953,7 +953,7 @@
                             <constraint firstItem="Nl9-b0-eSh" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leadingMargin" constant="50" id="jzb-6K-BJh"/>
                             <constraint firstItem="tKU-c5-iOv" firstAttribute="leading" secondItem="7LP-C8-3bd" secondAttribute="leading" id="kd6-A2-bYl"/>
                             <constraint firstItem="ABk-Sl-Uah" firstAttribute="leading" secondItem="gHB-HM-aOG" secondAttribute="leading" id="lUk-su-oXU"/>
-                            <constraint firstItem="3nn-gT-52m" firstAttribute="top" secondItem="Lnh-Of-FpG" secondAttribute="bottom" id="nXt-7R-SPc"/>
+                            <constraint firstItem="3nn-gT-52m" firstAttribute="top" secondItem="Lnh-Of-FpG" secondAttribute="bottom" constant="3" id="nXt-7R-SPc"/>
                             <constraint firstItem="ohv-SW-v7F" firstAttribute="leading" secondItem="QkO-cK-PyV" secondAttribute="leading" id="nuZ-A1-fqe"/>
                             <constraint firstItem="wFM-QY-qJ0" firstAttribute="top" secondItem="3nn-gT-52m" secondAttribute="bottom" constant="10" id="qFf-x1-hL4"/>
                             <constraint firstAttribute="trailing" secondItem="8Qu-RZ-7SU" secondAttribute="trailing" id="tYX-er-dOf"/>
@@ -979,6 +979,7 @@
                         <outlet property="accOrderDateInput" destination="PJ2-ao-4JT" id="ZDH-Nc-zxg"/>
                         <outlet property="accOrderNoInput" destination="FM6-5n-L78" id="qyA-Ek-BuY"/>
                         <outlet property="accOrderPartnerInput" destination="xSL-EF-5tc" id="Kdr-kF-cii"/>
+                        <outlet property="accOrderPartnerLabel" destination="B9h-lD-3ce" id="2hI-Bk-yM9"/>
                         <outlet property="accRemarkInput" destination="tKU-c5-iOv" id="wnq-Ct-tPC"/>
                         <outlet property="accUserInput" destination="7LP-C8-3bd" id="p6A-ck-7rN"/>
                         <outlet property="accountingReverseTableView" destination="8Qu-RZ-7SU" id="6oQ-k8-i6i"/>
@@ -1813,7 +1814,7 @@
                         <outlet property="invOrderNoInput" destination="H4N-NH-0js" id="KKp-bM-8IY"/>
                         <outlet property="invOrderUserInput" destination="wiX-Vf-c8M" id="AhB-bh-DQF"/>
                         <outlet property="invOrderWarehouseInput" destination="FKA-He-kfh" id="0JI-Eu-qKW"/>
-                        <outlet property="invTransType" destination="VLb-g5-BuN" id="4IL-6s-JUQ"/>
+                        <outlet property="invTransType" destination="VLb-g5-BuN" id="f9W-Bq-NgF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="13A-cq-yVZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2592,7 +2593,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="x0K-Pq-1HW">
-                        <barButtonItem key="leftBarButtonItem" title="儲存並離開" id="D4m-Ec-oox">
+                        <barButtonItem key="leftBarButtonItem" title="＜儲存並離開" id="D4m-Ec-oox">
                             <connections>
                                 <action selector="barBackButton:" destination="9Td-hE-K2i" id="6tk-2Z-uas"/>
                             </connections>
@@ -3868,9 +3869,9 @@ StoreApp
         <segue reference="LNu-av-hvY"/>
         <segue reference="6kR-NQ-LIR"/>
         <segue reference="Nve-gu-a0o"/>
-        <segue reference="dmI-TG-hIC"/>
-        <segue reference="QF1-5Q-6C1"/>
         <segue reference="2BX-Dt-cMR"/>
         <segue reference="YQU-cy-WNj"/>
+        <segue reference="DuU-bd-kTb"/>
+        <segue reference="QF1-5Q-6C1"/>
     </inferredMetricsTieBreakers>
 </document>

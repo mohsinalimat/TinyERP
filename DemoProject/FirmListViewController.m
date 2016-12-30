@@ -40,6 +40,11 @@
     self.firmListTableView.dataSource = self;
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.firmListTableView reloadData];
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.firmList.count;

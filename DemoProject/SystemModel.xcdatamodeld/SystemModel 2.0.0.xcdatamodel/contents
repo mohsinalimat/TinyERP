@@ -39,7 +39,7 @@
         <attribute name="memberType" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="OrderDetailEntity" representedClassName="OrderDetail" syncable="YES">
-        <attribute name="isInventory" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="isInventory" optional="YES" attributeType="Float" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="orderAmount" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="orderItemNo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orderNo" optional="YES" attributeType="String" syncable="YES"/>

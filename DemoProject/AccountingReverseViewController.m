@@ -13,6 +13,7 @@
 #import "DataBaseManager.h"
 #import "AlertManager.h"
 #import "Item.h"
+#import "Partner.h"
 #import "DateManager.h"
 #import "AppDelegate.h"
 
@@ -23,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *accDiscountInput;
 @property (weak, nonatomic) IBOutlet UITextField *accUserInput;
 @property (weak, nonatomic) IBOutlet UITextView *accRemarkInput;
+@property (weak, nonatomic) IBOutlet UILabel *accOrderPartnerLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *accFinanceType;
 @property (weak, nonatomic) IBOutlet UITextField *accBankAccountInput;
 @property (weak, nonatomic) IBOutlet UIButton *deleteAccOrderButton;
@@ -46,6 +48,8 @@
     //單頭初值
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
+    Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:self.currentReverseOM.orderPartner].firstObject;
+    self.accOrderPartnerLabel.text = partnerForLabel.partnerName;
     self.accOrderDetailList = [NSMutableArray new];
     self.title = @"沖帳明細";
     [self.accOrderPartnerInput setEnabled:NO];

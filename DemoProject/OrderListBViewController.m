@@ -152,7 +152,7 @@
             NSMutableArray *deadList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:orderNo];
             for (OrderDetail *deadOD in deadList)
             {
-                [Inventory rollbackInventory:deadOD warehouse:warehouse orderNoBegin:[om.orderNo substringToIndex:1]];
+                [Inventory rollbackInventory:deadOD warehouse:warehouse orderNoBegin:om.orderType];
                 [OrderDetail rollbackNotYet:@[deadOD]];
                 [helper.managedObjectContext deleteObject:deadOD];
             }

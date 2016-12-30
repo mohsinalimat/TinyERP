@@ -54,6 +54,10 @@
     {
         pred = [NSPredicate predicateWithFormat:@"partnerType=%@",fiterString];
     }
+    else if ([fiterColumn isEqualToString:@"partnerID"])
+    {
+        pred = [NSPredicate predicateWithFormat:@"partnerID=%@",fiterString];
+    }
     //基本資料
     else if ([fiterColumn isEqualToString:@"basicDataType"])
     {

@@ -12,8 +12,9 @@
 #import "CustomerListViewController.h"
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
+#import "AlertManager.h"
 
-@interface PartnerViewController () <UINavigationBarDelegate,CLLocationManagerDelegate>
+@interface PartnerViewController () <UINavigationBarDelegate,CLLocationManagerDelegate,UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *pID;
 @property (weak, nonatomic) IBOutlet UILabel *pKind;
@@ -42,6 +43,7 @@
 @property (nonatomic) BOOL isCreataAgain;
 
 @property (nonatomic) NSString *currentCoordinateString;
+@property NSString *originalPartnerID;
 
 @end
 
@@ -89,6 +91,7 @@
         NSInteger thisIndex = [naviArray indexOfObject:self];
         self.clvc = [naviArray objectAtIndex:thisIndex-1];
     }
+    self.originalPartnerID = self.thisPartner.partnerID;
     self.pIDInput.text = self.thisPartner.partnerID;
     self.pKindInput.text = self.thisPartner.partnerKind;
     self.pNameInput.text = self.thisPartner.partnerName;
@@ -114,6 +117,15 @@
     locationManager.activityType = CLActivityTypeAutomotiveNavigation;
     locationManager.delegate = self;
     [locationManager startUpdatingLocation];
+    self.pIDInput.delegate = self;
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.pIDInput)
+    {
+        [self isSamePartnerID];
+    }
 }
 
 -(void)saveValue
@@ -129,65 +141,116 @@
     [DataBaseManager updateToCoreData];
 }
 
+-(BOOL)isSamePartnerID
+{
+    for (Partner *p in self.partnerListInDetail)
+    {
+        if ([self.pIDInput.text isEqualToString:p.partnerID] && ![self.pIDInput.text isEqualToString:self.originalPartnerID]
+            )
+        {
+            if ([self.whereFrom isEqualToString:@"firmList"])
+            {
+                self.isSameID.text = @"廠商編號重複";
+            }
+            else if ([self.whereFrom isEqualToString:@"custList"])
+            {
+                self.isSameID.text = @"客戶編號重複";
+            }
+            [self.isSameID setHidden:NO];
+            return YES;
+        }
+    }
+    [self.isSameID setHidden:YES];
+    return NO;
+}
+
 - (IBAction)savePartner:(id)sender
 {
-    [self saveValue];
-    //先判斷來源
-    if ([self.whereFrom isEqualToString:@"firmList"])
+    if ([self isSamePartnerID])
     {
-        //看有無新增多筆
-        if (self.isCreataAgain == YES)
+        if ([self.whereFrom isEqualToString:@"firmList"])
         {
-            [self.flvc.firmListTableView reloadData];
+            [AlertManager alert:@"廠商編號重複" controller:self];
         }
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.partnerListInDetail indexOfObject:self.thisPartner] inSection:0];
-        [self.flvc.firmListTableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        else if ([self.whereFrom isEqualToString:@"custList"])
+        {
+            [AlertManager alert:@"客戶編號重複" controller:self];
+        }
     }
-    else if ([self.whereFrom isEqualToString:@"custList"])
+    else
     {
-        if (self.isCreataAgain == YES)
+        [self saveValue];
+        //先判斷來源
+        if ([self.whereFrom isEqualToString:@"firmList"])
         {
-            [self.clvc.custListTableView reloadData];
+            //看有無新增多筆
+            if (self.isCreataAgain == YES)
+            {
+                [self.flvc.firmListTableView reloadData];
+            }
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.partnerListInDetail indexOfObject:self.thisPartner] inSection:0];
+            [self.flvc.firmListTableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.partnerListInDetail indexOfObject:self.thisPartner] inSection:0];
-        [self.clvc.custListTableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        else if ([self.whereFrom isEqualToString:@"custList"])
+        {
+            if (self.isCreataAgain == YES)
+            {
+                [self.clvc.custListTableView reloadData];
+            }
+            NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.partnerListInDetail indexOfObject:self.thisPartner] inSection:0];
+            [self.clvc.custListTableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        [self.navigationController popViewControllerAnimated:YES];
     }
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)saveAndCreatePartner:(id)sender
 {
-    //存值並寫DB
-    [self saveValue];
-    [DataBaseManager updateToCoreData];
-    //建立新的物件
-    CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-    Partner *partner = [NSEntityDescription insertNewObjectForEntityForName:@"PartnerEntity" inManagedObjectContext:helper.managedObjectContext];
-    //塞到陣列
-    [self.partnerListInDetail insertObject:partner atIndex:0];
-    //新增到前一頁TV
-    NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
-    if ([self.whereFrom isEqualToString:@"firmList"])
+    if ([self isSamePartnerID])
     {
-        [self.flvc.firmListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if ([self.whereFrom isEqualToString:@"firmList"])
+        {
+            [AlertManager alert:@"廠商編號重複" controller:self];
+        }
+        else if ([self.whereFrom isEqualToString:@"custList"])
+        {
+            [AlertManager alert:@"客戶編號重複" controller:self];
+        }
     }
-    else if ([self.whereFrom isEqualToString:@"custList"])
+    else
     {
-        [self.clvc.custListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        //存值並寫DB
+        [self saveValue];
+        [DataBaseManager updateToCoreData];
+        //建立新的物件
+        CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+        Partner *partner = [NSEntityDescription insertNewObjectForEntityForName:@"PartnerEntity" inManagedObjectContext:helper.managedObjectContext];
+        //塞到陣列
+        [self.partnerListInDetail insertObject:partner atIndex:0];
+        //新增到前一頁TV
+        NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
+        if ([self.whereFrom isEqualToString:@"firmList"])
+        {
+            [self.flvc.firmListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else if ([self.whereFrom isEqualToString:@"custList"])
+        {
+            [self.clvc.custListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        //新物件指定為當前物件
+        self.thisPartner = partner;
+        //清空畫面
+        self.pIDInput.text = @"";
+        self.pNameInput.text = @"";
+        self.pFullNameInput.text = @"";
+        self.pKindInput.text = @"";
+        self.pTexNumInput.text = @"";
+        self.pBossInput.text = @"";
+        self.pTelInput.text = @"";
+        self.pAddrInput.text = @"";
+        //新增多筆為是
+        self.isCreataAgain = YES;
     }
-    //新物件指定為當前物件
-    self.thisPartner = partner;
-    //清空畫面
-    self.pIDInput.text = @"";
-    self.pNameInput.text = @"";
-    self.pFullNameInput.text = @"";
-    self.pKindInput.text = @"";
-    self.pTexNumInput.text = @"";
-    self.pBossInput.text = @"";
-    self.pTelInput.text = @"";
-    self.pAddrInput.text = @"";
-    //新增多筆為是
-    self.isCreataAgain = YES;
 }
 
 - (IBAction)deletePartner:(id)sender

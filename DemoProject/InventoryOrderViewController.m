@@ -52,6 +52,7 @@
         self.invOrderUserInput.text = self.currentInventoryOM.orderUser;
         self.invOrderNoInput.text = self.currentInventoryOM.orderNo;
         [self.invTransType setEnabled:NO];
+        [self.invOrderWarehouseInput setEnabled:NO];
         if ([self.currentInventoryOM.orderType isEqualToString:@"PF"])
         {
             self.invTransType.selectedSegmentIndex = 0;
@@ -93,11 +94,16 @@
     iodCell.invOrderItemNameLabel.text = @"";
     iodCell.invOrderItemUnitLabel.text = @"";
     iodCell.invOrderQtyInput.text = @"";
+    [iodCell.invOrderItemNoInput setEnabled:YES];
     
     iodCell.invOrderItemNoInput.placeholder = @"料號";
     iodCell.invOrderQtyInput.placeholder = @"異動量";
     
     OrderDetail *od = [self.invOrderDetailList objectAtIndex:indexPath.row];
+    if (od.isInventory != nil)
+    {
+        [iodCell.invOrderItemNoInput setEnabled:NO];
+    }
     iodCell.invOrderSeqLabel.text = [od.orderSeq stringValue];
     iodCell.invOrderItemNoInput.text = od.orderItemNo;
     iodCell.invOrderQtyInput.text = [od.orderQty stringValue];
@@ -192,11 +198,10 @@
                 od.orderItemNo = iodCell.invOrderItemNoInput.text;
                 od.orderQty = @([iodCell.invOrderQtyInput.text floatValue]);
             }
-            [Inventory calculateInventory:self.invOrderDetailList warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
+            [Inventory calculateInventory:self.invOrderDetailList warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:self.currentInventoryOM.orderType];
             [DataBaseManager updateToCoreData];
             [AlertManager alertWithoutButton:@"資料已儲存" controller:self time:0.5 action:@"popVC"];
         }
-        
     }
 }
 
@@ -218,7 +223,7 @@
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     for (OrderDetail *deadOD in deadList)
     {
-        [Inventory rollbackInventory:deadOD warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
+        [Inventory rollbackInventory:deadOD warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:self.currentInventoryOM.orderType];
         [helper.managedObjectContext deleteObject:deadOD];
     }
     [DataBaseManager updateToCoreData];
@@ -232,7 +237,7 @@
     {
         if (self.currentInventoryOM != nil)
         {
-            [Inventory rollbackInventory:[self.invOrderDetailList objectAtIndex:indexPath.row] warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:[self.currentInventoryOM.orderNo substringToIndex:1]];
+            [Inventory rollbackInventory:[self.invOrderDetailList objectAtIndex:indexPath.row] warehouse:self.currentInventoryOM.orderWarehouse orderNoBegin:self.currentInventoryOM.orderType];
         }
         [OrderDetail deleteOrderDetail:[self.invOrderDetailList objectAtIndex:indexPath.row] array:self.invOrderDetailList tableView:self.invOrderDetailTableView indexPath:indexPath];
         if (self.invOrderDetailList.count != 0)
