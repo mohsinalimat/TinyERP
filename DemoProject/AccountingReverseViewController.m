@@ -16,8 +16,9 @@
 #import "Partner.h"
 #import "DateManager.h"
 #import "AppDelegate.h"
+#import "DataPickerManager.h"
 
-@interface AccountingReverseViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface AccountingReverseViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UITextField *accOrderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *accOrderDateInput;
 @property (weak, nonatomic) IBOutlet UITextField *accOrderPartnerInput;
@@ -45,6 +46,7 @@
     //代理
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
+    self.accOrderDateInput.delegate = self;
     //單頭初值
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
@@ -114,6 +116,46 @@
 -(void)popVC
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    DateManager *dm = [DateManager new];
+    [dm showDatePicker:self];
+//    DataPickerManager *dpm = [DataPickerManager new];
+//    [dpm showDataPicker:self];
+//    CGFloat vcWidth = self.view.frame.size.width;
+//    CGFloat vcHeight = self.view.frame.size.height;
+//    UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
+//    pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
+//    pv.delegate = self;
+//    [self.view addSubview:pv];
+}
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return 10;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSString *rowIndex = [NSString stringWithFormat:@"%ld",row];
+    return rowIndex;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSLog(@"%ld",row);
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

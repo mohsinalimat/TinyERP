@@ -331,6 +331,8 @@
     if (textField == self.orderDateInput)
     {
         [self.datePickerView setHidden:NO];
+#pragma mark Q.不知為何storyBoard設背景沒用
+        self.datePickerView.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];;
     }
     else if (textField == self.orderPartnerInput)
     {

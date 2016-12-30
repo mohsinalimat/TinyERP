@@ -10,8 +10,9 @@
 #import <UIKit/UIKit.h>
 
 @interface DateManager : NSObject
+@property UIDatePicker *dp;
 +(NSString*)getTodayDateString;
 +(NSString*)getFormatedDateString:(NSDate*)date;
 +(NSDate*)getDateByString:(NSString*)string;
-+(void)showDatePicker:(UIViewController*)controller;
+-(void)showDatePicker:(UIViewController*)controller;
 @end

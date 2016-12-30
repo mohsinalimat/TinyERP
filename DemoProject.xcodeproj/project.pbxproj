@@ -26,6 +26,7 @@
 		272BB5931DC74A7700A1AB11 /* ItemListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB5921DC74A7700A1AB11 /* ItemListViewController.m */; };
 		272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB5951DC74AE300A1AB11 /* ItemViewController.m */; };
 		272DD7641DDC230100B12672 /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272DD7631DDC230100B12672 /* OrderCell.m */; };
+		27428D3F1E1640A8009358FA /* DataPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27428D3E1E1640A8009358FA /* DataPickerManager.m */; };
 		275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */; };
 		275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E11DE7F36400FF888D /* InventoryViewController.m */; };
 		275147E51DE7FFB100FF888D /* Inventory.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E41DE7FFB100FF888D /* Inventory.m */; };
@@ -110,6 +111,8 @@
 		272BB5951DC74AE300A1AB11 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		272DD7621DDC230100B12672 /* OrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderCell.h; sourceTree = "<group>"; };
 		272DD7631DDC230100B12672 /* OrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
+		27428D3D1E1640A8009358FA /* DataPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPickerManager.h; sourceTree = "<group>"; };
+		27428D3E1E1640A8009358FA /* DataPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPickerManager.m; sourceTree = "<group>"; };
 		275147DD1DE7DC0D00FF888D /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
 		275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WelcomeViewController.m; sourceTree = "<group>"; };
 		275147E01DE7F36400FF888D /* InventoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InventoryViewController.h; sourceTree = "<group>"; };
@@ -349,6 +352,8 @@
 				27DA2D311E076E1B002BEA63 /* OrderMasterManager.m */,
 				27A5B0441E0A69DA008BF08E /* DateManager.h */,
 				27A5B0451E0A69DA008BF08E /* DateManager.m */,
+				27428D3D1E1640A8009358FA /* DataPickerManager.h */,
+				27428D3E1E1640A8009358FA /* DataPickerManager.m */,
 			);
 			name = MANAGERs;
 			sourceTree = "<group>";
@@ -626,6 +631,7 @@
 				271462641DDD48F300CC8CB6 /* OrderDetailCell.m in Sources */,
 				272BB58A1DC746C900A1AB11 /* Partner.m in Sources */,
 				279AE0D01E0D3F81007D9B0B /* FinanceListViewController.m in Sources */,
+				27428D3F1E1640A8009358FA /* DataPickerManager.m in Sources */,
 				27BE8C461DDBE7AC00FAA604 /* OrderViewController.m in Sources */,
 				27E73CCC1DF7AB3C00FA09BC /* AccountingReverseViewController.m in Sources */,
 				27A4CA141DEECE41002476CD /* DropBoxCell.m in Sources */,

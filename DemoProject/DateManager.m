@@ -35,4 +35,31 @@
     return date;
 }
 
+-(void)showDatePicker:(UIViewController *)controller
+{
+    CGFloat vcWidth = controller.view.frame.size.width;
+    CGFloat vcHeight = controller.view.frame.size.height;
+    self.dp = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
+    self.dp.datePickerMode = UIDatePickerModeDate;
+    self.dp.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
+//    UIToolbar *tb = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, vcWidth, 44)];
+//    UIBarButtonItem *bbi = [[UIBarButtonItem alloc]initWithTitle:@"確定" style:UIBarButtonItemStylePlain target:self action:@selector(btnDate)];
+//    [tb setItems:@[bbi]];
+//    [controller.view addSubview:tb];
+    [controller.view addSubview:self.dp];
+    [self.dp addTarget:self action:@selector(sendDateString) forControlEvents:UIControlEventValueChanged];
+}
+
+-(void)sendDateString
+{
+    NSLog(@"hihi");
+}
+
+//-(void)btnDate
+//{
+//    NSLog(@"hihi");
+//}
+
+
+
 @end
