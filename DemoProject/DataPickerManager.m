@@ -7,16 +7,13 @@
 //
 
 #import "DataPickerManager.h"
+#import "DataBaseManager.h"
+#import "BankAccount.h"
+#import "BasicData.h"
 
 @implementation DataPickerManager
 
-//-(instancetype)init
-//{
-//    
-//    return self;
-//}
-
--(void)showDataPicker:(UIViewController*)controller  dataField:(UITextField*)dataField
+-(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy
 {
     CGFloat vcWidth = controller.view.frame.size.width;
     CGFloat vcHeight = controller.view.frame.size.height;
@@ -24,6 +21,8 @@
     self.pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
     self.pv.delegate = self;
     self.dataField = dataField;
+    self.dataSource = dataSource;
+    self.dataSourceList = [DataBaseManager queryFromCoreData:dataSource sortBy:sortBy];
     [controller.view addSubview:self.pv];
 }
 
@@ -34,20 +33,27 @@
 
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    return 5;
+    return self.dataSourceList.count;
 }
 
 -(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    NSString *rowIndex = [NSString stringWithFormat:@"%ld",row];
-    return rowIndex;
+    if ([self.dataSource isEqualToString:@"BankAccountEntity"])
+    {
+        BankAccount *ba = self.dataSourceList[row];
+        NSString *baString = [NSString stringWithFormat:@"[%@][%@]%@",ba.bankID,ba.bankName,ba.bankAccount];
+        return baString;
+    }
+    return nil;
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    NSString *dataString = [NSString stringWithFormat:@"%ld",row];
-    self.dataField.text = dataString;
-    NSLog(@"%ld",row);
+    if ([self.dataSource isEqualToString:@"BankAccountEntity"])
+    {
+        BankAccount *ba = self.dataSourceList[row];
+        self.dataField.text = ba.bankAccount;
+    }
 }
 
 

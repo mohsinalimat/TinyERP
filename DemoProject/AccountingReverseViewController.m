@@ -18,7 +18,7 @@
 #import "AppDelegate.h"
 #import "DataPickerManager.h"
 
-@interface AccountingReverseViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface AccountingReverseViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *accOrderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *accOrderDateInput;
 @property (weak, nonatomic) IBOutlet UITextField *accOrderPartnerInput;
@@ -48,7 +48,7 @@
     //代理
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
-    self.accOrderDateInput.delegate = self;
+    self.accBankAccountInput.delegate = self;
     //單頭初值
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
@@ -71,13 +71,13 @@
         [self.accDidRevListBtn setTintColor:[UIColor clearColor]];
         [self.deleteAccOrderButton setTitle:@"刪除單據" forState:UIControlStateNormal];
         self.accOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderSeq" fiterFrom:@"orderNo" fiterBy:self.currentReverseOM.orderNo];
-        if (self.currentReverseOM.orderFinanceType>0)
+        if ([self.currentReverseOM.orderFinanceType integerValue] == 0)
         {
-            [self.accBankAccountInput setEnabled:NO];
+            [self.accBankAccountInput setEnabled:YES];
         }
         else
         {
-            [self.accBankAccountInput setEnabled:YES];
+            [self.accBankAccountInput setEnabled:NO];
         }
     }
     else if ([self.whereFrom isEqualToString:@"accCreateSegue"])
@@ -122,42 +122,12 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-//    DateManager *dm = [DateManager new];
-//    [dm showDatePicker:self];
-    //DataPickerManager *dpm = [DataPickerManager new];
-    [self.dpm showDataPicker:self dataField:textField];
-    //CGFloat vcWidth = self.view.frame.size.width;
-    //CGFloat vcHeight = self.view.frame.size.height;
-    //UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
-    //pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
-    //pv.delegate = self;
-    //[self.view addSubview:pv];
-}
-
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return 10;
-}
-
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    NSString *rowIndex = [NSString stringWithFormat:@"%ld",row];
-    return rowIndex;
-}
-
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSLog(@"%ld",row);
+    [self.dpm showDataPicker:self dataField:textField dataSource:@"BankAccountEntity" sortBy:@"bankID"];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    
+    [self.dpm.pv removeFromSuperview];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -270,7 +240,7 @@
         for (NSUInteger i=0; i<self.accOrderDetailList.count; i++)
         {
             AccRevCell *arCell = [self.accountingReverseTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
-            if (arCell.odThisAmount.text.length==0)
+            if (arCell.odThisAmount.text.length==0 || [arCell.odThisAmount.text floatValue] == 0)
             {
                 invalidOrderDteail = YES;
                 break;

@@ -12,5 +12,7 @@
 @interface DataPickerManager : NSObject <UIPickerViewDelegate,UIPickerViewDataSource>
 @property UIPickerView *pv;
 @property UITextField *dataField;
--(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField;
+@property NSMutableArray *dataSourceList;
+@property NSString *dataSource;
+-(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy;
 @end
