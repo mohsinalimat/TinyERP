@@ -11,5 +11,6 @@
 
 @interface DataPickerManager : NSObject <UIPickerViewDelegate,UIPickerViewDataSource>
 @property UIPickerView *pv;
--(void)showDataPicker:(UIViewController*)controller;
+@property UITextField *dataField;
+-(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField;
 @end

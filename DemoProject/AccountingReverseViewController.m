@@ -36,6 +36,7 @@
 @property BOOL isDeleteAction;
 @property BOOL isOverAmount;
 @property BOOL isLeaveVC;
+@property DataPickerManager *dpm;
 @end
 
 @implementation AccountingReverseViewController
@@ -43,6 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.dpm = [DataPickerManager new];
     //代理
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
@@ -122,14 +124,14 @@
 {
 //    DateManager *dm = [DateManager new];
 //    [dm showDatePicker:self];
-//    DataPickerManager *dpm = [DataPickerManager new];
-//    [dpm showDataPicker:self];
-    CGFloat vcWidth = self.view.frame.size.width;
-    CGFloat vcHeight = self.view.frame.size.height;
-    UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
-    pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
-    pv.delegate = self;
-    [self.view addSubview:pv];
+    //DataPickerManager *dpm = [DataPickerManager new];
+    [self.dpm showDataPicker:self dataField:textField];
+    //CGFloat vcWidth = self.view.frame.size.width;
+    //CGFloat vcHeight = self.view.frame.size.height;
+    //UIPickerView *pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
+    //pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
+    //pv.delegate = self;
+    //[self.view addSubview:pv];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView

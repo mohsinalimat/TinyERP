@@ -16,13 +16,14 @@
 //    return self;
 //}
 
--(void)showDataPicker:(UIViewController*)controller
+-(void)showDataPicker:(UIViewController*)controller  dataField:(UITextField*)dataField
 {
     CGFloat vcWidth = controller.view.frame.size.width;
     CGFloat vcHeight = controller.view.frame.size.height;
     self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
     self.pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
     self.pv.delegate = self;
+    self.dataField = dataField;
     [controller.view addSubview:self.pv];
 }
 
@@ -44,6 +45,8 @@
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
+    NSString *dataString = [NSString stringWithFormat:@"%ld",row];
+    self.dataField.text = dataString;
     NSLog(@"%ld",row);
 }
 

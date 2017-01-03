@@ -160,11 +160,17 @@
     headerView.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
     if (self.isShowByItem)
     {
-        headerView.title.text = self.itemGroupSortedArray[indexPath.section];
+        NSArray *itemAarray = self.itemListSorted[indexPath.section];
+        NSNumber *sumInventory = [itemAarray valueForKeyPath:@"@sum.qty"];
+        NSString *headerString = [NSString stringWithFormat:@"%@總數%2.f",self.itemGroupSortedArray[indexPath.section],[sumInventory floatValue]];
+        headerView.title.text = headerString;
     }
     else
     {
-        headerView.title.text = self.warehouseGroupSortedArray[indexPath.section];
+        NSArray *warehouseAarray = self.warehouseListSorted[indexPath.section];
+        NSNumber *sumInventory = [warehouseAarray valueForKeyPath:@"@sum.qty"];
+        NSString *headerString = [NSString stringWithFormat:@"%@總數%2.f",self.warehouseGroupSortedArray[indexPath.section],[sumInventory floatValue]];
+        headerView.title.text = headerString;
     }
     return headerView;
 }
