@@ -13,6 +13,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 #import "AlertManager.h"
+#import "DataPickerManager.h"
 
 @interface PartnerViewController () <UINavigationBarDelegate,CLLocationManagerDelegate,UITextFieldDelegate>
 
@@ -44,6 +45,7 @@
 
 @property (nonatomic) NSString *currentCoordinateString;
 @property NSString *originalPartnerID;
+@property DataPickerManager *dpm;
 
 @end
 
@@ -59,7 +61,7 @@
     [self.isSameID setHidden:YES];
     self.pAddrInput.layer.borderWidth = 1;
     self.pAddrInput.layer.borderColor = self.view.tintColor.CGColor;
-
+    self.dpm = [DataPickerManager new];
     if ([self.whereFrom isEqualToString:@"firmList"])
     {
         self.title = @"廠商資料";
@@ -118,14 +120,48 @@
     locationManager.delegate = self;
     [locationManager startUpdatingLocation];
     self.pIDInput.delegate = self;
+    self.pKindInput.delegate = self;
+    self.pNameInput.delegate = self;
+    self.pFullNameInput.delegate = self;
+    self.pTexNumInput.delegate = self;
+    self.pBossInput.delegate = self;
+    self.pTelInput.delegate = self;
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField
+-(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     if (textField == self.pIDInput)
     {
         [self isSamePartnerID];
     }
+    else if (textField == self.pKindInput && [self.whereFrom isEqualToString:@"firmList"])
+    {
+        [self.dpm showDataPicker:self dataField:self.pKindInput dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"廠商分類" headerView:nil];
+    }
+    else if (textField == self.pKindInput && [self.whereFrom isEqualToString:@"custList"])
+    {
+        [self.dpm showDataPicker:self dataField:self.pKindInput dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"客戶分類" headerView:nil];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (textField == self.pKindInput)
+    {
+        [self.dpm.pv removeFromSuperview];
+    }
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.pAddrInput resignFirstResponder];
+    [self.dpm.pv removeFromSuperview];
 }
 
 -(void)saveValue

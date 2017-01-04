@@ -295,8 +295,8 @@
                 }
                 case 1:
                 {
-                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell"];
-                    cell.textLabel.text = @"   個人資料";
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signupCell"];
+                    cell.textLabel.text = @"   新增使用者";
                     cell.textLabel.textColor = self.view.tintColor;
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
@@ -304,8 +304,8 @@
                 }
                 case 2:
                 {
-                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"signupCell"];
-                    cell.textLabel.text = @"   新增使用者";
+                    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"profileCell"];
+                    cell.textLabel.text = @"   個人資料";
                     cell.textLabel.textColor = self.view.tintColor;
                     cell.textLabel.textAlignment = UITextAlignmentCenter;
                     return cell;
@@ -329,7 +329,7 @@
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     Member *member = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID][0];
-    if ([segue.identifier isEqualToString:@"membersSegue"])
+    if ([segue.identifier isEqualToString:@"membersSegue"] || [segue.identifier isEqualToString:@"signupSegue"])
     {
         if (![member.memberClass isEqualToString:@"admin"])
         {
@@ -392,10 +392,17 @@
 //3.1
 -(void)dropboxBackupButton
 {
-    self.dbAction = @"Backup";
-    if ([self isDropboxDidLogin])
+    if (![self.appDLG.currentMember.memberClass isEqualToString:@"admin"])
     {
-        [self dropboxBackupAction];
+        [AlertManager alert:@"需有管理員權限才可執行" controller:self];
+    }
+    else
+    {
+        self.dbAction = @"Backup";
+        if ([self isDropboxDidLogin])
+        {
+            [self dropboxBackupAction];
+        }
     }
 }
 
@@ -408,10 +415,17 @@
 //3.2
 -(void)dropboxRestoreButton
 {
-    self.dbAction = @"Restore";
-    if ([self isDropboxDidLogin])
+    if (![self.appDLG.currentMember.memberClass isEqualToString:@"admin"])
     {
-        [self dropboxRestoreAction];
+        [AlertManager alert:@"需有管理員權限才可執行" controller:self];
+    }
+    else
+    {
+        self.dbAction = @"Restore";
+        if ([self isDropboxDidLogin])
+        {
+            [self dropboxRestoreAction];
+        }
     }
 }
 
@@ -470,14 +484,21 @@
 
 -(void)dropboxLogoutButton
 {
-    if ([DropboxClientsManager authorizedClient] != nil)
+    if (![self.appDLG.currentMember.memberClass isEqualToString:@"admin"])
     {
-        [DropboxClientsManager unlinkClients];
-        [AlertManager alert:@"您已登出DropBox" controller:self];
+        [AlertManager alert:@"需有管理員權限才可執行" controller:self];
     }
     else
     {
-        [AlertManager alert:@"您尚未登入DropBox" controller:self];
+        if ([DropboxClientsManager authorizedClient] != nil)
+        {
+            [DropboxClientsManager unlinkClients];
+            [AlertManager alert:@"您已登出DropBox" controller:self];
+        }
+        else
+        {
+            [AlertManager alert:@"您尚未登入DropBox" controller:self];
+        }
     }
 }
 

@@ -54,6 +54,7 @@
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
     Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:self.currentReverseOM.orderPartner].firstObject;
     self.accOrderPartnerLabel.text = partnerForLabel.partnerName;
+    self.accRemarkInput.text = self.currentReverseOM.orderRemark;
     self.accOrderDetailList = [NSMutableArray new];
     self.title = @"沖帳明細";
     [self.accOrderPartnerInput setEnabled:NO];
@@ -122,12 +123,18 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [self.dpm showDataPicker:self dataField:textField dataSource:@"BankAccountEntity" sortBy:@"bankID"];
+    [self.dpm showDataPicker:self dataField:textField dataSource:@"BankAccountEntity" sortBy:@"bankID" fiterFrom:nil fiterBy:nil headerView:nil];
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self.dpm.pv removeFromSuperview];
+}
+
+//不可變更
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return NO;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -265,6 +272,7 @@
             self.currentReverseOM.orderFinanceType = @(self.accFinanceType.selectedSegmentIndex);
             self.currentReverseOM.orderTotalAmount = @([self sumAmount]);
             self.currentReverseOM.orderDiscount = @([self.accDiscountInput.text floatValue]);
+            self.currentReverseOM.orderRemark = self.accRemarkInput.text;
             //存單身
             for (OrderDetail *od in self.accOrderDetailList)
             {
@@ -309,6 +317,7 @@
                     sonOM.orderFinanceType = self.currentReverseOM.orderFinanceType;
                     sonOM.orderDiscount = self.currentReverseOM.orderDiscount;
                     sonOM.orderNoTwins = self.currentReverseOM.orderNo;
+                    sonOM.orderRemark = self.currentReverseOM.orderRemark;
                     self.currentReverseOM.orderNoTwins = sonOM.orderNo;
                 }
             }
@@ -326,6 +335,10 @@
                     updateFinanceOM.orderTotalAmount = self.currentReverseOM.orderTotalAmount;
                     updateFinanceOM.orderDiscount = self.currentReverseOM.orderDiscount;
                     updateFinanceOM.orderDate = self.currentReverseOM.orderDate;
+                    if (updateFinanceOM.orderRemark == nil)
+                    {
+                        updateFinanceOM.orderRemark = self.currentReverseOM.orderRemark;
+                    }
                 }
             }
             [DataBaseManager updateToCoreData];

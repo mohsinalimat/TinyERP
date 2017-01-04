@@ -25,4 +25,5 @@
 @property NSNumber *orderDiscount;
 @property NSString *orderNoTwins;
 @property NSString *orderReason;
+@property NSString *orderRemark;
 @end

@@ -14,5 +14,5 @@
 @property UITextField *dataField;
 @property NSMutableArray *dataSourceList;
 @property NSString *dataSource;
--(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy;
+-(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy fiterFrom:(NSString*)fiterFrom fiterBy:(NSString*)fiterBy headerView:(UIView*)headerView;
 @end

@@ -16,11 +16,14 @@
 #import "AlertManager.h"
 #import "AppDelegate.h"
 #import "AccountingReverseViewController.h"
+#import "DataPickerManager.h"
 
-@interface FinanceListViewController () <UITableViewDelegate,UITableViewDataSource>
+@interface FinanceListViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property NSMutableArray *financeAcountList;
 @property NSMutableArray *financeOrderList;
 @property NSMutableArray *finance2DList;
+@property NSMutableArray *openSectionList;
+@property DataPickerManager *dpm;
 @property BOOL isGoToARVC;
 @end
 
@@ -32,6 +35,7 @@
     //代理
     self.financeTableView.delegate = self;
     self.financeTableView.dataSource = self;
+    self.dpm = [DataPickerManager new];
     self.finance2DList = [NSMutableArray new];
     //帳戶資料
     self.financeAcountList = [DataBaseManager queryFromCoreData:@"BankAccountEntity" sortBy:@"bankID"];
@@ -61,6 +65,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:nil];
+    self.openSectionList = [NSMutableArray new];
+    for (NSUInteger section=0; section<self.finance2DList.count; section++)
+    {
+        [self.openSectionList addObject:@"close"];
+    }
     self.financeOrderList = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderDE" fiterBy:@"DE"];
     [self splitArray];
     [self.financeTableView reloadData];
@@ -103,7 +112,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 44.0;
+    return 50.0;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -119,10 +128,21 @@
     //按鈕
     CGFloat buttonXlocalPE = self.financeTableView.frame.size.width - 80;
     CGFloat buttonXlocalSE = self.financeTableView.frame.size.width - 160;
-    UIButton *buttonPE = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocalPE, 18, 0, 0)];
-    UIButton *buttonSE = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocalSE, 18, 0, 0)];
+    CGFloat switchXlocal = self.financeTableView.frame.size.width - 50;
+    UIButton *buttonPE = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocalPE, 22, 0, 0)];
+    UIButton *buttonSE = [[UIButton alloc]initWithFrame:CGRectMake(buttonXlocalSE, 22, 0, 0)];
+    UISwitch *switchAccordion = [[UISwitch alloc]initWithFrame:CGRectMake(switchXlocal, 0, 0, 0)];
     buttonPE.tag = section;
     buttonSE.tag = section;
+    switchAccordion.tag = section;
+    if ([self.openSectionList[section] isEqualToString:@"open"])
+    {
+        switchAccordion.on =YES;
+    }
+    else
+    {
+        switchAccordion.on = NO;
+    }
     [buttonPE setTitle:@"新增支出" forState:UIControlStateNormal];
     [buttonSE setTitle:@"新增收入" forState:UIControlStateNormal];
     [buttonPE setTitleColor:self.view.tintColor forState:UIControlStateNormal];
@@ -132,9 +152,14 @@
     [buttonSE sizeToFit];
     [tableHeaderView addSubview:buttonPE];
     [tableHeaderView addSubview:buttonSE];
+    [tableHeaderView addSubview:switchAccordion];
     //hihi
     [buttonPE addTarget:self action:@selector(addOrderPE:) forControlEvents:UIControlEventTouchUpInside];
     [buttonSE addTarget:self action:@selector(addOrderSE:) forControlEvents:UIControlEventTouchUpInside];
+    [switchAccordion addTarget:self action:@selector(headerTap:) forControlEvents:UIControlEventValueChanged];
+//不知為何每個手勢傳的headerView都是同一個物件
+//    UITapGestureRecognizer *headerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headerTap:)];
+//    [self.view addGestureRecognizer:headerTap];
     //帳號title
     UILabel *sectionTitleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, self.financeTableView.frame.size.width, 22)];
     BankAccount *ba = self.financeAcountList[section];
@@ -173,6 +198,51 @@
     return tableHeaderView;
 }
 
+- (void)headerTap:(UISwitch*)switchAccordion
+{
+    if (switchAccordion.on)
+    {
+        [self.openSectionList replaceObjectAtIndex:switchAccordion.tag withObject:@"open"];
+        [self.financeTableView reloadData];
+    }
+    else
+    {
+        NSArray *closeArray = self.finance2DList[switchAccordion.tag];
+        BOOL closeZero = NO;
+        for (NSUInteger accountIndex=0; accountIndex<closeArray.count; accountIndex++)
+        {
+            FinanceCell *finCell = [self.financeTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:accountIndex inSection:switchAccordion.tag]];
+            [self saveCell:closeArray[accountIndex] finCell:finCell];
+            if (finCell.finOrderAmountInput.text.length==0 || [finCell.finOrderAmountInput.text floatValue]==0)
+            {
+                closeZero = YES;
+                break;
+            }
+        }
+        if (closeZero == YES)
+        {
+            [AlertManager alert:@"金額未填" controller:self];
+            switchAccordion.on = YES;
+        }
+        else
+        {
+            [self.openSectionList replaceObjectAtIndex:switchAccordion.tag withObject:@"close"];
+            [self.financeTableView reloadData];
+        }
+    }
+}
+
+-(void)saveCell:(OrderMaster*)om finCell:(FinanceCell*)finCell
+{
+    om.orderDate = [DateManager getDateByString:finCell.finOrderDateInput.text];
+    om.orderUser = finCell.finOrderUserInput.text;
+    om.orderTotalAmount = @([finCell.finOrderAmountInput.text floatValue]);
+    om.orderDiscount = @([finCell.finOrderDiscountInput.text floatValue]);
+    om.orderReason = finCell.finOrderReasonInput.text;
+    om.orderPartner = finCell.finOrderPartnerInput.text;
+    om.orderRemark = finCell.finOrderRemarkInput.text;
+}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.financeAcountList.count;
@@ -180,13 +250,21 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSArray *array = self.finance2DList[section];
-    return array.count;
+    if ([self.openSectionList[section] isEqualToString:@"open"])
+    {
+        NSArray *array = self.finance2DList[section];
+        return array.count;
+    }
+    else
+    {
+        return 0;
+    }
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 80.0;
+    return 115.0;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -199,18 +277,27 @@
     }
     [finCell.detailButton setEnabled:YES];
     finCell.finOrderUserInput.textColor = [UIColor purpleColor];
+    finCell.finOrderRemarkInput.layer.borderWidth = 1;
+    finCell.finOrderRemarkInput.layer.borderColor = [self.view.tintColor CGColor];
     NSArray *array = self.finance2DList[indexPath.section];
     OrderMaster *om = array[indexPath.row];
     finCell.finOrderNoInput.text = om.orderNo;
     finCell.finOrderDateInput.text = [DateManager getFormatedDateString:om.orderDate];
     finCell.finOrderUserInput.text = om.orderUser;
-    finCell.finOrderNoTwinsInput.text = om.orderNoTwins;
     finCell.finOrderAmountInput.text = [om.orderTotalAmount stringValue];
     finCell.finOrderDiscountInput.text = [om.orderDiscount stringValue];
     finCell.finOrderReasonInput.text = om.orderReason;
     finCell.finOrderPartnerInput.text = om.orderPartner;
+    finCell.finOrderRemarkInput.text = om.orderRemark;
     [finCell.finOrderNoInput setEnabled:NO];
-    [finCell.finOrderNoTwinsInput setEnabled:NO];
+    //代理
+    finCell.finOrderDateInput.delegate = self;
+    finCell.finOrderPartnerInput.delegate = self;
+    finCell.finOrderReasonInput.delegate = self;
+    finCell.finOrderDateInput.tag = 1;
+    finCell.finOrderPartnerInput.tag = 2;
+    finCell.finOrderReasonInput.tag = 3;
+    
     if ([om.orderUser isEqualToString:@"系統產生"])
     {
         for (UITextField *field in finCell.finOrderSevenInput)
@@ -233,6 +320,29 @@
         finCell.finOrderNoInput.textColor = [UIColor colorWithRed:0 green:0.7 blue:0 alpha:1];
     }
     return finCell;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField.tag == 2)
+    {
+        [self.dpm showDataPicker:self dataField:textField dataSource:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:nil fiterBy:nil headerView:nil];
+    }
+    else if (textField.tag == 3)
+    {
+        [self.dpm showDataPicker:self dataField:textField dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"財務理由" headerView:nil];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.dpm.pv removeFromSuperview];
+}
+
+//不可變更
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return NO;
 }
 
 -(void)tableView:(UITableView *)tableView didselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -312,27 +422,29 @@
         {
             NSIndexPath *ip = [NSIndexPath indexPathForRow:[self.finance2DList[accountIndex] indexOfObject:om] inSection:accountIndex];
             FinanceCell *finCell = [self.financeTableView cellForRowAtIndexPath:ip];
-            NSLog(@"%@",finCell.finOrderAmountInput.text);
-            if (finCell.finOrderAmountInput.text.length==0)
+            if (finCell != nil && (finCell.finOrderAmountInput.text.length==0 || [finCell.finOrderAmountInput.text floatValue]==0))
             {
                 invaildOM = YES;
                 goto invaild;
             }
-            om.orderDate = [DateManager getDateByString:finCell.finOrderDateInput.text];
-            om.orderUser = finCell.finOrderUserInput.text;
-            om.orderTotalAmount = @([finCell.finOrderAmountInput.text floatValue]);
-            om.orderDiscount = @([finCell.finOrderDiscountInput.text floatValue]);
-            om.orderReason = finCell.finOrderReasonInput.text;
-            om.orderPartner = finCell.finOrderPartnerInput.text;
+            if ([self.openSectionList[accountIndex]isEqualToString:@"open"])
+            {
+                [self saveCell:om finCell:finCell];
+            }
         }
     }
     invaild:
     if (invaildOM == YES)
     {
-        [AlertManager alert:@"資料金額未填" controller:self];
+        [AlertManager alert:@"金額未填" controller:self];
     }
     else
     {
+//        for (NSUInteger section=0; section<self.finance2DList.count; section++)
+//        {
+//            [self.openSectionList replaceObjectAtIndex:section withObject:@"open"];
+//        }
+//        [self.financeTableView reloadData];
         [DataBaseManager updateToCoreData];
         [AlertManager alertWithoutButton:@"儲存成功" controller:self time:0.5 action:@"popVC"];
         [self.navigationController popViewControllerAnimated:YES];

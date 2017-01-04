@@ -68,6 +68,12 @@
         baCell.bankIDInput.text = ba.bankID;
         baCell.bankNameInput.text = ba.bankName;
         baCell.bankAccountInput.text = ba.bankAccount;
+        if ([ba.bankID isEqualToString:@"000"])
+        {
+            [baCell.bankIDInput setEnabled:NO];
+            [baCell.bankNameInput setEnabled:NO];
+            [baCell.bankAccountInput setEnabled:NO];
+        }
         return baCell;
     }
     else
@@ -83,6 +89,12 @@
         return editCell;
     }
     return nil;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
@@ -131,19 +143,26 @@
         if ([self.whereFrom isEqualToString:@"銀行帳號"])
         {
             BankAccount *ba = [self.basicDataList objectAtIndex:indexPath.row];
-            [helper.managedObjectContext deleteObject:ba];
-            [self.basicDataList removeObject:ba];
+            if ([ba.bankID isEqualToString:@"000"])
+            {
+                [AlertManager alert:@"現金帳戶不可刪除" controller:self];
+            }
+            else
+            {
+                [helper.managedObjectContext deleteObject:ba];
+                [self.basicDataList removeObject:ba];
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [DataBaseManager updateToCoreData];
+            }
         }
         else
         {
             BasicData *bd = [self.basicDataList objectAtIndex:indexPath.row];
             [helper.managedObjectContext deleteObject:bd];
             [self.basicDataList removeObject:bd];
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [DataBaseManager updateToCoreData];
         }
-        //刪cell
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        //寫DB
-        [DataBaseManager updateToCoreData];
         
     }
 }

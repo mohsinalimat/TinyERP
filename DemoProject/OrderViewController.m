@@ -20,6 +20,7 @@
 #import "Inventory.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "AppDelegate.h"
+#import "DataPickerManager.h"
 
 @interface OrderViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *partnerLabel;
@@ -66,6 +67,8 @@
 @property NSString *originalPreOrderNo;
 @property BOOL isOverQty;
 @property BOOL isLeaveVC;
+@property DataPickerManager *dpm;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 
 @end
 
@@ -77,7 +80,7 @@
     
     self.orderNoBegin = [self.currentOM.orderNo substringToIndex:1];
     self.selectedRowIndex = -1;
-    
+    self.dpm = [DataPickerManager new];
     //單頭初值
     self.orderNoInput.text = self.currentOM.orderNo;
     self.orderPreOrderInput.text = self.currentOM.oderPreOrder;
@@ -243,11 +246,6 @@
     [super viewWillDisappear:nil];
     [DataBaseManager rollbackFromCoreData];
     self.isLeaveVC = YES;
-}
-
--(void)dealloc
-{
-    NSLog(@"殺了我吧");
 }
 
 -(void)popVC
@@ -546,7 +544,8 @@
         [odCell.odPrice setHidden:YES];
     }
     //監聽欄位
-    [odCell.odItemNo addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
+    odCell.odItemNo.delegate = self;
+    [odCell.odItemNo addTarget:self action:@selector(itemEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odPrice addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odThisQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
@@ -602,6 +601,13 @@
     return odCell;
 }
 
+-(IBAction)itemEditingBegin:(UITextField*)sender
+{
+    [sender resignFirstResponder];
+    [self.dpm showDataPicker:self dataField:sender dataSource:@"ItemEntity" sortBy:@"itemNo" fiterFrom:nil fiterBy:nil headerView:self.headerView];
+    [self anyoneEditingBegin:sender];
+}
+
 //紀錄最後欄位的單身
 -(IBAction)anyoneEditingBegin:(UITextField*)sender
 {
@@ -612,6 +618,7 @@
 //輸完料號
 -(IBAction)odItemNoEditingEnd:(UITextField*)sender
 {
+    [self.dpm.pv removeFromSuperview];
     //產生cell
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
@@ -683,7 +690,7 @@
 {
     NSIndexPath *ip = [NSIndexPath indexPathForRow:sender.tag-1 inSection:0];
     OrderDetailCell *odCell = [self.orderDetailTableView cellForRowAtIndexPath:ip];
-    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
+//    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
 //    od.orderThisQty = @([odCell.odThisQty.text floatValue]);
     if ([odCell.odThisQty.text floatValue] == 0 && self.isLeaveVC !=YES)
     {

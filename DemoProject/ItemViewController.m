@@ -15,7 +15,7 @@
 #import "ImageManager.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
-@interface ItemViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate,GADInterstitialDelegate>
+@interface ItemViewController () <UINavigationControllerDelegate,UIImagePickerControllerDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITextFieldDelegate,UITextViewDelegate,GADInterstitialDelegate>
 
 @property (nonatomic) GADInterstitial *interAD;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
@@ -75,8 +75,12 @@
     
     //代理
     self.itemNoInput.delegate = self;
+    self.itemNameInput.delegate = self;
     self.itemKindInput.delegate = self;
     self.itemUnitInput.delegate = self;
+    self.itemPriceInput.delegate = self;
+    self.itemSafetyStockInput.delegate = self;
+    self.itemSpecInput.delegate = self;
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
     
@@ -127,16 +131,6 @@
     }
 }
 
-//不准輸入
--(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if (textField==self.itemUnitInput || textField==self.itemKindInput)
-    {
-        return NO;
-    }
-    return YES;
-}
-
 -(void)showPickerView:(NSString*)whichInput
 {
     [UIView animateWithDuration:0.75 animations:
@@ -148,10 +142,11 @@
     [self.pickerView reloadAllComponents];
 }
 
-
 //開始編輯
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    //不管是誰先藏picker
+    self.pickerView.alpha = 0;
     if (textField == self.itemUnitInput)
     {
         [self showPickerView:@"單位"];
@@ -174,6 +169,35 @@
         //[self.pickerView setHidden:YES];
         self.pickerView.alpha = 0;
     }
+    [textField resignFirstResponder];
+}
+
+//觸碰self.view縮鍵盤
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.pickerView.alpha = 0;
+    [self.itemRemarkInput resignFirstResponder];
+}
+
+//不准輸入
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField==self.itemUnitInput || textField==self.itemKindInput)
+    {
+        return NO;
+    }
+    return YES;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    if (textField == self.itemUnitInput || textField == self.itemKindInput)
+    {
+        //[self.pickerView setHidden:YES];
+        self.pickerView.alpha = 0;
+    }
+    return YES;
 }
 
 //幾個滾輪(不可省略= =)
@@ -328,39 +352,34 @@
     return NO;
 }
 
--(void)checkSaveRefresh
+-(void)saveRefresh
 {
-    if ([self saveCheckOK])
+    //如果新增多筆
+    if (self.isCreataAgain==YES)
     {
-        [self saveToItemObject];
-        
-        //如果新增多筆
-        if (self.isCreataAgain==YES)
-        {
-            //整個tableView刷新
-            [self.delegate allCellRefresh];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else
-        {
-            //只刷新一筆cell
-            [self.delegate cellRefresh:self.thisItem];
-            [self.navigationController popViewControllerAnimated:YES];
-        }
+        //整個tableView刷新
+        [self.delegate allCellRefresh];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        //只刷新一筆cell
+        [self.delegate cellRefresh:self.thisItem];
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 //按下儲存
 - (IBAction)itemInputDone:(id)sender
 {
-    
-    if (self.interAD.isReady)
+    if ([self saveCheckOK])
     {
-        [self.interAD presentFromRootViewController:self];
-    }
-    else
-    {
-        [self checkSaveRefresh];
+        [self saveToItemObject];
+        if (self.interAD.isReady)
+        {
+            [self.interAD presentFromRootViewController:self];
+        }
+        [self saveRefresh];
     }
 }
 
@@ -425,7 +444,7 @@
 //使用者按下x，關閉廣告
 -(void)interstitialDidDismissScreen:(GADInterstitial *)ad
 {
-    [self checkSaveRefresh];
+    [self saveRefresh];
 }
 
 //使用者點擊廣告，賺錢
@@ -433,7 +452,7 @@
 {
     [self dismissViewControllerAnimated:YES completion:
      ^{
-         [self checkSaveRefresh];
+         [self saveRefresh];
     }];
 }
 - (IBAction)gesturePop:(id)sender

@@ -24,4 +24,5 @@
 @dynamic orderDiscount;
 @dynamic orderNoTwins;
 @dynamic orderReason;
+@dynamic orderRemark;
 @end

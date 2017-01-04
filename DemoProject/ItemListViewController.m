@@ -44,7 +44,19 @@
     self.title = @"商品清單";
     self.itemListTableView.delegate = self;
     self.itemListTableView.dataSource = self;
-    
+    [self.itemList enumerateObjectsUsingBlock:^(Item *deleteItem, NSUInteger idx, BOOL *stop)
+    {
+        if (deleteItem.itemNo == nil)
+        {
+            *stop = YES;
+            if (*stop)
+            {
+                CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+                [helper.managedObjectContext deleteObject:deleteItem];
+                [self.itemList removeObject:deleteItem];
+            }
+        }
+    }];
     //加廣告
     self.bannerAD = [[GADBannerView alloc]initWithAdSize:kGADAdSizeSmartBannerPortrait];
     self.bannerAD.adUnitID = @"ca-app-pub-7838204729392356/8056073022";

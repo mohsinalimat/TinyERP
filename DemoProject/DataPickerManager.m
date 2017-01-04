@@ -10,19 +10,41 @@
 #import "DataBaseManager.h"
 #import "BankAccount.h"
 #import "BasicData.h"
+#import "Partner.h"
+#import "Item.h"
 
 @implementation DataPickerManager
 
--(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy
+-(void)showDataPicker:(UIViewController*)controller dataField:(UITextField*)dataField dataSource:(NSString*)dataSource sortBy:(NSString*)sortBy fiterFrom:(NSString*)fiterFrom fiterBy:(NSString*)fiterBy headerView:(UIView*)headerView
 {
     CGFloat vcWidth = controller.view.frame.size.width;
     CGFloat vcHeight = controller.view.frame.size.height;
-    self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/2, vcWidth, vcHeight/3)];
+    if ([dataSource isEqualToString:@"ItemEntity"])
+    {
+        CGFloat viewY = headerView.frame.origin.y;
+        CGFloat viewH = headerView.frame.size.height;
+        self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, vcWidth, viewY+viewH)];
+    }
+    else
+    {
+        self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, vcHeight/5, vcWidth, vcHeight/3)];
+    }
     self.pv.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];
     self.pv.delegate = self;
     self.dataField = dataField;
     self.dataSource = dataSource;
-    self.dataSourceList = [DataBaseManager queryFromCoreData:dataSource sortBy:sortBy];
+    if (fiterBy == nil)
+    {
+        self.dataSourceList = [DataBaseManager queryFromCoreData:dataSource sortBy:sortBy];
+    }
+    else
+    {
+        self.dataSourceList = [DataBaseManager fiterFromCoreData:dataSource sortBy:sortBy fiterFrom:fiterFrom fiterBy:fiterBy];
+    }
+    if ([self.dataSource isEqualToString:@"BankAccountEntity"])
+    {
+        [self.dataSourceList removeObjectAtIndex:0];
+    }
     [controller.view addSubview:self.pv];
 }
 
@@ -44,6 +66,23 @@
         NSString *baString = [NSString stringWithFormat:@"[%@][%@]%@",ba.bankID,ba.bankName,ba.bankAccount];
         return baString;
     }
+    else if ([self.dataSource isEqualToString:@"PartnerEntity"])
+    {
+        Partner *p = self.dataSourceList[row];
+        NSString *pString = [NSString stringWithFormat:@"[%@]%@",p.partnerID,p.partnerName];
+        return pString;
+    }
+    else if ([self.dataSource isEqualToString:@"ItemEntity"])
+    {
+        Item *item = self.dataSourceList[row];
+        NSString *itemString = [NSString stringWithFormat:@"[%@]%@",item.itemNo,item.itemName];
+        return itemString;
+    }
+    else
+    {
+        BasicData *bd = self.dataSourceList[row];
+        return bd.basicDataName;
+    }
     return nil;
 }
 
@@ -53,6 +92,21 @@
     {
         BankAccount *ba = self.dataSourceList[row];
         self.dataField.text = ba.bankAccount;
+    }
+    else if ([self.dataSource isEqualToString:@"PartnerEntity"])
+    {
+        Partner *p = self.dataSourceList[row];
+        self.dataField.text = p.partnerID;
+    }
+    else if ([self.dataSource isEqualToString:@"ItemEntity"])
+    {
+        Item *item = self.dataSourceList[row];
+        self.dataField.text = item.itemNo;
+    }
+    else
+    {
+        BasicData *bd = self.dataSourceList[row];
+        self.dataField.text = bd.basicDataName;
     }
 }
 

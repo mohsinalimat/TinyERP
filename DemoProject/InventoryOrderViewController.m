@@ -16,17 +16,21 @@
 #import "OrderDetail.h"
 #import "Item.h"
 #import "AlertManager.h"
+#import "DataPickerManager.h"
 
 @interface InventoryOrderViewController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *invOrderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderDateInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderUserInput;
 @property (weak, nonatomic) IBOutlet UITextField *invOrderWarehouseInput;
+@property (weak, nonatomic) IBOutlet UITextField *invOrderReasonInput;
 @property (weak, nonatomic) IBOutlet UITableView *invOrderDetailTableView;
 @property (weak, nonatomic) IBOutlet UIButton *deleteOrderButton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *invTransType;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
 @property NSMutableArray *invOrderDetailList;
 @property NSUInteger odCount;
+@property DataPickerManager *dpm;
 @end
 
 @implementation InventoryOrderViewController
@@ -36,7 +40,11 @@
     [super viewDidLoad];
     self.invOrderDetailTableView.delegate = self;
     self.invOrderDetailTableView.dataSource = self;
+    self.invOrderDateInput.delegate = self;
+    self.invOrderWarehouseInput.delegate = self;
+    self.invOrderReasonInput.delegate = self;
     self.invOrderDetailList = [NSMutableArray new];
+    self.dpm = [DataPickerManager new];
     if (self.currentInventoryOM==nil)
     {
         self.invOrderDateInput.text = [DateManager getTodayDateString];
@@ -51,6 +59,7 @@
         self.invOrderDateInput.text = [DateManager getFormatedDateString:self.currentInventoryOM.orderDate];
         self.invOrderUserInput.text = self.currentInventoryOM.orderUser;
         self.invOrderNoInput.text = self.currentInventoryOM.orderNo;
+        self.invOrderReasonInput.text = self.currentInventoryOM.orderReason;
         [self.invTransType setEnabled:NO];
         [self.invOrderWarehouseInput setEnabled:NO];
         if ([self.currentInventoryOM.orderType isEqualToString:@"PF"])
@@ -83,6 +92,35 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    if (textField == self.invOrderWarehouseInput)
+    {
+        [self.dpm showDataPicker:self dataField:textField dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"倉庫" headerView:nil];
+    }
+    else if (textField == self.invOrderReasonInput)
+    {
+        [self.dpm showDataPicker:self dataField:textField dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"異動理由" headerView:nil];
+    }
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.dpm.pv removeFromSuperview];
+}
+
+//不可變更
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return NO;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.invOrderDetailList.count;
@@ -108,15 +146,22 @@
     iodCell.invOrderItemNoInput.text = od.orderItemNo;
     iodCell.invOrderQtyInput.text = [od.orderQty stringValue];
     [self showItemNameAndUnit:od.orderItemNo iodCell:iodCell];
+    [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     iodCell.invOrderItemNoInput.tag = indexPath.row;
     return iodCell;
+}
+
+-(void)invOrderItemNoEditingBegin:(UITextField*)sender
+{
+    [self.dpm showDataPicker:self dataField:sender dataSource:@"ItemEntity" sortBy:@"itemNo" fiterFrom:nil fiterBy:nil headerView:self.headerView];
 }
 
 -(void)invOrderItemNoEditingEnd:(UITextField*)sender
 {
     InvOredrDetailCell *iodCell = [self.invOrderDetailTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:sender.tag inSection:0]];
     [self showItemNameAndUnit:iodCell.invOrderItemNoInput.text iodCell:iodCell];
+    [self.dpm.pv removeFromSuperview];
 }
 
 -(void)showItemNameAndUnit:(NSString*)itemNo iodCell:(InvOredrDetailCell*)iodCell
@@ -189,6 +234,7 @@
             self.currentInventoryOM.orderUser = self.invOrderUserInput.text;
             self.currentInventoryOM.orderWarehouse = self.invOrderWarehouseInput.text;
             self.currentInventoryOM.orderCount = @(self.odCount);
+            self.currentInventoryOM.orderReason = self.invOrderReasonInput.text;
             //存單身
             for (OrderDetail *od in self.invOrderDetailList)
             {
