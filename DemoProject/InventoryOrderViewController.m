@@ -17,6 +17,7 @@
 #import "Item.h"
 #import "AlertManager.h"
 #import "DataPickerManager.h"
+#import "DateManager.h"
 
 @interface InventoryOrderViewController () <UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *invOrderNoInput;
@@ -31,6 +32,7 @@
 @property NSMutableArray *invOrderDetailList;
 @property NSUInteger odCount;
 @property DataPickerManager *dpm;
+@property DateManager *dm;
 @end
 
 @implementation InventoryOrderViewController
@@ -44,6 +46,7 @@
     self.invOrderWarehouseInput.delegate = self;
     self.invOrderReasonInput.delegate = self;
     self.invOrderDetailList = [NSMutableArray new];
+    self.dm = [DateManager new];
     self.dpm = [DataPickerManager new];
     if (self.currentInventoryOM==nil)
     {
@@ -102,11 +105,22 @@
     {
         [self.dpm showDataPicker:self dataField:textField dataSource:@"BasicDataEntity" sortBy:@"basicDataName" fiterFrom:@"basicDataType" fiterBy:@"異動理由" headerView:nil];
     }
+    else if (textField == self.invOrderDateInput)
+    {
+        [self.dm showDatePicker:self dateField:textField];
+    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [self.dpm.pv removeFromSuperview];
+    if (textField == self.invOrderWarehouseInput || textField == self.invOrderReasonInput)
+    {
+        [self.dpm.pv removeFromSuperview];
+    }
+    else
+    {
+        [self.dm.dp removeFromSuperview];
+    }
 }
 
 //不可變更
@@ -146,6 +160,8 @@
     iodCell.invOrderItemNoInput.text = od.orderItemNo;
     iodCell.invOrderQtyInput.text = [od.orderQty stringValue];
     [self showItemNameAndUnit:od.orderItemNo iodCell:iodCell];
+    iodCell.invOrderItemNoInput.delegate = self;
+    iodCell.invOrderQtyInput.delegate = self;
     [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     iodCell.invOrderItemNoInput.tag = indexPath.row;

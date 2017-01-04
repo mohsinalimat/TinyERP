@@ -69,6 +69,7 @@
 @property BOOL isLeaveVC;
 @property DataPickerManager *dpm;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
+@property UITextField *orderDateField;
 
 @end
 
@@ -216,6 +217,8 @@
     
     self.orderNoInput.delegate = self;
     self.orderDateInput.delegate = self;
+    self.orderExpectedDayInput.delegate = self;
+    self.orderExpectedReverseDayInput.delegate = self;
     self.orderPartnerInput.delegate = self;
     self.orderWarehouseInput.delegate = self;
     self.orderPreOrderInput.delegate = self;
@@ -268,6 +271,8 @@
             //assign交易對象
             OrderMaster *om = omArray[0];
             self.orderPartnerInput.text = om.orderPartner;
+            Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:self.currentOM.orderPartner].firstObject;
+            self.partnerLabel.text = partnerForLabel.partnerName;
         }
         //清空單身
         if (self.orderDetailList.count !=0)
@@ -326,8 +331,9 @@
 //shouldChangeCharactersInRange還是有用啊 當初怎會這麼說
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField == self.orderDateInput)
+    if (textField == self.orderDateInput || textField == self.orderExpectedDayInput || textField == self.orderExpectedReverseDayInput)
     {
+        self.orderDateField = textField;
         [self.datePickerView setHidden:NO];
 #pragma mark Q.不知為何storyBoard設背景沒用
         self.datePickerView.backgroundColor = [UIColor colorWithRed:0.2 green:1 blue:1 alpha:1];;
@@ -356,7 +362,7 @@
 //結束編輯
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == self.orderDateInput)
+    if (textField == self.orderDateInput || textField == self.orderExpectedDayInput || textField == self.orderExpectedReverseDayInput)
     {
         [self.datePickerView setHidden:YES];
     }
@@ -382,11 +388,7 @@
             }
         }
     }
-    if (textField == self.orderPartnerInput)
-    {
-        [self.dataPickerView setHidden:YES];
-    }
-    else if (textField == self.orderWarehouseInput)
+    if (textField == self.orderPartnerInput || textField == self.orderWarehouseInput)
     {
         [self.dataPickerView setHidden:YES];
     }
@@ -428,7 +430,7 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy/MM/dd"];
     NSString *dateString = [formatter stringFromDate:sender.date];
-    self.orderDateInput.text = dateString;
+    self.orderDateField.text = dateString;
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
@@ -545,6 +547,9 @@
     }
     //監聽欄位
     odCell.odItemNo.delegate = self;
+    odCell.odQty.delegate = self;
+    odCell.odPrice.delegate = self;
+    odCell.odThisQty.delegate = self;
     [odCell.odItemNo addTarget:self action:@selector(itemEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odPrice addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
@@ -603,7 +608,6 @@
 
 -(IBAction)itemEditingBegin:(UITextField*)sender
 {
-    [sender resignFirstResponder];
     [self.dpm showDataPicker:self dataField:sender dataSource:@"ItemEntity" sortBy:@"itemNo" fiterFrom:nil fiterBy:nil headerView:self.headerView];
     [self anyoneEditingBegin:sender];
 }
@@ -649,7 +653,7 @@
 //    OrderDetail *od = [self.orderDetailList objectAtIndex:sender.tag-1];
 //    od.orderQty = @([odCell.odQty.text floatValue]);
 //    od.orderPrice = @([odCell.odPrice.text floatValue]);
-    if ([odCell.odQty.text floatValue] == 0 && self.isLeaveVC !=YES)
+    if ([odCell.odQty.text floatValue] == 0 && odCell != nil && self.isLeaveVC != YES)
     {
         [AlertManager alert:@"數量不可為零" controller:self];
     }
@@ -739,6 +743,8 @@
 //新增單身
 - (IBAction)addOrderDetail:(id)sender
 {
+    [self.datePickerView setHidden:YES];
+    [self.dataPickerView setHidden:YES];
     //產生物件DB寫入殼
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     OrderDetail *od = [NSEntityDescription insertNewObjectForEntityForName:@"OrderDetailEntity" inManagedObjectContext:helper.managedObjectContext];
@@ -1009,10 +1015,13 @@
             //生成物件
             CoreDataHelper *helper = [CoreDataHelper sharedInstance];
             OrderDetail *od = [self.orderDetailList objectAtIndex:indexPath.row];
-            //逆庫存
-            [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];
-            //逆餘量
-            [OrderDetail rollbackNotYet:@[od]];
+            if ([self.whereFrom isEqualToString:@"bSegue"])
+            {
+                //逆庫存
+                [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];
+                //逆餘量
+                [OrderDetail rollbackNotYet:@[od]];
+            }
             //刪DB
             [helper.managedObjectContext deleteObject:od];
             //刪陣列

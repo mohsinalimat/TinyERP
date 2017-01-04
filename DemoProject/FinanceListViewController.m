@@ -24,6 +24,7 @@
 @property NSMutableArray *finance2DList;
 @property NSMutableArray *openSectionList;
 @property DataPickerManager *dpm;
+@property DateManager *dm;
 @property BOOL isGoToARVC;
 @end
 
@@ -36,6 +37,7 @@
     self.financeTableView.delegate = self;
     self.financeTableView.dataSource = self;
     self.dpm = [DataPickerManager new];
+    self.dm = [DateManager new];
     self.finance2DList = [NSMutableArray new];
     //帳戶資料
     self.financeAcountList = [DataBaseManager queryFromCoreData:@"BankAccountEntity" sortBy:@"bankID"];
@@ -324,7 +326,11 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    if (textField.tag == 2)
+    if (textField.tag == 1)
+    {
+        [self.dm showDatePicker:self dateField:textField];
+    }
+    else if (textField.tag == 2)
     {
         [self.dpm showDataPicker:self dataField:textField dataSource:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:nil fiterBy:nil headerView:nil];
     }
@@ -336,13 +342,26 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [self.dpm.pv removeFromSuperview];
+    if (textField.tag == 1)
+    {
+        [self.dm.dp removeFromSuperview];
+    }
+    else
+    {
+        [self.dpm.pv removeFromSuperview];
+    }
 }
 
 //不可變更
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     return NO;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 -(void)tableView:(UITableView *)tableView didselectRowAtIndexPath:(NSIndexPath *)indexPath

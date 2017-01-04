@@ -87,7 +87,6 @@
             {
                 odPre.orderNotYetAmount = odPost.orderAmount;
             }
-            [DataBaseManager updateToCoreData];
         }
     }
 }

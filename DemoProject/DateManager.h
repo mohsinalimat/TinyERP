@@ -11,8 +11,9 @@
 
 @interface DateManager : NSObject
 @property UIDatePicker *dp;
+@property UITextField *dateField;
 +(NSString*)getTodayDateString;
 +(NSString*)getFormatedDateString:(NSDate*)date;
 +(NSDate*)getDateByString:(NSString*)string;
--(void)showDatePicker:(UIViewController*)controller;
+-(void)showDatePicker:(UIViewController*)controller dateField:(UITextField*)dateField;
 @end

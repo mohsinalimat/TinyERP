@@ -1291,7 +1291,7 @@
                                 <rect key="frame" x="0.0" y="234" width="414" height="44"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bSO-uU-TAA">
-                                        <rect key="frame" x="10" y="7" width="306" height="30"/>
+                                        <rect key="frame" x="10" y="7" width="305.66666666666669" height="30"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="總金額" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tg6-45-0wk">
                                                 <rect key="frame" x="0.0" y="0.0" width="52" height="30"/>
@@ -1369,14 +1369,14 @@
                                 </connections>
                             </button>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ypT-Rk-hs6">
-                                <rect key="frame" x="0.0" y="234" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="278" width="414" height="300"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="0.92825885070000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="8cr-Ue-O31"/>
                                 </constraints>
                             </pickerView>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="LNN-gE-Hle">
-                                <rect key="frame" x="0.0" y="234" width="414" height="300"/>
+                                <rect key="frame" x="0.0" y="278" width="414" height="300"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="0.92825885070000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="4SX-Gh-2tT"/>
@@ -1392,7 +1392,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="LNN-gE-Hle" firstAttribute="top" secondItem="73V-R2-rmQ" secondAttribute="bottom" id="0Cw-QF-Nm7"/>
                             <constraint firstItem="vfR-3c-5nQ" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="283-Pk-PbQ"/>
+                            <constraint firstItem="ypT-Rk-hs6" firstAttribute="top" secondItem="73V-R2-rmQ" secondAttribute="bottom" id="3dr-Vu-hSu"/>
                             <constraint firstItem="ypT-Rk-hs6" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="6no-Em-XiW"/>
                             <constraint firstAttribute="trailingMargin" secondItem="kqk-W7-wYm" secondAttribute="trailing" constant="50" id="8Vu-1b-YeO"/>
                             <constraint firstItem="LNN-gE-Hle" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="8n6-sp-z3V"/>
@@ -1402,7 +1404,6 @@
                             <constraint firstAttribute="bottom" secondItem="9pg-TS-cbC" secondAttribute="bottom" id="Ky6-81-Awh"/>
                             <constraint firstAttribute="trailing" secondItem="IbO-bv-cVu" secondAttribute="trailing" constant="10" id="R5A-bD-5kT"/>
                             <constraint firstItem="IbO-bv-cVu" firstAttribute="top" secondItem="QOU-Cv-gs5" secondAttribute="bottom" constant="10" id="Uhz-p5-uPy"/>
-                            <constraint firstItem="ypT-Rk-hs6" firstAttribute="top" secondItem="73V-R2-rmQ" secondAttribute="top" id="Zrr-Qk-xMy"/>
                             <constraint firstItem="kqk-W7-wYm" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leadingMargin" constant="50" id="ZzD-q0-fs1"/>
                             <constraint firstItem="73V-R2-rmQ" firstAttribute="top" secondItem="IbO-bv-cVu" secondAttribute="bottom" constant="10" id="gHV-mX-GU2"/>
                             <constraint firstItem="IbO-bv-cVu" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" constant="10" id="glZ-vn-y9Y"/>
@@ -1412,7 +1413,6 @@
                             <constraint firstItem="73V-R2-rmQ" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="pzd-iU-qUL"/>
                             <constraint firstAttribute="trailing" secondItem="73V-R2-rmQ" secondAttribute="trailing" id="rQF-eA-LRs"/>
                             <constraint firstItem="9pg-TS-cbC" firstAttribute="leading" secondItem="7XS-1p-dl1" secondAttribute="leading" id="tJP-37-iWQ"/>
-                            <constraint firstItem="LNN-gE-Hle" firstAttribute="top" secondItem="73V-R2-rmQ" secondAttribute="top" id="tgF-tv-i72"/>
                             <constraint firstAttribute="trailing" secondItem="vfR-3c-5nQ" secondAttribute="trailing" id="vGU-q7-59C"/>
                         </constraints>
                         <connections>
@@ -1469,7 +1469,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3803" y="1092"/>
+            <point key="canvasLocation" x="3802.898550724638" y="1091.5760869565217"/>
         </scene>
         <!--Inventory Order List View Controller-->
         <scene sceneID="kNC-Kr-HZ2">

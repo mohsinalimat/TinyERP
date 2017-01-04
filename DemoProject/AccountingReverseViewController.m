@@ -37,6 +37,7 @@
 @property BOOL isOverAmount;
 @property BOOL isLeaveVC;
 @property DataPickerManager *dpm;
+@property DateManager *dm;
 @end
 
 @implementation AccountingReverseViewController
@@ -45,10 +46,13 @@
 {
     [super viewDidLoad];
     self.dpm = [DataPickerManager new];
+    self.dm = [DateManager new];
     //代理
     self.accountingReverseTableView.delegate = self;
     self.accountingReverseTableView.dataSource = self;
     self.accBankAccountInput.delegate = self;
+    self.accOrderDateInput.delegate = self;
+    self.accDiscountInput.delegate = self;
     //單頭初值
     self.accOrderNoInput.text = self.currentReverseOM.orderNo;
     self.accOrderPartnerInput.text = self.currentReverseOM.orderPartner;
@@ -123,12 +127,32 @@
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [self.dpm showDataPicker:self dataField:textField dataSource:@"BankAccountEntity" sortBy:@"bankID" fiterFrom:nil fiterBy:nil headerView:nil];
+    if (textField == self.accBankAccountInput)
+    {
+        [self.dpm showDataPicker:self dataField:textField dataSource:@"BankAccountEntity" sortBy:@"bankID" fiterFrom:nil fiterBy:nil headerView:nil];
+    }
+    else if (textField == self.accOrderDateInput)
+    {
+        [self.dm showDatePicker:self dateField:textField];
+    }
 }
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [self.dpm.pv removeFromSuperview];
+    if (textField == self.accBankAccountInput)
+    {
+        [self.dpm.pv removeFromSuperview];
+    }
+    else if (textField == self.accOrderDateInput)
+    {
+        [self.dm.dp removeFromSuperview];
+    }
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 //不可變更
@@ -152,6 +176,7 @@
     accRevCell.odThisAmount.text = @"";
     accRevCell.odResultLabel.text = @"";
     //監聽
+    accRevCell.odThisAmount.delegate = self;
     [accRevCell.odThisAmount addTarget:self action:@selector(odThisAmountEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     //取物件
     OrderDetail *od = [self.accOrderDetailList objectAtIndex:indexPath.row];
@@ -167,7 +192,6 @@
         Item *item = [itemList objectAtIndex:0];
         accRevCell.odItemNameLabel.text = item.itemName;
     }
-    
     accRevCell.odAmount.text = [od.orderAmount stringValue];
     [accRevCell.odAmount setEnabled:NO];
     accRevCell.odThisAmount.text = [od.orderThisAmount stringValue];
