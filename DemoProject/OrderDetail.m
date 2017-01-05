@@ -50,20 +50,20 @@
             }
         }
         //拿我的前單去找人家的前單, 如果他的號碼大於我
-        if (odPre.orderNoOld == nil)
+        //如果沒有前單 就是A單 就不管相關單據
+        if (odPre.orderNoOld != nil)
         {
-            odPre.orderNoOld = @".";
-        }
-        NSArray *yesBrotherArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeqOld" fiterByArray:@[odPre.orderNoOld,odPre.orderSeqOld]];
-        if (yesBrotherArray != nil)
-        {
-            for (OrderDetail *odBrother in yesBrotherArray)
+            NSArray *yesBrotherArray = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"orderNoAndSeqOld" fiterByArray:@[odPre.orderNoOld,odPre.orderSeqOld]];
+            if (yesBrotherArray != nil)
             {
-                NSComparisonResult youBrother = [odPre.orderNo compare:odBrother.orderNo];
-                if (youBrother == NSOrderedAscending)
+                for (OrderDetail *odBrother in yesBrotherArray)
                 {
-                    NSString *odString = [NSString stringWithFormat:@"項次[%@]有相關單據%@-%@\n",odPre.orderSeq,odBrother.orderNo,odBrother.orderSeq];
-                    [yesString appendString:odString];
+                    NSComparisonResult youBrother = [odPre.orderNo compare:odBrother.orderNo];
+                    if (youBrother == NSOrderedAscending)
+                    {
+                        NSString *odString = [NSString stringWithFormat:@"項次[%@]有相關單據%@-%@\n",odPre.orderSeq,odBrother.orderNo,odBrother.orderSeq];
+                        [yesString appendString:odString];
+                    }
                 }
             }
         }

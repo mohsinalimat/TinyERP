@@ -141,6 +141,18 @@
     {
         pred = [NSPredicate predicateWithFormat:@"orderNo like %@",@"*F*"];
     }
+    //查採購未交量不等於零
+    else if ([fiterColumn isEqualToString:@"orderNotYetQtyPA"])
+    {
+        NSString *pa = @"PA*";
+        pred = [NSPredicate predicateWithFormat:@"(orderNotYetQty!=%@) && (orderNo like %@)",@([fiterString floatValue]),pa];
+    }
+    //查訂單未交量不等於零
+    else if ([fiterColumn isEqualToString:@"orderNotYetQtySA"])
+    {
+        NSString *sa = @"SA*";
+        pred = [NSPredicate predicateWithFormat:@"(orderNotYetQty!=%@) && (orderNo like %@)",@([fiterString floatValue]),sa];
+    }
     
     request.predicate = pred;
     

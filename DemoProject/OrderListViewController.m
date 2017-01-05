@@ -14,6 +14,7 @@
 #import "OrderViewController.h"
 #import "OrderMasterManager.h"
 #import "AlertManager.h"
+#import "OrderChartsViewController.h"
 
 @interface OrderListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *upBarLabel;
@@ -112,6 +113,11 @@
         ovc.whereFrom = segue.identifier;
         ovc.currentOM = om;
         ovc.orderListInDteail = self.orderList;
+    }
+    else if ([segue.identifier isEqualToString:@"orderChartsSegue"])
+    {
+        OrderChartsViewController *ocvc = segue.destinationViewController;
+        ocvc.whereFrom = self.whereFrom;
     }
 #pragma mark Q.很奇怪為何一進這個VC就會跑到這裡？
 }
