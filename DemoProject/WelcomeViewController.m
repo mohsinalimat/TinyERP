@@ -31,6 +31,7 @@
     self.appDLG = (AppDelegate*)[UIApplication sharedApplication].delegate;
     self.fbLoginButton.delegate = self;
     self.userIDInput.delegate = self;
+    self.userPWInput.delegate = self;
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(helloFB) name:FBSDKProfileDidChangeNotification object:nil];
 }
 
@@ -140,7 +141,9 @@
     else
     {
         Member *checkMember = memberArray[0];
-        if ([checkMember.memberID isEqualToString:self.userIDInput.text] && [checkMember.memberPW isEqualToString:self.userPWInput.text])
+        NSData *plainData = [[NSData alloc] initWithBase64EncodedString:checkMember.memberPW options:0];
+        NSString *plainText = [[NSString alloc] initWithData:plainData encoding:NSUTF8StringEncoding];
+        if ([checkMember.memberID isEqualToString:self.userIDInput.text] && [plainText isEqualToString:self.userPWInput.text])
         {
             if (checkMember.memberApproved != YES)
             {

@@ -93,7 +93,7 @@
 -(void)modifyMember
 {
     self.currentMember.memberName = self.memberNameInput.text;
-    self.currentMember.memberPW = self.memberPWInput.text;
+    self.currentMember.memberPW = [self base64Encode:self.memberPWInput.text];
     self.currentMember.memberBirthday = [DateManager getDateByString:self.memberBirthdayInput.text];
     self.currentMember.memberImg = UIImageJPEGRepresentation(self.memberImgView.image, 1);
     [DataBaseManager updateToCoreData];
@@ -134,7 +134,7 @@
     CoreDataHelper *helper = [CoreDataHelper sharedInstance];
     Member *addMember = [NSEntityDescription insertNewObjectForEntityForName:@"MemberEntity" inManagedObjectContext:helper.managedObjectContext];
     addMember.memberID = self.memberIDInput.text;
-    addMember.memberPW = self.memberPWInput.text;
+    addMember.memberPW = [self base64Encode:self.memberPWInput.text];
     addMember.memberName = self.memberNameInput.text;
     addMember.memberType = @"inside";
     NSDateFormatter *df = [NSDateFormatter new];
@@ -149,6 +149,12 @@
         addMember.memberClass = @"admin";
     }
     [DataBaseManager updateToCoreData];
+}
+
+- (NSString *)base64Encode:(NSString *)string
+{
+    NSData *cipherData = [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [cipherData base64EncodedStringWithOptions:0];
 }
 
 -(void)prepareForImage
