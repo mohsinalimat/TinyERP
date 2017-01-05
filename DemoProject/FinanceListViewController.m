@@ -33,6 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"財務明細";
     //代理
     self.financeTableView.delegate = self;
     self.financeTableView.dataSource = self;

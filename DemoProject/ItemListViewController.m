@@ -44,19 +44,19 @@
     self.title = @"商品清單";
     self.itemListTableView.delegate = self;
     self.itemListTableView.dataSource = self;
-    [self.itemList enumerateObjectsUsingBlock:^(Item *deleteItem, NSUInteger idx, BOOL *stop)
-    {
-        if (deleteItem.itemNo == nil)
-        {
-            *stop = YES;
-            if (*stop)
-            {
-                CoreDataHelper *helper = [CoreDataHelper sharedInstance];
-                [helper.managedObjectContext deleteObject:deleteItem];
-                [self.itemList removeObject:deleteItem];
-            }
-        }
-    }];
+//    [self.itemList enumerateObjectsUsingBlock:^(Item *deleteItem, NSUInteger idx, BOOL *stop)
+//    {
+//        if (deleteItem.itemNo == nil)
+//        {
+//            *stop = YES;
+//            if (*stop)
+//            {
+//                CoreDataHelper *helper = [CoreDataHelper sharedInstance];
+//                [helper.managedObjectContext deleteObject:deleteItem];
+//                [self.itemList removeObject:deleteItem];
+//            }
+//        }
+//    }];
     //加廣告
     self.bannerAD = [[GADBannerView alloc]initWithAdSize:kGADAdSizeSmartBannerPortrait];
     self.bannerAD.adUnitID = @"ca-app-pub-7838204729392356/8056073022";
@@ -155,7 +155,7 @@
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.itemListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
     //寫DB
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
     //生成ViewController
     ItemViewController *ivc = [self.storyboard instantiateViewControllerWithIdentifier:@"itemViewController"];
     //把物件跟陣列丟過去

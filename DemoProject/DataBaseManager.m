@@ -153,6 +153,12 @@
         NSString *sa = @"SA*";
         pred = [NSPredicate predicateWithFormat:@"(orderNotYetQty!=%@) && (orderNo like %@)",@([fiterString floatValue]),sa];
     }
+    //單身類型
+    else if ([fiterColumn isEqualToString:@"orderDetailType"])
+    {
+        NSString *starString = [fiterString stringByAppendingString:@"*"];
+        pred = [NSPredicate predicateWithFormat:@"orderNo like %@",starString];
+    }
     
     request.predicate = pred;
     

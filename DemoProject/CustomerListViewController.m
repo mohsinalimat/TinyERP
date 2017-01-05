@@ -63,7 +63,7 @@
     Partner *partner = [NSEntityDescription insertNewObjectForEntityForName:@"PartnerEntity" inManagedObjectContext:helper.managedObjectContext];
     partner.partnerType = @"C";
     [self.custList insertObject:partner atIndex:0];
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.custListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
     

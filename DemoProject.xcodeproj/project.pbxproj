@@ -26,6 +26,7 @@
 		272BB5931DC74A7700A1AB11 /* ItemListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB5921DC74A7700A1AB11 /* ItemListViewController.m */; };
 		272BB5961DC74AE300A1AB11 /* ItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 272BB5951DC74AE300A1AB11 /* ItemViewController.m */; };
 		272DD7641DDC230100B12672 /* OrderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 272DD7631DDC230100B12672 /* OrderCell.m */; };
+		273C6D011E1E4CC600C5EF95 /* AccChartsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 273C6D001E1E4CC600C5EF95 /* AccChartsViewController.m */; };
 		27428D3F1E1640A8009358FA /* DataPickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27428D3E1E1640A8009358FA /* DataPickerManager.m */; };
 		275147DF1DE7DC0D00FF888D /* WelcomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */; };
 		275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 275147E11DE7F36400FF888D /* InventoryViewController.m */; };
@@ -160,6 +161,8 @@
 		272BB5951DC74AE300A1AB11 /* ItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemViewController.m; sourceTree = "<group>"; };
 		272DD7621DDC230100B12672 /* OrderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderCell.h; sourceTree = "<group>"; };
 		272DD7631DDC230100B12672 /* OrderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderCell.m; sourceTree = "<group>"; };
+		273C6CFF1E1E4CC600C5EF95 /* AccChartsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccChartsViewController.h; sourceTree = "<group>"; };
+		273C6D001E1E4CC600C5EF95 /* AccChartsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccChartsViewController.m; sourceTree = "<group>"; };
 		27428D3D1E1640A8009358FA /* DataPickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPickerManager.h; sourceTree = "<group>"; };
 		27428D3E1E1640A8009358FA /* DataPickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPickerManager.m; sourceTree = "<group>"; };
 		275147DD1DE7DC0D00FF888D /* WelcomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WelcomeViewController.h; sourceTree = "<group>"; };
@@ -458,6 +461,8 @@
 			children = (
 				27999C911E1DF2680065B4E3 /* OrderChartsViewController.h */,
 				27999C921E1DF2680065B4E3 /* OrderChartsViewController.m */,
+				273C6CFF1E1E4CC600C5EF95 /* AccChartsViewController.h */,
+				273C6D001E1E4CC600C5EF95 /* AccChartsViewController.m */,
 			);
 			name = CHARTs;
 			sourceTree = "<group>";
@@ -782,6 +787,7 @@
 				27BE8C081DD5C7B600FAA604 /* FirmListViewController.m in Sources */,
 				279AE0D61E10F827007D9B0B /* BankAccountCell.m in Sources */,
 				27E73CC91DF7AAB500FA09BC /* AccountingListViewController.m in Sources */,
+				273C6D011E1E4CC600C5EF95 /* AccChartsViewController.m in Sources */,
 				275A12CC1DC8398200A8C52D /* DataBaseManager.m in Sources */,
 				27E73CDE1DFFA35700FA09BC /* ImageManager.m in Sources */,
 				275147E21DE7F36400FF888D /* InventoryViewController.m in Sources */,

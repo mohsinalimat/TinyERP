@@ -11,10 +11,12 @@
 #import "DataBaseManager.h"
 #import "OrderMaster.h"
 #import "OrderDetail.h"
+#import "AccChartsViewController.h"
 
 @interface AccountingReversedListViewController () <UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *accountingReversedTableView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *navigationBackButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *pieChartButton;
 @property NSMutableArray *orderListDidReversed;
 @end
 
@@ -30,12 +32,14 @@
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"PC"];
         self.title = @"已沖應付";
         self.navigationBackButton.title = @"＜未沖應付";
+        self.pieChartButton.title = @"支出比例";
     }
     else if ([self.whereFrom isEqualToString:@"arSegue"])
     {
         self.orderListDidReversed = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
         self.title = @"已沖應收";
         self.navigationBackButton.title = @"＜未沖應收";
+        self.pieChartButton.title = @"收入比例";
     }
 }
 
@@ -78,10 +82,18 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    AccountingReverseViewController *arvc = segue.destinationViewController;
-    arvc.whereFrom = @"accQuerySegue";
-    arvc.accOrderListInDetail = self.orderListDidReversed;
-    arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
+    if ([segue.identifier isEqualToString:@"accQuerySegue"])
+    {
+        AccountingReverseViewController *arvc = segue.destinationViewController;
+        arvc.whereFrom = @"accQuerySegue";
+        arvc.accOrderListInDetail = self.orderListDidReversed;
+        arvc.currentReverseOM = [self.orderListDidReversed objectAtIndex:self.accountingReversedTableView.indexPathForSelectedRow.row];
+    }
+    else if ([segue.identifier isEqualToString:@"accChartsSegue"])
+    {
+        AccChartsViewController *acvc = segue.destinationViewController;
+        acvc.whereFrom = self.whereFrom;
+    }
 }
 
 - (IBAction)navigationBack:(id)sender

@@ -587,6 +587,24 @@
             </objects>
             <point key="canvasLocation" x="1974" y="1864"/>
         </scene>
+        <!--Acc Charts View Controller-->
+        <scene sceneID="8A7-DJ-6XV">
+            <objects>
+                <viewController id="7x5-3l-K8B" customClass="AccChartsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Xgn-sm-Zsn"/>
+                        <viewControllerLayoutGuide type="bottom" id="EoN-5b-hCX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Jsb-Fi-g41">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uU2-ze-giP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3803" y="2698"/>
+        </scene>
         <!--Accounting Reversed List View Controller-->
         <scene sceneID="Usl-qR-8R4">
             <objects>
@@ -663,10 +681,16 @@
                                 <action selector="navigationBack:" destination="sTQ-PT-MRd" id="jEV-AY-gVu"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="NqD-kN-4Id">
+                            <connections>
+                                <segue destination="7x5-3l-K8B" kind="show" identifier="accChartsSegue" id="oZY-o7-IVO"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="accountingReversedTableView" destination="Hjx-lk-HHy" id="Pec-vS-eDL"/>
                         <outlet property="navigationBackButton" destination="HtB-cb-qhK" id="det-Lp-0rg"/>
+                        <outlet property="pieChartButton" destination="NqD-kN-4Id" id="WI6-rp-BmB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MVG-DL-t1K" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -676,7 +700,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2913" y="1864"/>
+            <point key="canvasLocation" x="2916" y="2698"/>
         </scene>
         <!--Accounting Reverse View Controller-->
         <scene sceneID="Vki-IC-HWV">
@@ -1027,7 +1051,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2916" y="2661"/>
+            <point key="canvasLocation" x="1974" y="2698"/>
         </scene>
         <!--Order View Controller-->
         <scene sceneID="cDi-6H-oU1">
@@ -3968,13 +3992,13 @@ StoreApp
         <image name="dropboxIcon" width="72" height="68"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="6kR-NQ-LIR"/>
         <segue reference="LNu-av-hvY"/>
         <segue reference="quf-qe-AWJ"/>
-        <segue reference="dmI-TG-hIC"/>
-        <segue reference="QF1-5Q-6C1"/>
         <segue reference="YQU-cy-WNj"/>
         <segue reference="2BX-Dt-cMR"/>
+        <segue reference="8W9-N1-xFn"/>
+        <segue reference="DuU-bd-kTb"/>
+        <segue reference="6kR-NQ-LIR"/>
         <segue reference="Nve-gu-a0o"/>
     </inferredMetricsTieBreakers>
 </document>

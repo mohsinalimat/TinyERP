@@ -67,7 +67,7 @@
     [self.firmList insertObject:partner atIndex:0];
     NSIndexPath *ip = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.firmListTableView insertRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationAutomatic];
-    [DataBaseManager updateToCoreData];
+//    [DataBaseManager updateToCoreData];
     
     PartnerViewController *pvc = [self.storyboard instantiateViewControllerWithIdentifier:@"partnerViewController"];
     pvc.thisPartner = partner;

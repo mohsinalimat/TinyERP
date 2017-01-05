@@ -36,7 +36,7 @@
     {
         [self prepareForDataEntry:@"orderNotYetQtySA" xAxis:hbCharView.xAxis];    }
     
-    BarChartDataSet *chartDataSet = [[BarChartDataSet alloc] initWithValues:self.dataEntryList label:@"餘量"];
+    BarChartDataSet *chartDataSet = [[BarChartDataSet alloc] initWithValues:self.dataEntryList];
     
     BarChartData *chartData = [[BarChartData alloc] initWithDataSet:chartDataSet];
     
