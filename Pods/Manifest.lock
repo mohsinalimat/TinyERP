@@ -1,4 +1,7 @@
 PODS:
+  - Crashlytics (3.8.3):
+    - Fabric (~> 1.6.3)
+  - Fabric (1.6.11)
   - Firebase (3.10.0):
     - Firebase/Core (= 3.10.0)
   - Firebase/AdMob (3.10.0):
@@ -28,6 +31,8 @@ PODS:
   - SVProgressHUD (2.1.2)
 
 DEPENDENCIES:
+  - Crashlytics
+  - Fabric
   - Firebase
   - Firebase/AdMob
   - Firebase/Core
@@ -35,6 +40,8 @@ DEPENDENCIES:
   - SVProgressHUD
 
 SPEC CHECKSUMS:
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
   Firebase: 387f37c7dca894a02708da9ff35ba147040eae9e
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseCore: 1e383fdfe37b6b5d6ff88e84204bdee30276af0f
@@ -46,6 +53,6 @@ SPEC CHECKSUMS:
   ObjectiveDropboxOfficial: 95dbb4e5d2aadf3fed2f15f23af302d9d384dfed
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
 
-PODFILE CHECKSUM: 69fd4261980358b49e232cd70de79cda1f360051
+PODFILE CHECKSUM: c2824b5f22cdbbd88b79ab417488392faf12512e
 
 COCOAPODS: 1.0.0

@@ -10,6 +10,8 @@ target 'DemoProject' do
   pod "Firebase/Core"
   pod "Firebase/AdMob"
   pod "SVProgressHUD"
+  pod "Fabric"
+  pod "Crashlytics"
 
   # Pods for DemoProject
   pod "ObjectiveDropboxOfficial"
