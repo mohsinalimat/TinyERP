@@ -158,7 +158,11 @@
 //不可變更
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    return NO;
+    if (textField == self.accBankAccountInput || textField == self.accOrderDateInput)
+    {
+        return NO;
+    }
+    return YES;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -471,6 +475,11 @@
 - (IBAction)backRootView:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)gestureRight:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)didReceiveMemoryWarning

@@ -224,7 +224,7 @@
     self.orderPreOrderInput.delegate = self;
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(deleteAndGetOrderDetail) name:@"deleteAndGetOrderDetailYes" object:nil];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearPreOrderNo) name:@"deleteAndGetOrderDetailNo" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(clearPreOrderNo) name:@"deleteAndGetOrderDetailNo" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(popVC) name:@"popVC" object:nil];
     
     //DataMode
@@ -271,6 +271,7 @@
             //assign交易對象
             OrderMaster *om = omArray[0];
             self.orderPartnerInput.text = om.orderPartner;
+            self.originalPreOrderNo = self.orderPreOrderInput.text;
             Partner *partnerForLabel = [DataBaseManager fiterFromCoreData:@"PartnerEntity" sortBy:@"partnerID" fiterFrom:@"partnerID" fiterBy:self.currentOM.orderPartner].firstObject;
             self.partnerLabel.text = partnerForLabel.partnerName;
         }
@@ -279,8 +280,12 @@
         {
             for (OrderDetail *od in self.orderDetailList)
             {
-                [DataBaseManager deleteDataAndObject:od array:self.orderDetailList];
+                [OrderDetail rollbackNotYet:@[od]];
+                [Inventory rollbackInventory:od warehouse:self.currentOM.orderWarehouse orderNoBegin:self.currentOM.orderType];
+                CoreDataHelper *help = [CoreDataHelper sharedInstance];
+                [help.managedObjectContext deleteObject:od];
             }
+            self.orderDetailList = [NSMutableArray array];
         }
         for (OrderDetail *od in orderAOrderDetailList)
         {
@@ -398,14 +403,23 @@
 {
     if ([[self.orderPreOrderInput.text substringToIndex:2] isEqualToString:type])
     {
-        //單身有東西才確認
-        if (self.orderDetailList.count !=0)
+        NSString *findPostOrderString = [OrderDetail isPostOrder:self.orderDetailList];
+        if (findPostOrderString.length != 0)
         {
-            [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
+            NSString *finalString = [NSString stringWithFormat:@"%@，不可修改",findPostOrderString];
+            [AlertManager alert:finalString controller:self];
         }
         else
         {
-            [self deleteAndGetOrderDetail];
+            //單身有東西才確認
+            if (self.orderDetailList.count !=0)
+            {
+                [AlertManager alertYesAndNo:@"請確認是否刪除單身所有資料\n並由此單號帶出單身" yes:@"是" no:@"否" controller:self postNotificationName:@"deleteAndGetOrderDetail"];
+            }
+            else
+            {
+                [self deleteAndGetOrderDetail];
+            }
         }
     }
     else
@@ -1102,7 +1116,10 @@
 
 - (IBAction)gesturePop:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.orderDetailList.count != 0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning

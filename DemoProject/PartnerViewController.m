@@ -315,7 +315,11 @@
 
 - (IBAction)gesturePop:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if (self.pIDInput.text.length!=0 && self.pNameInput.text.length!=0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)phoneCell:(id)sender

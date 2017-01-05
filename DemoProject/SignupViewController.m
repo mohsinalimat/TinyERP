@@ -191,6 +191,11 @@
     return YES;
 }
 
+- (IBAction)gestureRight:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

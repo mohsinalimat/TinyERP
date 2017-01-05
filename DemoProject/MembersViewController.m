@@ -17,6 +17,7 @@
 @interface MembersViewController () <UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UICollectionView *membersCollectionView;
 @property (weak, nonatomic) IBOutlet UIButton *changeAppovedButton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *isShowApprovedSegment;
 
 @property NSArray *memberClassList;
 @property NSMutableArray *memberApprovedYesList;
@@ -336,6 +337,30 @@
 -(void)popVC
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)gestureRight:(id)sender
+{
+    if (self.isShowApporvedMember)
+    {
+        self.isShowApporvedMember = NO;
+        self.isShowApprovedSegment.selectedSegmentIndex = 0;
+        [self.membersCollectionView reloadData];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (IBAction)gestureLeft:(id)sender
+{
+    if (self.isShowApporvedMember == NO)
+    {
+        self.isShowApporvedMember = YES;
+        self.isShowApprovedSegment.selectedSegmentIndex = 1;
+        [self.membersCollectionView reloadData];
+    }
 }
 
 - (void)didReceiveMemoryWarning

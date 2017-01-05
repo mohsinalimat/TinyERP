@@ -457,7 +457,10 @@
 }
 - (IBAction)gesturePop:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    if (self.itemNoInput.text.length!=0 && self.itemNameInput.text.length!=0)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning
