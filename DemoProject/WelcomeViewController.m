@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet FBSDKLoginButton *fbLoginButton;
 @property (weak, nonatomic) IBOutlet UITextField *userIDInput;
 @property (weak, nonatomic) IBOutlet UITextField *userPWInput;
+@property (weak, nonatomic) IBOutlet UILabel *welcomeWord;
 @property (nonatomic) AppDelegate *appDLG;
 @end
 
@@ -32,6 +33,14 @@
     self.fbLoginButton.delegate = self;
     self.userIDInput.delegate = self;
     self.userPWInput.delegate = self;
+//    CGFloat h = self.welcomeWord.frame.size.height;
+//    CGFloat w = self.welcomeWord.frame.size.width;
+//    UILabel *appName = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, w, h)];
+//    appName.text = @"店店三碗公";
+//    NSLayoutConstraint *xCenterConstraint = [NSLayoutConstraint constraintWithItem:appName attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.welcomeWord attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+//    NSLayoutConstraint *yCenterConstraint = [NSLayoutConstraint constraintWithItem:appName attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.welcomeWord attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0];
+//    [appName addConstraints:@[xCenterConstraint,yCenterConstraint]];
+//    [self.welcomeWord addSubview:appName];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(helloFB) name:FBSDKProfileDidChangeNotification object:nil];
 }
 

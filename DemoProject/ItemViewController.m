@@ -79,7 +79,9 @@
     self.itemKindInput.delegate = self;
     self.itemUnitInput.delegate = self;
     self.itemPriceInput.delegate = self;
+    self.itemPriceInput.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     self.itemSafetyStockInput.delegate = self;
+    self.itemSafetyStockInput.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     self.itemSpecInput.delegate = self;
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;

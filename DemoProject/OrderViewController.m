@@ -564,6 +564,9 @@
     odCell.odQty.delegate = self;
     odCell.odPrice.delegate = self;
     odCell.odThisQty.delegate = self;
+    odCell.odQty.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    odCell.odPrice.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    odCell.odThisQty.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     [odCell.odItemNo addTarget:self action:@selector(itemEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odQty addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [odCell.odPrice addTarget:self action:@selector(anyoneEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];

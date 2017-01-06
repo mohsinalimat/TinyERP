@@ -58,7 +58,11 @@
         [self.accountingSegment setTitle:@"客戶" forSegmentAtIndex:0];
         self.title = @"未沖應收";
     }
-    
+    [self splitArray];
+}
+
+-(void)splitArray
+{
     //取得單號並去重
     NSSet *orederNoGroup = [NSSet setWithArray:[self.totalOrderDetailList valueForKey:@"orderNo"]];
     
@@ -200,6 +204,7 @@
         self.totalOrderDetailList = [DataBaseManager fiterFromCoreData:@"OrderDetailEntity" sortBy:@"orderNo" fiterFrom:@"NotYetAmountSB" fiterBy:@"0"];
         self.orderListReverse = [DataBaseManager fiterFromCoreData:@"OrderMasterEntity" sortBy:@"orderNo" fiterFrom:@"orderType" fiterBy:@"SC"];
     }
+    [self splitArray];
     [self.accountingTableView reloadData];
 }
 

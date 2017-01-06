@@ -510,18 +510,18 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q0e-LE-2m4" id="6YP-59-FTA">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Vye-KB-SaS">
-                                                    <rect key="frame" x="15" y="5" width="33.333333333333336" height="20.333333333333332"/>
+                                                    <rect key="frame" x="15" y="4" width="34" height="21"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cHl-cM-PuA">
-                                                    <rect key="frame" x="14.999999999999996" y="25.333333333333332" width="43.666666666666664" height="14.333333333333334"/>
+                                                    <rect key="frame" x="15" y="25" width="44" height="15"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="textColor"/>
@@ -625,11 +625,11 @@
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qLd-bb-DrN" id="nqu-K6-qEy">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="unH-mC-9i2">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -3234,10 +3234,10 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wS5-5f-SPn">
                                 <rect key="frame" x="30" y="74" width="354" height="234"/>
                                 <string key="text">歡迎使用
-StoreApp
+店店三碗公
 微型店鋪管理系統</string>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.21100763950000001" green="0.55004929960000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="sEu-ce-44l">
@@ -3311,6 +3311,7 @@ StoreApp
                         <outlet property="fbLoginButton" destination="tjJ-I0-6uF" id="C9v-pT-HDc"/>
                         <outlet property="userIDInput" destination="TYQ-zr-d7v" id="iix-El-T35"/>
                         <outlet property="userPWInput" destination="5XY-20-MVf" id="qBv-wR-nkO"/>
+                        <outlet property="welcomeWord" destination="wS5-5f-SPn" id="cwb-4e-kEd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qn5-gP-178" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3992,13 +3993,13 @@ StoreApp
         <image name="dropboxIcon" width="72" height="68"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LNu-av-hvY"/>
+        <segue reference="6kR-NQ-LIR"/>
         <segue reference="quf-qe-AWJ"/>
-        <segue reference="YQU-cy-WNj"/>
-        <segue reference="2BX-Dt-cMR"/>
+        <segue reference="LNu-av-hvY"/>
         <segue reference="8W9-N1-xFn"/>
         <segue reference="DuU-bd-kTb"/>
-        <segue reference="6kR-NQ-LIR"/>
+        <segue reference="YQU-cy-WNj"/>
         <segue reference="Nve-gu-a0o"/>
+        <segue reference="6fB-GK-7mR"/>
     </inferredMetricsTieBreakers>
 </document>

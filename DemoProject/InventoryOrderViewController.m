@@ -162,6 +162,7 @@
     [self showItemNameAndUnit:od.orderItemNo iodCell:iodCell];
     iodCell.invOrderItemNoInput.delegate = self;
     iodCell.invOrderQtyInput.delegate = self;
+    iodCell.invOrderQtyInput.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingBegin:) forControlEvents:UIControlEventEditingDidBegin];
     [iodCell.invOrderItemNoInput addTarget:self action:@selector(invOrderItemNoEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     iodCell.invOrderItemNoInput.tag = indexPath.row;

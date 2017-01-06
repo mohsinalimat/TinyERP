@@ -297,6 +297,8 @@
     finCell.finOrderDateInput.delegate = self;
     finCell.finOrderPartnerInput.delegate = self;
     finCell.finOrderReasonInput.delegate = self;
+    finCell.finOrderAmountInput.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+    finCell.finOrderDiscountInput.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     finCell.finOrderDateInput.tag = 1;
     finCell.finOrderPartnerInput.tag = 2;
     finCell.finOrderReasonInput.tag = 3;

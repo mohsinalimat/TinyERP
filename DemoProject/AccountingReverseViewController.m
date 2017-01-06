@@ -181,6 +181,7 @@
     accRevCell.odResultLabel.text = @"";
     //監聽
     accRevCell.odThisAmount.delegate = self;
+    accRevCell.odThisAmount.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
     [accRevCell.odThisAmount addTarget:self action:@selector(odThisAmountEditingEnd:) forControlEvents:UIControlEventEditingDidEnd];
     //取物件
     OrderDetail *od = [self.accOrderDetailList objectAtIndex:indexPath.row];
