@@ -19,6 +19,7 @@
 @dynamic orderType;
 @dynamic orderCount;
 @dynamic orderExpectedDay;
+@dynamic orderExpectedReverseDay;
 @dynamic orderBankAccount;
 @dynamic orderFinanceType;
 @dynamic orderDiscount;

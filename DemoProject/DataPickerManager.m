@@ -27,7 +27,7 @@
     }
     else if ([dataSource isEqualToString:@"BankAccountEntity"] || [dataSource isEqualToString:@"PartnerEntity"] || [fiterBy isEqualToString:@"財務理由"])
     {
-        self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, vcWidth, vcHeight/3)];
+        self.pv = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 0, vcWidth, vcHeight/4)];
     }
     else
     {

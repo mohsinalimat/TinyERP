@@ -40,7 +40,7 @@
     self.membersCollectionView.delegate = self;
     self.membersCollectionView.dataSource = self;
     self.membersCollectionView.allowsMultipleSelection = YES;
-    self.memberClassList = @[@"店長",@"店員",@"財務",@"未分類"];
+    self.memberClassList = @[@"未分類"];
     self.selectedMemberList = [NSMutableArray new];
     self.isShowApporvedMember = NO;
     [self.changeAppovedButton setTitle:@"啟用" forState:UIControlStateNormal];

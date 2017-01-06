@@ -21,6 +21,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import "AppDelegate.h"
 #import "DataPickerManager.h"
+#import "DateManager.h"
 
 @interface OrderViewController () <UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UILabel *partnerLabel;
@@ -30,9 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalAmountWordLabel;
 @property (weak, nonatomic) IBOutlet UIButton *allDeliveryButton;
-
 @property (weak, nonatomic) IBOutlet UILabel *orderDateLabel;
-
 @property (weak, nonatomic) IBOutlet UITextField *orderNoInput;
 @property (weak, nonatomic) IBOutlet UITextField *orderPreOrderInput;
 @property (weak, nonatomic) IBOutlet UITextField *orderPartnerInput;
@@ -107,6 +106,8 @@
         self.orderUserInput.text = appDLG.currentUserName;
     }
     self.orderDateInput.text = dateString;
+    self.orderExpectedDayInput.text = [DateManager getFormatedDateString:self.currentOM.orderExpectedDay];
+    self.orderExpectedReverseDayInput.text = [DateManager getFormatedDateString:self.currentOM.orderExpectedReverseDay];
     self.orderPartnerInput.text = self.currentOM.orderPartner;
     self.orderWarehouseInput.text = self.currentOM.orderWarehouse;
     
@@ -168,10 +169,10 @@
         {
             self.partnerLabel.text = @"廠商";
         }
-        self.orderDateLabel.text = @"採購日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
             self.title = @"採購單";
+            self.orderDateLabel.text = @"採購日期";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
@@ -179,6 +180,7 @@
             [self.emptyInput setHidden:YES];
             self.orderPreOrderInput.placeholder = @"請輸入採購單號";
             self.title = @"進貨單";
+            self.orderDateLabel.text = @"採購日期";
             self.orderExpectedReverseDayLabel.text = @"預付日期";
             [self.allDeliveryButton setTitle:@"全部收貨" forState:UIControlStateNormal];
         }
@@ -193,10 +195,10 @@
         {
             self.partnerLabel.text = @"客戶";
         }
-        self.orderDateLabel.text = @"訂單日期";
         if ([self.whereFrom isEqualToString:@"aSegue"])
         {
             self.title = @"訂單";
+            self.orderDateLabel.text = @"訂單日期";
         }
         else if ([self.whereFrom isEqualToString:@"bSegue"])
         {
@@ -205,6 +207,7 @@
             self.orderPreOrderInput.placeholder = @"請輸入訂單號碼";
             self.orderExpectedReverseDayLabel.text = @"預收日期";
             self.title = @"銷貨單";
+            self.orderDateLabel.text = @"銷貨日期";
             [self.allDeliveryButton setTitle:@"全部出貨" forState:UIControlStateNormal];
         }
     }
@@ -963,6 +966,8 @@
     self.currentOM.orderDate = [df dateFromString:orderDateString];
     NSString *orderExpectedString = self.orderExpectedDayInput.text;
     self.currentOM.orderExpectedDay = [df dateFromString:orderExpectedString];
+    NSString *orderExpectedReverseString = self.orderExpectedReverseDayInput.text;
+    self.currentOM.orderExpectedReverseDay = [df dateFromString:orderExpectedReverseString];
     
     self.currentOM.orderNo = self.orderNoInput.text;
     self.currentOM.orderUser = self.orderUserInput.text;
