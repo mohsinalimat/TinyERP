@@ -55,11 +55,6 @@
     NSLog(@"FBSDKProfileDidChangeNotification,WelcomeVC,helloFB");
     self.appDLG.currentUserID = [FBSDKProfile currentProfile].userID;
     self.appDLG.currentUserName = [FBSDKProfile currentProfile].name;
-    NSArray *getMemberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID];
-    if (getMemberArray.count != 0)
-    {
-        self.appDLG.currentMember = getMemberArray[0];
-    }
     self.appDLG.loginType = @"FaceBook";
     if (self.appDLG.currentUserID != nil)
     {
@@ -136,6 +131,11 @@
             addMember.memberClass = @"admin";
         }
         [DataBaseManager updateToCoreData];
+        NSArray *getMemberArray = [DataBaseManager fiterFromCoreData:@"MemberEntity" sortBy:@"memberID" fiterFrom:@"memberID" fiterBy:self.appDLG.currentUserID];
+        if (getMemberArray.count != 0)
+        {
+            self.appDLG.currentMember = getMemberArray[0];
+        }
     }
 }
 
