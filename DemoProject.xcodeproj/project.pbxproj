@@ -404,6 +404,7 @@
 			children = (
 				271A7F911DE4304700EEAFB3 /* AlertManager.h */,
 				271A7F921DE4304700EEAFB3 /* AlertManager.m */,
+				275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */,
 				272BB5821DC7457F00A1AB11 /* CoreDataHelper.h */,
 				272BB5831DC7457F00A1AB11 /* CoreDataHelper.m */,
 				275A12CA1DC8398200A8C52D /* DataBaseManager.h */,
@@ -493,7 +494,6 @@
 			isa = PBXGroup;
 			children = (
 				275147DD1DE7DC0D00FF888D /* WelcomeViewController.h */,
-				275147DE1DE7DC0D00FF888D /* WelcomeViewController.m */,
 				27E73CD61DFF8FA300FA09BC /* SignupViewController.h */,
 				27E73CD71DFF8FA300FA09BC /* SignupViewController.m */,
 				278034CB1E0B839700E98F08 /* MembersViewController.h */,
@@ -936,7 +936,7 @@
 					"$(PROJECT_DIR)/DemoProject",
 				);
 				INFOPLIST_FILE = DemoProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -968,7 +968,7 @@
 					"$(PROJECT_DIR)/DemoProject",
 				);
 				INFOPLIST_FILE = DemoProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
